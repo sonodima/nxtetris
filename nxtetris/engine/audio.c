@@ -4,9 +4,32 @@
 
 #define FRAMES_PER_BUFFER 512
 
+Audio* make_audio(void) {
+    Audio* audio;
+    PaError error;
+    
+    audio = malloc(sizeof(Audio));
+
+    error = Pa_Initialize();
+    if (error != paNoError) {
+        printf("%s\n", Pa_GetErrorText(error));
+        return 0;
+    }
+    
+    return audio;
+}
+
+void free_audio(Audio* audio) {
+    Pa_Terminate();
+    
+    if (audio) {
+        free(audio);
+    }
+}
+
 int portaudio_callback(const void* input, void* output, unsigned long frame_count,
-                                     const PaStreamCallbackTimeInfo* time_info,
-                                     PaStreamCallbackFlags flags, void* user_data) {
+                       const PaStreamCallbackTimeInfo* time_info,
+                       PaStreamCallbackFlags flags, void* user_data) {
     Sound* sound;
     sf_count_t read_length;
     
@@ -31,32 +54,10 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
     return paComplete;
 }
 
-Audio* make_audio(void) {
-    Audio* audio;
-    PaError error;
-    
-    audio = malloc(sizeof(Audio));
-
-    error = Pa_Initialize();
-    if (error != paNoError) {
-        printf("%s\n", Pa_GetErrorText(error));
-        return 0;
-    }
-    
-    return audio;
-}
-
-void free_audio(Audio* audio) {
-    Pa_Terminate();
-    
-    if (audio) {
-        free(audio);
-    }
-}
-
 Sound* make_sound(Audio* audio, const char* path, int looped) {
     Sound* sound;
     PaError error;
+    PaStreamParameters stream_parameters;
     
     sound = malloc(sizeof(Sound));
     sound->looped = looped;
@@ -68,17 +69,17 @@ Sound* make_sound(Audio* audio, const char* path, int looped) {
         return 0;
     }
     
-    sound->stream_parameters.device = Pa_GetDefaultOutputDevice();
-    sound->stream_parameters.sampleFormat = paInt32;
-    sound->stream_parameters.channelCount = sound->file_info.channels;
-    sound->stream_parameters.suggestedLatency =
-        Pa_GetDeviceInfo(sound->stream_parameters.device)->defaultLowOutputLatency;
-    sound->stream_parameters.hostApiSpecificStreamInfo = 0;
+    stream_parameters.device = Pa_GetDefaultOutputDevice();
+    stream_parameters.sampleFormat = paInt32;
+    stream_parameters.channelCount = sound->file_info.channels;
+    stream_parameters.suggestedLatency =
+        Pa_GetDeviceInfo(stream_parameters.device)->defaultLowOutputLatency;
+    stream_parameters.hostApiSpecificStreamInfo = 0;
     
     /*
      Setup the stream for the sample with the proper callback.
      */
-    error = Pa_OpenStream(&sound->stream, 0, &sound->stream_parameters, sound->file_info.samplerate,
+    error = Pa_OpenStream(&sound->stream, 0, &stream_parameters, sound->file_info.samplerate,
                           FRAMES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
     if (error != paNoError) {
         Pa_Terminate();

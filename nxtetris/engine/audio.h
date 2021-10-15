@@ -11,7 +11,6 @@ typedef struct {
 } Audio;
 
 typedef struct {
-    PaStreamParameters stream_parameters;
     PaStream* stream;
     SNDFILE* sound_file;
     SF_INFO file_info;
