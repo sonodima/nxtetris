@@ -7,11 +7,14 @@
 int portaudio_callback(const void* input, void* output, unsigned long frame_count,
                                      const PaStreamCallbackTimeInfo* time_info,
                                      PaStreamCallbackFlags flags, void* user_data) {
-    Audio* audio;
-    float* out;
+    Sound* sound;
+    int* out;
+    sf_count_t read_length;
+
+    /* float* out;
     sf_count_t read_length;
     unsigned int i, j, cur = 0;
-    double gain = 1.0;
+    
     
     audio = (Audio*)user_data;
     out = (float*)output;
@@ -27,6 +30,23 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
     } else {
         return paComplete;
     }
+     */
+    
+    sound = (Sound*)user_data;
+    out = (int*)output;
+
+    sound->cursor = out;
+    
+    if (frame_count > 0) {
+        sf_seek(sound->sound_file, sound->position, SEEK_SET);
+
+        read_length = sf_readf_int(sound->sound_file, sound->cursor, frame_count);
+        
+        sound->position += read_length;
+        sound->cursor += read_length;
+    }
+    
+    return paContinue;
 }
 
 Audio* make_audio(void) {
@@ -41,54 +61,13 @@ Audio* make_audio(void) {
         return 0;
     }
 
-    audio->sound_file = sf_open("/Users/tommaso/Desktop/bg.wav", SFM_READ, &audio->file_info);
-    if (!audio->sound_file) {
-        Pa_Terminate();
-        printf("%s\n", sf_strerror(audio->sound_file));
-        return 0;
-    }
-    
-    audio->stream_parameters.device = Pa_GetDefaultOutputDevice();
-    audio->stream_parameters.sampleFormat = paInt32;
-    audio->stream_parameters.channelCount = audio->file_info.channels;
-    audio->stream_parameters.suggestedLatency =
-        Pa_GetDeviceInfo(audio->stream_parameters.device)->defaultLowOutputLatency;
-    audio->stream_parameters.hostApiSpecificStreamInfo = 0;
-    
     /*
-     Allocate the sound buffer.
-     */
-    audio->buffer = calloc(audio->file_info.channels * FRAMES_PER_BUFFER, sizeof(float));
-
-    
-    error = Pa_OpenStream(&audio->stream, 0, &audio->stream_parameters, audio->file_info.samplerate,
-                          FRAMES_PER_BUFFER, paClipOff, &portaudio_callback, audio);
-    if (error != paNoError) {
-        Pa_Terminate();
-        printf("%s\n", Pa_GetErrorText(error));
-        return 0;
-    }
-    
-    error = Pa_StartStream(audio->stream);
-    if (error != paNoError) {
-        Pa_Terminate();
-        printf("%s\n", Pa_GetErrorText(error));
-        return 0;
-    }
-    
-    
-    /*
-    
-    
     error = Pa_CloseStream(stream);
     if (error != paNoError) {
         Pa_Terminate();
         printf("%s\n", Pa_GetErrorText(error));
         return;
     }
-    
-    
-    
     
     Pa_Terminate();
      */
@@ -98,4 +77,71 @@ Audio* make_audio(void) {
 
 void free_audio(Audio* audio) {
     
+}
+
+Sound* make_sound(Audio* audio, const char* path) {
+    Sound* sound;
+    PaError error;
+    
+    sound = malloc(sizeof(Sound));
+    
+    sound->sound_file = sf_open(path, SFM_READ, &sound->file_info);
+    if (!sound->sound_file) {
+        Pa_Terminate();
+        printf("%s\n", sf_strerror(sound->sound_file));
+        return 0;
+    }
+    
+    sound->stream_parameters.device = Pa_GetDefaultOutputDevice();
+    sound->stream_parameters.sampleFormat = paInt32;
+    sound->stream_parameters.channelCount = sound->file_info.channels;
+    sound->stream_parameters.suggestedLatency =
+        Pa_GetDeviceInfo(sound->stream_parameters.device)->defaultLowOutputLatency;
+    sound->stream_parameters.hostApiSpecificStreamInfo = 0;
+    
+    /*
+     Allocate the sound buffer.
+     */
+    sound->buffer = calloc(sound->file_info.channels * FRAMES_PER_BUFFER, sizeof(float));
+
+    
+    error = Pa_OpenStream(&sound->stream, 0, &sound->stream_parameters, sound->file_info.samplerate,
+                          FRAMES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
+    if (error != paNoError) {
+        Pa_Terminate();
+        printf("%s\n", Pa_GetErrorText(error));
+        return 0;
+    }
+    
+    return sound;
+}
+
+void free_sound(Sound* sound) {
+    
+}
+
+int start_sound(Sound* sound) {
+    PaError error;
+    
+    error = Pa_StartStream(sound->stream);
+    if (error != paNoError) {
+        Pa_Terminate();
+        printf("%s\n", Pa_GetErrorText(error));
+        return 0;
+    }
+    
+    return 1;
+}
+
+int stop_sound(Sound* sound) {
+    PaError error;
+
+    error = Pa_StopStream(sound->stream);
+    if (error != paNoError) {
+        Pa_Terminate();
+        printf("%s\n", Pa_GetErrorText(error));
+        return 0;
+    }
+    
+    return 1;
 }
