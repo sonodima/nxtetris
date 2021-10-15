@@ -30,5 +30,4 @@ int start_sound(Sound* sound);
 
 int stop_sound(Sound* sound);
 
-
 #endif /* engine_media_audio_h */

@@ -130,7 +130,7 @@ Size get_window_size(void) {
     return size;
 }
 
-char* get_drawable_character(unsigned int alpha) {
+char* get_drawable_character(Alpha alpha) {
     char* character = "  ";
 
     switch (alpha) {
