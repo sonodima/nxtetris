@@ -82,7 +82,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
     init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
     attron(COLOR_PAIR(color.foreground * 8 + color.background));
     
-    mvprintw(point.y, point.x, text);
+    mvprintw(point.y, point.x * 2, text);
     
     attroff(COLOR_PAIR(color.foreground + color.background * 8));
         
@@ -112,7 +112,7 @@ void draw_rect(Graphics* graphics, Rect rect, Color color) {
                 for (j = 0; j < rect.width; ++j) {
                     /* Ignore cols that would exceed the drawing context. */
                     if (j <= graphics->size.width + 1) {
-                        mvprintw(rect.y + i, rect.x + j,
+                        mvprintw(rect.y + i, (rect.x + j) * 2,
                                  get_drawable_character(color.alpha));
                     }
                 }
@@ -126,24 +126,25 @@ void draw_rect(Graphics* graphics, Rect rect, Color color) {
 Size get_window_size(void) {
     Size size;
     getmaxyx(stdscr, size.height, size.width);
+    size.width /= 2;
     return size;
 }
 
 char* get_drawable_character(unsigned int alpha) {
-    char* character = " ";
+    char* character = "  ";
 
     switch (alpha) {
         case lighter:
-            character = "░";
+            character = "░░";
             break;
         case light:
-            character = "▒";
+            character = "▒▒";
             break;
         case dark:
-            character = "▓";
+            character = "▓▓";
             break;
         case darker:
-            character = "█";
+            character = "██";
             break;
     }
     

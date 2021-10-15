@@ -10,9 +10,9 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino) {
         for (i = 0; i < 4; ++i) {
             for (j = 0; j < 4; ++j) {
                 if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
-                    rect.x = tetromino.point.x + j * 2;
+                    rect.x = tetromino.point.x + j;
                     rect.y = tetromino.point.y + i;
-                    rect.width = 2;
+                    rect.width = 1;
                     rect.height = 1;
                     
                     draw_rect(graphics, rect, tetromino.color);
@@ -32,9 +32,9 @@ int test_tetromino_collision(Graphics* graphics, Tetromino tetromino, Point poin
         for (i = 0; i < 4; ++i) {
             for (j = 0; j < 4; ++j) {
                 if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
-                    rect.x = point.x + j * 2;
+                    rect.x = point.x + j;
                     rect.y = point.y + i;
-                    rect.width = 2;
+                    rect.width = 1;
                     rect.height = 1;
                     
                     if (test_box_collision(rect, point)) {

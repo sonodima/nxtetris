@@ -31,7 +31,7 @@ int main(void) {
         begin_frame(graphics);
         
         tick_game(game);
- 
+         
         present_frame();
         usleep(1000 * FRAME_INTERVAL);
     }

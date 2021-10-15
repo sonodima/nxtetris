@@ -42,6 +42,7 @@ Controls* make_controls(void) {
     controls = malloc(sizeof(Controls));
     controls->enabled = 1;
     controls->pressed_key = -1;
+    controls->mouse_state = 0;
     
     return controls;
 }
@@ -70,7 +71,10 @@ void update_controls(Controls* controls) {
                         controls->mouse_state = 1;
                     }
                     
-                    controls->mouse_position.x = mouse_event.x;
+                    /*
+                     Mouse X is divided by two because, in the screen space, y=2x.
+                     */
+                    controls->mouse_position.x = mouse_event.x / 2;
                     controls->mouse_position.y = mouse_event.y;
                 }
             } else {
