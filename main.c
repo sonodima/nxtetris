@@ -31,11 +31,13 @@ int main(void) {
         begin_frame(graphics);
         
         tick_game(game);
-         
+        // draw_rect(graphics, (Rect){controls->mouse_position.x, controls->mouse_position.y, 1, 1}, (Color){red, black, darker});
+        
         present_frame();
         usleep(1000 * FRAME_INTERVAL);
     }
     
+    free_game(game);
     free_controls(controls);
     free_graphics(graphics);
     return 0;

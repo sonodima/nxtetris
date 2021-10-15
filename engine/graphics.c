@@ -62,7 +62,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
     
     switch (alignment) {
         case center:
-            point.x -= (int)(length / 2);
+            point.x -= (int)(length / 4);
             break;
         case right:
             point.x -= length;

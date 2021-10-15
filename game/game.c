@@ -23,7 +23,9 @@ Game* make_game(Graphics* graphics, Controls* controls) {
 }
 
 void free_game(Game* game) {
-    
+    if (game) {
+        free(game);
+    }
 }
 
 Tetromino spawn_game_tetromino(Game* game) {
@@ -108,19 +110,6 @@ void tick_game_gravity(Game* game) {
     }
 }
 
-/*
- 
- if (controls->mouse_state == 1) {
-     if (rotation < TETROMINOES_ROTATIONS - 1) {
-         ++rotation;
-     } else {
-         rotation = 0;
-     }
- }
-  
- 
- */
-
 void tick_game(Game* game) {
     unsigned int i;
         
@@ -132,13 +121,11 @@ void tick_game(Game* game) {
              Note that y=2x, so we need to move the tetronimo in the x
              axis two units a time.
              */
-            game->temp_tetronimo.point.x = game->controls->mouse_position.x
-                - (game->controls->mouse_position.x % 2) - 2;
+            game->temp_tetronimo.point.x = game->controls->mouse_position.x - 1;
             
             if (game->controls->mouse_state == 1) {
                 game->temp_tetronimo.placement = falling;
                 game->tetrominoes[game->tetrominoes_count++] = game->temp_tetronimo;
-
                 
                 game->placement_state = placed;
             }
