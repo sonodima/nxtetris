@@ -99,7 +99,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
     return size;
 }
 
-void fill_rect(Graphics* graphics, Rect rect, Color color) {
+void draw_rect(Graphics* graphics, Rect rect, Color color) {
     unsigned int i, j;
     
     if (graphics) {

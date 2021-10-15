@@ -24,7 +24,7 @@ void present_frame(void);
 Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
                VerticalAlignment alignment, int bold, int underline);
 
-void fill_rect(Graphics* graphics, Rect rect, Color color);
+void draw_rect(Graphics* graphics, Rect rect, Color color);
 
 Size get_window_size(void);
 
