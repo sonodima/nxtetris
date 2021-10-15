@@ -38,9 +38,9 @@ int main(void) {
             is_running = 0;
         }
         
-        color.alpha = lighter;
+        color.alpha = light;
         color.background = black;
-        color.foreground = red;
+        color.foreground = yellow;
         
         if (test_tetromino_collision(1, rotation, (Point){4, 2}, controls->mouse_position)) {
             color.alpha = darker;
