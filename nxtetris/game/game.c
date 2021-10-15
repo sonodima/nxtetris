@@ -65,11 +65,11 @@ void remove_game_tetromino(Game* game) {
 }
 
 void test_tetronimoes_overlap(Game* game, Tetromino tetronimo) {
+    /*
     unsigned int i, j, t;
     unsigned int lower[4];
     unsigned int upper[4];
 
-    /*
     for (i = 0; i < 4; ++i) {
         lower[i] = 0;
         for (j = 0; j < 4; ++j) {

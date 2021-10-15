@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#define FRAMES_PER_BUFFER 512
+#define SAMPLES_PER_BUFFER 512
 
 Audio* make_audio(void) {
     Audio* audio;
@@ -32,12 +32,13 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
                        PaStreamCallbackFlags flags, void* user_data) {
     Sound* sound;
     sf_count_t read_length;
-    
+
     sound = (Sound*)user_data;
     
     if (frame_count > 0) {
         sf_seek(sound->sound_file, sound->position, SEEK_SET);
         read_length = sf_readf_int(sound->sound_file, output, frame_count);
+        
         if (read_length > 0) {
             sound->position += read_length;
             return paContinue;
@@ -80,7 +81,7 @@ Sound* make_sound(Audio* audio, const char* path, int looped) {
      Setup the stream for the sample with the proper callback.
      */
     error = Pa_OpenStream(&sound->stream, 0, &stream_parameters, sound->file_info.samplerate,
-                          FRAMES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
+                          SAMPLES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
     if (error != paNoError) {
         Pa_Terminate();
         printf("[%s] %s\n", path, Pa_GetErrorText(error));

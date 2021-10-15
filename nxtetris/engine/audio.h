@@ -14,8 +14,8 @@ typedef struct {
     PaStream* stream;
     SNDFILE* sound_file;
     SF_INFO file_info;
-    int looped;
     int position;
+    int looped;
 } Sound;
 
 Audio* make_audio(void);
