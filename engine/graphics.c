@@ -12,11 +12,25 @@ Graphics* make_graphics(void) {
     graphics = malloc(sizeof(Graphics));
     graphics->size = get_window_size();
     
-    setlocale(LC_ALL, ""); /* Enables wchar display. */
+    /*
+     Enable wchar console output.
+     */
+    setlocale(LC_ALL, "");
     
-    initscr(); /* Start curses mode. */
-    start_color(); /* Start the color functionality. */
-    curs_set(0); /* Hide the cursor. */
+    /*
+     Start curses mode.
+     */
+    initscr();
+    
+    /*
+     Start the curses color functionality.
+     */
+    start_color();
+    
+    /*
+     Hide the cursor.
+     */
+    curs_set(0);
     
     return graphics;
 }

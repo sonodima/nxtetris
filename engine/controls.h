@@ -14,6 +14,8 @@ typedef struct {
 
 Controls* make_controls(void);
 
+void free_controls(Controls* controls);
+
 void update_controls(Controls* controls);
 
 #endif /* engine_controls_h */

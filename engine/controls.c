@@ -46,11 +46,22 @@ Controls* make_controls(void) {
     return controls;
 }
 
+void free_controls(Controls* controls) {
+    if (controls) {
+        free(controls);
+    }
+    
+    /*
+     Tell XTerm to stop reporting the mouse position.
+     */
+    printf("\033[?1003l\n");
+}
+
 void update_controls(Controls* controls) {
     int pressed_key;
     MEVENT mouse_event;
     
-    if (controls->enabled) {
+    if (controls && controls->enabled) {
         pressed_key = getch();
         if (pressed_key != ERR) {
             if (pressed_key == KEY_MOUSE) {
