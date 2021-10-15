@@ -19,12 +19,8 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
             sound->position += read_length;
             return paContinue;
         } else {
+            sound->position = 0;
             if (sound->looped) {
-                /*
-                 If the sound is looped, reset the
-                 position for the next iteration.
-                 */
-                sound->position = 0;
                 return paContinue;
             } else {
                 return paComplete;
@@ -113,6 +109,7 @@ int start_sound(Sound* sound) {
     
     if (sound) {
         sound->position = 0;
+        Pa_AbortStream(sound->stream);
         
         /*
          Start the stream if it is not already running.

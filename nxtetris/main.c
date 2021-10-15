@@ -24,7 +24,7 @@ int main(void) {
     int is_running = 1;
         
     srand((unsigned int)time(0));
-    
+
     audio = make_audio();
     graphics = make_graphics();
     controls = make_controls();

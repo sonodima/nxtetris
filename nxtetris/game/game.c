@@ -139,6 +139,7 @@ void tick_game(Game* game) {
                 game->tetrominoes[game->tetrominoes_count++] = game->temp_tetronimo;
                 
                 game->placement_state = placed;
+                start_sound(game->sounds.lock);
             }
             
             switch (game->controls->pressed_key) {
