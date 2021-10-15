@@ -11,25 +11,25 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
     int* out;
     sf_count_t read_length;
 
-    /* float* out;
-    sf_count_t read_length;
-    unsigned int i, j, cur = 0;
-    
-    
-    audio = (Audio*)user_data;
-    out = (float*)output;
+    /*
+     float* out;
+     sf_count_t read_length;
+     unsigned int i, j, cur = 0;
+     
+     audio = (Audio*)user_data;
+     out = (float*)output;
 
-    read_length = sf_readf_float(audio->sound_file, audio->buffer, FRAMES_PER_BUFFER);
-    if (read_length > 0) {
-        for (i = 0; i < read_length; ++i) {
-            for (j = 0; j < audio->stream_parameters.channelCount; ++j) {
-                *out++ = audio->buffer[cur++];
-            }
-        }
-        return paContinue;
-    } else {
-        return paComplete;
-    }
+     read_length = sf_readf_float(audio->sound_file, audio->buffer, FRAMES_PER_BUFFER);
+     if (read_length > 0) {
+         for (i = 0; i < read_length; ++i) {
+             for (j = 0; j < audio->stream_parameters.channelCount; ++j) {
+                 *out++ = audio->buffer[cur++];
+             }
+         }
+         return paContinue;
+     } else {
+         return paComplete;
+     }
      */
     
     sound = (Sound*)user_data;
@@ -60,23 +60,16 @@ Audio* make_audio(void) {
         printf("%s\n", Pa_GetErrorText(error));
         return 0;
     }
-
-    /*
-    error = Pa_CloseStream(stream);
-    if (error != paNoError) {
-        Pa_Terminate();
-        printf("%s\n", Pa_GetErrorText(error));
-        return;
-    }
-    
-    Pa_Terminate();
-     */
     
     return audio;
 }
 
 void free_audio(Audio* audio) {
+    Pa_Terminate();
     
+    if (audio) {
+        free(audio);
+    }
 }
 
 Sound* make_sound(Audio* audio, const char* path) {
@@ -88,7 +81,7 @@ Sound* make_sound(Audio* audio, const char* path) {
     sound->sound_file = sf_open(path, SFM_READ, &sound->file_info);
     if (!sound->sound_file) {
         Pa_Terminate();
-        printf("%s\n", sf_strerror(sound->sound_file));
+        printf("[%s] %s\n", path, sf_strerror(sound->sound_file));
         return 0;
     }
     
@@ -109,7 +102,7 @@ Sound* make_sound(Audio* audio, const char* path) {
                           FRAMES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
     if (error != paNoError) {
         Pa_Terminate();
-        printf("%s\n", Pa_GetErrorText(error));
+        printf("[%s] %s\n", path, Pa_GetErrorText(error));
         return 0;
     }
     
@@ -117,17 +110,31 @@ Sound* make_sound(Audio* audio, const char* path) {
 }
 
 void free_sound(Sound* sound) {
-    
+    PaError error;
+
+    if (sound) {
+        error = Pa_CloseStream(sound->stream);
+        if (error != paNoError) {
+            printf("%s\n", Pa_GetErrorText(error));
+        }
+        
+        sf_close(sound->sound_file);
+        
+        free(sound->buffer);
+        free(sound);
+    }
 }
 
 int start_sound(Sound* sound) {
     PaError error;
     
-    error = Pa_StartStream(sound->stream);
-    if (error != paNoError) {
-        Pa_Terminate();
-        printf("%s\n", Pa_GetErrorText(error));
-        return 0;
+    if (sound) {
+        error = Pa_StartStream(sound->stream);
+        if (error != paNoError) {
+            Pa_Terminate();
+            printf("%s\n", Pa_GetErrorText(error));
+            return 0;
+        }
     }
     
     return 1;
@@ -136,11 +143,13 @@ int start_sound(Sound* sound) {
 int stop_sound(Sound* sound) {
     PaError error;
 
-    error = Pa_StopStream(sound->stream);
-    if (error != paNoError) {
-        Pa_Terminate();
-        printf("%s\n", Pa_GetErrorText(error));
-        return 0;
+    if (sound) {
+        error = Pa_StopStream(sound->stream);
+        if (error != paNoError) {
+            Pa_Terminate();
+            printf("%s\n", Pa_GetErrorText(error));
+            return 0;
+        }
     }
     
     return 1;

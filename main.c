@@ -20,41 +20,37 @@ int main(void) {
     Graphics* graphics;
     Controls* controls;
     Audio* audio;
-    Sound* background_music;
-    Sound* background_music2;
     Game* game;
     int is_running = 1;
-
-    int toggle = 0;
+    
+    Sound* cringe_music;
+    Sound* background_music;
     
     srand((unsigned int)time(0));
     
     audio = make_audio();
-    background_music = make_sound(audio, "/Users/tommaso/Desktop/bg.aif");
-    background_music2 = make_sound(audio, "/Users/tommaso/Desktop/bg.wav");
-    start_sound(background_music);
-    start_sound(background_music2);
 
+    /*
+     Load sound assets.
+     */
+    cringe_music = make_sound(audio, "/Users/tommaso/Desktop/bg.aif");
+    background_music = make_sound(audio, "/Users/tommaso/Desktop/bg.wav");
+
+    start_sound(cringe_music);
+    start_sound(background_music);
+    
     graphics = make_graphics();
     controls = make_controls();
     game = make_game(graphics, controls);
-
+    
+    /*
+     Main process loop.
+     */
     while (is_running) {
         update_controls(controls);
         begin_frame(graphics);
         
-        if (controls->mouse_state == 1) {
-            toggle = !toggle;
-            
-            if (toggle) {
-            } else {
-               // stop_sound(background_music);
-            }
-        }
-        
         tick_game(game);
-                
-        // draw_rect(graphics, (Rect){controls->mouse_position.x, controls->mouse_position.y, 1, 1}, (Color){red, black, darker});
         
         present_frame();
         usleep(1000 * FRAME_INTERVAL);
@@ -63,5 +59,9 @@ int main(void) {
     free_game(game);
     free_controls(controls);
     free_graphics(graphics);
+    
+    free_sound(background_music);
+    free_sound(cringe_music);
+    free_audio(audio);
     return 0;
 }
