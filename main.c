@@ -12,11 +12,14 @@
 #include "game/tetromino.h"
 #include "game/game.h"
 
+#include "engine/audio.h"
+
 #define FRAME_INTERVAL 4
 
 int main(void) {
     Graphics* graphics;
     Controls* controls;
+    Audio* audio;
     Game* game;
     int is_running = 1;
 
@@ -24,6 +27,7 @@ int main(void) {
     
     graphics = make_graphics();
     controls = make_controls();
+    audio = make_audio();
     game = make_game(graphics, controls);
 
     while (is_running) {
