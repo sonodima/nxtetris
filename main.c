@@ -38,10 +38,16 @@ int main(void) {
             is_running = 0;
         }
         
-        color.alpha = darker;
+        color.alpha = lighter;
         color.background = black;
         color.foreground = red;
-        draw_tetromino(graphics, 1, rotation, controls->mouse_position, color);
+        
+        if (test_tetromino_collision(1, rotation, (Point){4, 2}, controls->mouse_position)) {
+            color.alpha = darker;
+        }
+        
+        draw_tetromino(graphics, 1, rotation, (Point){4, 2}, color);
+
         
         present_frame();
         usleep(1000 * FRAME_INTERVAL);

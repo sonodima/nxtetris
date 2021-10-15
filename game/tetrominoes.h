@@ -45,4 +45,7 @@ static int tetromino_shapes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
 void draw_tetromino(Graphics* graphics, unsigned int shape, unsigned int rotation,
                     Point point, Color color);
 
+int test_tetromino_collision(unsigned int shape, unsigned int rotation, Point point,
+                             Point tested_point);
+
 #endif /* game_tetrominoes_h */
