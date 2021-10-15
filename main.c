@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include <curses.h>
 
@@ -7,48 +9,29 @@
 #include "engine/controls.h"
 #include "engine/types/color.h"
 
-#include "game/tetrominoes.h"
+#include "game/tetromino.h"
+#include "game/game.h"
 
 #define FRAME_INTERVAL 4
 
 int main(void) {
     Graphics* graphics;
     Controls* controls;
+    Game* game;
     int is_running = 1;
-    
-    Color color;
-    int rotation = 0;
+
+    srand((unsigned int)time(0));
     
     graphics = make_graphics();
     controls = make_controls();
+    game = make_game(graphics, controls);
 
     while (is_running) {
         update_controls(controls);
         begin_frame(graphics);
         
-        if (controls->mouse_state == 1) {
-            if (rotation < TETROMINOES_ROTATIONS - 1) {
-                ++rotation;
-            } else {
-                rotation = 0;
-            }
-        }
-         
-        if (controls->pressed_key == KEY_BACKSPACE) {
-            is_running = 0;
-        }
-        
-        color.alpha = light;
-        color.background = black;
-        color.foreground = yellow;
-        
-        if (test_tetromino_collision(1, rotation, (Point){4, 2}, controls->mouse_position)) {
-            color.alpha = darker;
-        }
-        
-        draw_tetromino(graphics, 1, rotation, (Point){4, 2}, color);
-
-        
+        tick_game(game);
+ 
         present_frame();
         usleep(1000 * FRAME_INTERVAL);
     }

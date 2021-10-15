@@ -9,9 +9,6 @@
 Graphics* make_graphics(void) {
     Graphics* graphics;
     
-    graphics = malloc(sizeof(Graphics));
-    graphics->size = get_window_size();
-    
     /*
      Enable wchar console output.
      */
@@ -32,6 +29,9 @@ Graphics* make_graphics(void) {
      */
     curs_set(0);
     
+    graphics = malloc(sizeof(Graphics));
+    graphics->size = get_window_size();
+
     return graphics;
 }
 

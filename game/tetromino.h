@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "../engine/graphics.h"
+#include "enums/placement_state.h"
 
 #define TETROMINOES_COUNT 7
 #define TETROMINOES_ROTATIONS 4
@@ -11,7 +12,7 @@
 /**
  * Bitmask encoding idea from: https://stackoverflow.com/a/38596291
  */
-static int tetromino_shapes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
+static int tetrominoes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
     {
         /* T */
         0x4640, 0x0E40, 0x4C40, 0x4E00
@@ -42,10 +43,21 @@ static int tetromino_shapes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
     },
 };
 
-void draw_tetromino(Graphics* graphics, unsigned int shape, unsigned int rotation,
-                    Point point, Color color);
+typedef struct {
+    unsigned int shape;
+    unsigned int rotation;
+    Point point;
+    Color color;
+    PlacementState placement;
+} Tetromino;
 
-int test_tetromino_collision(unsigned int shape, unsigned int rotation, Point point,
-                             Point tested_point);
+void draw_tetromino(Graphics* graphics, Tetromino tetromino);
+
+int test_tetromino_collision(Graphics* graphics, Tetromino tetromino, Point point);
+
+/**
+ * Obtains the coordinates of the bottom point of a tetronimo.
+ */
+Point get_bottom_tetronimo_y(Tetromino tetromino);
 
 #endif /* game_tetrominoes_h */

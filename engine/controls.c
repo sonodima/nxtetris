@@ -6,10 +6,6 @@
 
 Controls* make_controls(void) {
     Controls* controls;
-    
-    controls = malloc(sizeof(Controls));
-    controls->enabled = 1;
-    controls->pressed_key = -1;
 
     /*
      Disable keypress echoing.
@@ -43,6 +39,9 @@ Controls* make_controls(void) {
      */
     printf("\033[?1003h\n");
     
+    controls = malloc(sizeof(Controls));
+    controls->enabled = 1;
+    controls->pressed_key = -1;
     
     return controls;
 }
