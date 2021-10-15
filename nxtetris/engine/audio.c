@@ -112,11 +112,18 @@ int start_sound(Sound* sound) {
     PaError error;
     
     if (sound) {
-        error = Pa_StartStream(sound->stream);
-        if (error != paNoError) {
-            Pa_Terminate();
-            printf("%s\n", Pa_GetErrorText(error));
-            return 0;
+        sound->position = 0;
+        
+        /*
+         Start the stream if it is not already running.
+         */
+        if (!Pa_IsStreamActive(sound->stream)) {
+            error = Pa_StartStream(sound->stream);
+            if (error != paNoError) {
+                Pa_Terminate();
+                printf("%s\n", Pa_GetErrorText(error));
+                return 0;
+            }
         }
     }
     

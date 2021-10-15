@@ -8,16 +8,27 @@
 
 #define GRAVITY_TIME 0.002
 
-Game* make_game(Graphics* graphics, Controls* controls) {
+void load_sounds(Game* game) {
+    game->sounds.bg = make_sound(game->audio, "/Users/tommaso/Desktop/bg.aif", 1);
+    game->sounds.lock = make_sound(game->audio, "/Users/tommaso/Desktop/lock.aif", 0);
+    game->sounds.rot_cl = make_sound(game->audio, "/Users/tommaso/Desktop/rot_cl.aif", 0);
+    game->sounds.rot_cc = make_sound(game->audio, "/Users/tommaso/Desktop/rot_cc.aif", 0);
+}
+
+Game* make_game(Graphics* graphics, Controls* controls, Audio* audio) {
     Game* game;
     
     game = malloc(sizeof(Game));
     game->graphics = graphics;
     game->controls = controls;
+    game->audio = audio;
     game->tetrominoes = malloc(sizeof(Tetromino) * 100);
     game->tetrominoes_count = 0;
     game->gravity_clock = clock();
     game->placement_state = placed;
+    
+    load_sounds(game);
+    start_sound(game->sounds.bg);
     
     return game;
 }
@@ -140,6 +151,7 @@ void tick_game(Game* game) {
                     } else {
                         game->temp_tetronimo.rotation = 0;
                     }
+                    start_sound(game->sounds.rot_cl);
                     break;
                     
                 case KEY_LEFT:
@@ -151,6 +163,7 @@ void tick_game(Game* game) {
                     } else {
                         game->temp_tetronimo.rotation = TETROMINOES_ROTATIONS - 1;
                     }
+                    start_sound(game->sounds.rot_cc);
                     break;
             }
             break;

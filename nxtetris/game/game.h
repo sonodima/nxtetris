@@ -6,11 +6,21 @@
 
 #include "../engine/graphics.h"
 #include "../engine/controls.h"
+#include "../engine/audio.h"
 #include "tetromino.h"
+
+typedef struct {
+    Sound* bg;
+    Sound* lock;
+    Sound* rot_cl;
+    Sound* rot_cc;
+} Sounds;
 
 typedef struct {
     Graphics* graphics;
     Controls* controls;
+    Audio* audio;
+    Sounds sounds;
     Tetromino temp_tetronimo;
     Tetromino* tetrominoes;
     int tetrominoes_count;
@@ -18,7 +28,7 @@ typedef struct {
     PlacementState placement_state;
 } Game;
 
-Game* make_game(Graphics* graphics, Controls* controls);
+Game* make_game(Graphics* graphics, Controls* controls, Audio* audio);
 
 void free_game(Game* game);
 

@@ -22,26 +22,13 @@ int main(void) {
     Audio* audio;
     Game* game;
     int is_running = 1;
-    
-    Sound* cringe_music;
-    Sound* background_music;
-    
+        
     srand((unsigned int)time(0));
     
     audio = make_audio();
-
-    /*
-     Load sound assets.
-     */
-    cringe_music = make_sound(audio, "/Users/tommaso/Desktop/bg.aif", 1);
-    background_music = make_sound(audio, "/Users/tommaso/Desktop/bg.wav", 0);
-
-    start_sound(cringe_music);
-    start_sound(background_music);
-    
     graphics = make_graphics();
     controls = make_controls();
-    game = make_game(graphics, controls);
+    game = make_game(graphics, controls, audio);
     
     /*
      Main process loop.
@@ -59,9 +46,6 @@ int main(void) {
     free_game(game);
     free_controls(controls);
     free_graphics(graphics);
-    
-    free_sound(background_music);
-    free_sound(cringe_music);
     free_audio(audio);
     return 0;
 }
