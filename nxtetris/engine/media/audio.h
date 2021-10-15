@@ -1,5 +1,5 @@
-#ifndef engine_audio_h
-#define engine_audio_h
+#ifndef engine_media_audio_h
+#define engine_media_audio_h
 
 #include <stdio.h>
 
@@ -31,4 +31,4 @@ int start_sound(Sound* sound);
 int stop_sound(Sound* sound);
 
 
-#endif /* engine_audio_h */
+#endif /* engine_media_audio_h */

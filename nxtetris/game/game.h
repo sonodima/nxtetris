@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "../engine/graphics.h"
+#include "../engine/media/graphics.h"
+#include "../engine/media/audio.h"
 #include "../engine/controls.h"
-#include "../engine/audio.h"
 #include "tetromino.h"
 
 typedef struct {

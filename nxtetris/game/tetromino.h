@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "../engine/graphics.h"
+#include "../engine/media/graphics.h"
 #include "enums/placement_state.h"
 
 #define TETROMINOES_COUNT 7

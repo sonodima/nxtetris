@@ -5,14 +5,13 @@
 
 #include <curses.h>
 
-#include "engine/graphics.h"
+#include "engine/media/graphics.h"
+#include "engine/media/audio.h"
 #include "engine/controls.h"
 #include "engine/types/color.h"
 
 #include "game/tetromino.h"
 #include "game/game.h"
-
-#include "engine/audio.h"
 
 #define FRAME_INTERVAL 12
 

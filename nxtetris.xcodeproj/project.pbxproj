@@ -193,18 +193,26 @@
 		43D7D69C270F5E57009DD32F /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				43EE39EA271A39D9001CFC0F /* media */,
 				43279A552710610300635AB5 /* enums */,
 				43279A51270F985900635AB5 /* types */,
-				43D7D69D270F5E65009DD32F /* graphics.h */,
-				43D7D69E270F5E65009DD32F /* graphics.c */,
 				4318119F27195E1E001D57B0 /* controls.h */,
 				431811A027195E1E001D57B0 /* controls.c */,
 				431811AD27198FE9001D57B0 /* collisions.h */,
 				431811AE27198FE9001D57B0 /* collisions.c */,
+			);
+			path = engine;
+			sourceTree = "<group>";
+		};
+		43EE39EA271A39D9001CFC0F /* media */ = {
+			isa = PBXGroup;
+			children = (
+				43D7D69D270F5E65009DD32F /* graphics.h */,
+				43D7D69E270F5E65009DD32F /* graphics.c */,
 				4382ECD32719E0BE00E6E6D8 /* audio.h */,
 				4382ECD42719E0BE00E6E6D8 /* audio.c */,
 			);
-			path = engine;
+			path = media;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
