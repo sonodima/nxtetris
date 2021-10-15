@@ -43,6 +43,7 @@ Controls* make_controls(void) {
      */
     printf("\033[?1003h\n");
     
+    
     return controls;
 }
 

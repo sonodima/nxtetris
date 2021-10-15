@@ -14,6 +14,7 @@ int main(void) {
     Controls* controls;
     int is_running = 1;
     
+    Color color;
     int toggle = 0;
     
     graphics = make_graphics();
@@ -33,31 +34,17 @@ int main(void) {
         
         /*
         fill_rect(graphics, (Rect){
-            x,
-            graphics->size.height / 2 - 1, 4, 2
-        }, (Color){red, red, darker});
-        
-        fill_rect(graphics, (Rect){
-            x + 5,
-            graphics->size.height / 2 - 1, 4, 2
-        }, (Color){green, red, darker});
-        
-        fill_rect(graphics, (Rect){
-            x + 10,
-            graphics->size.height / 2 - 1, 4, 2
-        }, (Color){white, red, darker});
-        
-        fill_rect(graphics, (Rect){
-            x + 15,
-            graphics->size.height / 2 - 1, 4, 2
-        }, (Color){blue, black, darker});
-        */
-        
-        fill_rect(graphics, (Rect){
             controls->mouse_position.x - 2, controls->mouse_position.y - 1,
             4, 2
         }, (Color){red, black, toggle ? darker : lighter});
-                
+        */
+        
+        color.alpha = darker;
+        color.background = black;
+        color.foreground = red;
+        draw_text(graphics, "Test", controls->mouse_position, color, center, 1, 1);
+        
+        
         present_frame();
         usleep(1000 * 4);
     }

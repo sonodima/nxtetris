@@ -26,8 +26,6 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
 
 void fill_rect(Graphics* graphics, Rect rect, Color color);
 
-void draw_line(Graphics* graphics, unsigned int start, unsigned int end);
-
 Size get_window_size(void);
 
 char* get_drawable_character(unsigned int alpha);

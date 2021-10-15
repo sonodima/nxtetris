@@ -57,7 +57,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
                VerticalAlignment alignment, int bold, int underline) {
     unsigned int length;
     Size size;
-
+    
     length = (unsigned int)strlen(text);
     
     switch (alignment) {
@@ -79,9 +79,12 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
         attron(A_UNDERLINE);
     }
     
-    init_pair(1, color.foreground, color.background);
-    attrset(COLOR_PAIR(1));
+    init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
+    attron(COLOR_PAIR(color.foreground * 8 + color.background));
+    
     mvprintw(point.y, point.x, text);
+    
+    attroff(COLOR_PAIR(color.foreground + color.background * 8));
         
     if (bold) {
         attroff(A_BOLD);
@@ -98,28 +101,26 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
 
 void fill_rect(Graphics* graphics, Rect rect, Color color) {
     unsigned int i, j;
-  
-    init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
-    attron(COLOR_PAIR(color.foreground * 8 + color.background));
     
-    for (i = 0; i < rect.height; ++i) {
-        /* Ignore rows that would exceed the drawing context. */
-        if (i <= graphics->size.height + 1) {
-            for (j = 0; j < rect.width; ++j) {
-                /* Ignore cols that would exceed the drawing context. */
-                if (j <= graphics->size.width + 1) {
-                    mvprintw(rect.y + i, rect.x + j,
-                             get_drawable_character(color.alpha));
+    if (graphics) {
+        init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
+        attron(COLOR_PAIR(color.foreground * 8 + color.background));
+        
+        for (i = 0; i < rect.height; ++i) {
+            /* Ignore rows that would exceed the drawing context. */
+            if (i <= graphics->size.height + 1) {
+                for (j = 0; j < rect.width; ++j) {
+                    /* Ignore cols that would exceed the drawing context. */
+                    if (j <= graphics->size.width + 1) {
+                        mvprintw(rect.y + i, rect.x + j,
+                                 get_drawable_character(color.alpha));
+                    }
                 }
             }
         }
+        
+        attroff(COLOR_PAIR(color.foreground + color.background * 8));
     }
-    
-    attroff(COLOR_PAIR(color.foreground + color.background * 8));
-}
-
-void draw_line(Graphics* graphics, unsigned int start, unsigned int end) {
-   /* mvvline(<#int#>, <#int#>, chtype, <#int#>) */
 }
 
 Size get_window_size(void) {
