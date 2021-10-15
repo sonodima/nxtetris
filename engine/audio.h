@@ -15,16 +15,15 @@ typedef struct {
     PaStream* stream;
     SNDFILE* sound_file;
     SF_INFO file_info;
-    float* buffer;
+    int looped;
     int position;
-    int* cursor;
 } Sound;
 
 Audio* make_audio(void);
 
 void free_audio(Audio* audio);
 
-Sound* make_sound(Audio* audio, const char* path);
+Sound* make_sound(Audio* audio, const char* path, int looped);
 
 void free_sound(Sound* sound);
 

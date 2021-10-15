@@ -33,8 +33,8 @@ int main(void) {
     /*
      Load sound assets.
      */
-    cringe_music = make_sound(audio, "/Users/tommaso/Desktop/bg.aif");
-    background_music = make_sound(audio, "/Users/tommaso/Desktop/bg.wav");
+    cringe_music = make_sound(audio, "/Users/tommaso/Desktop/bg.aif", 1);
+    background_music = make_sound(audio, "/Users/tommaso/Desktop/bg.wav", 0);
 
     start_sound(cringe_music);
     start_sound(background_music);

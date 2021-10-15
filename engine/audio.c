@@ -8,45 +8,31 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
                                      const PaStreamCallbackTimeInfo* time_info,
                                      PaStreamCallbackFlags flags, void* user_data) {
     Sound* sound;
-    int* out;
     sf_count_t read_length;
-
-    /*
-     float* out;
-     sf_count_t read_length;
-     unsigned int i, j, cur = 0;
-     
-     audio = (Audio*)user_data;
-     out = (float*)output;
-
-     read_length = sf_readf_float(audio->sound_file, audio->buffer, FRAMES_PER_BUFFER);
-     if (read_length > 0) {
-         for (i = 0; i < read_length; ++i) {
-             for (j = 0; j < audio->stream_parameters.channelCount; ++j) {
-                 *out++ = audio->buffer[cur++];
-             }
-         }
-         return paContinue;
-     } else {
-         return paComplete;
-     }
-     */
     
     sound = (Sound*)user_data;
-    out = (int*)output;
-
-    sound->cursor = out;
     
     if (frame_count > 0) {
         sf_seek(sound->sound_file, sound->position, SEEK_SET);
-
-        read_length = sf_readf_int(sound->sound_file, sound->cursor, frame_count);
-        
-        sound->position += read_length;
-        sound->cursor += read_length;
+        read_length = sf_readf_int(sound->sound_file, output, frame_count);
+        if (read_length > 0) {
+            sound->position += read_length;
+            return paContinue;
+        } else {
+            if (sound->looped) {
+                /*
+                 If the sound is looped, reset the
+                 position for the next iteration.
+                 */
+                sound->position = 0;
+                return paContinue;
+            } else {
+                return paComplete;
+            }
+        }
     }
     
-    return paContinue;
+    return paComplete;
 }
 
 Audio* make_audio(void) {
@@ -72,11 +58,12 @@ void free_audio(Audio* audio) {
     }
 }
 
-Sound* make_sound(Audio* audio, const char* path) {
+Sound* make_sound(Audio* audio, const char* path, int looped) {
     Sound* sound;
     PaError error;
     
     sound = malloc(sizeof(Sound));
+    sound->looped = looped;
     
     sound->sound_file = sf_open(path, SFM_READ, &sound->file_info);
     if (!sound->sound_file) {
@@ -93,11 +80,8 @@ Sound* make_sound(Audio* audio, const char* path) {
     sound->stream_parameters.hostApiSpecificStreamInfo = 0;
     
     /*
-     Allocate the sound buffer.
+     Setup the stream for the sample with the proper callback.
      */
-    sound->buffer = calloc(sound->file_info.channels * FRAMES_PER_BUFFER, sizeof(float));
-
-    
     error = Pa_OpenStream(&sound->stream, 0, &sound->stream_parameters, sound->file_info.samplerate,
                           FRAMES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
     if (error != paNoError) {
@@ -120,7 +104,6 @@ void free_sound(Sound* sound) {
         
         sf_close(sound->sound_file);
         
-        free(sound->buffer);
         free(sound);
     }
 }
