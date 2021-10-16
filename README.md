@@ -7,7 +7,6 @@
 - [x] Easy to use CLI graphics abstraction.
 - [x] Mouse and keyboard input.
 - [x] Audio support. _(wav/aif/ogg)_
-- [x] Te
 - [x] Gravity force.
 - [x] Tetrominoes shapes.
 - [x] Tetromino spawn and rotation.
