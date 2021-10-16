@@ -9,24 +9,16 @@
 Graphics* make_graphics(void) {
     Graphics* graphics;
     
-    /*
-     Enable wchar console output.
-     */
+    /* Enable wchar console output. */
     setlocale(LC_ALL, "");
     
-    /*
-     Start curses mode.
-     */
+    /* Start curses mode. */
     initscr();
     
-    /*
-     Start the curses color functionality.
-     */
+    /* Start the curses color functionality. */
     start_color();
     
-    /*
-     Hide the cursor.
-     */
+    /* Hide the cursor. */
     curs_set(0);
     
     graphics = malloc(sizeof(Graphics));
@@ -58,44 +50,63 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
     unsigned int length;
     Size size;
     
+    /*
+     Calculate the correct x-axis coordinate
+     for text alignment.
+     */
     length = (unsigned int)strlen(text);
-    
     switch (alignment) {
         case center:
             point.x -= (int)(length / 4);
             break;
         case right:
-            point.x -= length;
+            point.x -= length / 2;
             break;
         case left:
             break;
     }
     
+    /* Enable styling attributes. */
     if (bold) {
         attron(A_BOLD);
     }
-    
     if (underline) {
         attron(A_UNDERLINE);
     }
     
-    init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
-    attron(COLOR_PAIR(color.foreground * 8 + color.background));
+    /*
+     Create and enable the color pair.
+     Color pair range goes from 0 to 77.
+     The first digit describes the foreground color,
+     the second one describes the background color.
+     */
+    init_pair(color.foreground * 10 + color.background, color.foreground, color.background);
+    attron(COLOR_PAIR(color.foreground * 10 + color.background));
     
+    /*
+     Draw the string at the calculated coordinates.
+     The x-axis value is multiplied by two due to the
+     graphics context being y=2x.
+     */
     mvprintw(point.y, point.x * 2, text);
     
-    attroff(COLOR_PAIR(color.foreground + color.background * 8));
-        
+    /* Disable color attribute. */
+    attroff(COLOR_PAIR(color.foreground * 10 + color.background));
+    
+    /* Disable styling attributes. */
     if (bold) {
         attroff(A_BOLD);
     }
-    
     if (underline) {
         attroff(A_UNDERLINE);
     }
     
+    /*
+     The height of the string is always 1 unit,
+     The width gets divided by 2 to factor for
+     */
     size.height = 1;
-    size.width = length;
+    size.width = length / 2;
     return size;
 }
 
@@ -103,14 +114,25 @@ void draw_rect(Graphics* graphics, Rect rect, Color color) {
     unsigned int i, j;
     
     if (graphics) {
+        /*
+         Create and enable the color pair.
+         Color pair range goes from 0 to 77.
+         The first digit describes the foreground color,
+         the second one describes the background color.
+         */
         init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
         attron(COLOR_PAIR(color.foreground * 8 + color.background));
         
+        /*
+         Iterate all the units in the rect, and only
+         draw those that would be drawn inside of the
+         graphics context.
+         */
         for (i = 0; i < rect.height; ++i) {
-            /* Ignore rows that would exceed the drawing context. */
+            /* Ignore rows that would exceed the graphics context. */
             if (i <= graphics->size.height + 1) {
                 for (j = 0; j < rect.width; ++j) {
-                    /* Ignore cols that would exceed the drawing context. */
+                    /* Ignore cols that would exceed the graphics context. */
                     if (j <= graphics->size.width + 1) {
                         mvprintw(rect.y + i, (rect.x + j) * 2,
                                  get_drawable_character(color.alpha));
@@ -119,6 +141,7 @@ void draw_rect(Graphics* graphics, Rect rect, Color color) {
             }
         }
         
+        /* Disable color attribute. */
         attroff(COLOR_PAIR(color.foreground + color.background * 8));
     }
 }
@@ -131,22 +154,28 @@ Size get_window_size(void) {
 }
 
 char* get_drawable_character(Alpha alpha) {
-    char* character = "  ";
+    char* tuple = "  ";
 
+    /*
+     Assign a tuple of characters to
+     each alpha value.
+     */
     switch (alpha) {
         case lighter:
-            character = "░░";
+            tuple = "░░";
             break;
         case light:
-            character = "▒▒";
+            tuple = "▒▒";
             break;
         case dark:
-            character = "▓▓";
+            tuple = "▓▓";
             break;
         case darker:
-            character = "██";
+            tuple = "██";
+            break;
+        case transparent:
             break;
     }
     
-    return character;
+    return tuple;
 }

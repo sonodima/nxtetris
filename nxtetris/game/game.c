@@ -9,10 +9,10 @@
 #define GRAVITY_TIME 0.002
 
 void load_sounds(Game* game) {
-    game->sounds.bg = make_sound(game->audio, "/Users/tommaso/Desktop/bg.aif", 1);
-    game->sounds.lock = make_sound(game->audio, "/Users/tommaso/Desktop/lock.aif", 0);
-    game->sounds.rot_cl = make_sound(game->audio, "/Users/tommaso/Desktop/rot_cl.aif", 0);
-    game->sounds.rot_cc = make_sound(game->audio, "/Users/tommaso/Desktop/rot_cc.aif", 0);
+    game->sounds.bg = make_sound(game->audio, "audio/bg.aif", 1);
+    game->sounds.lock = make_sound(game->audio, "audio/lock.aif", 0);
+    game->sounds.rot_cl = make_sound(game->audio, "audio/rot_cl.aif", 0);
+    game->sounds.rot_cc = make_sound(game->audio, "audio/rot_cc.aif", 0);
 }
 
 Game* make_game(Graphics* graphics, Controls* controls, Audio* audio) {
