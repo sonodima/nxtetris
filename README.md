@@ -11,6 +11,8 @@
 - [x] Tetrominoes shapes.
 - [x] Tetromino spawn and rotation.
 - [ ] Fixed game surface size handling.
+- [ ] Minimum window size handling.
+- [ ] Page-based menu navigation.
 - [ ] Tetrominoes collision detection.
 - [ ] Single player game-mode.
 - [ ] Two players game-mode.
@@ -20,7 +22,7 @@
 
 - Networked 2-players multiplayer.
 
-### Prerequisites
+## Prerequisites
 
 - [ncurses](https://invisible-island.net/ncurses/)
 - [PortAudio](http://www.portaudio.com/)
