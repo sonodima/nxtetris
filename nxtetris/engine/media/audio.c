@@ -9,7 +9,11 @@ Audio* make_audio(void) {
     PaError error;
     
     audio = malloc(sizeof(Audio));
-
+    
+    /*
+     Initialize PortAudio library's internal data structures
+     and prepare underlying host APIs for use.
+     */
     error = Pa_Initialize();
     if (error != paNoError) {
         printf("%s\n", Pa_GetErrorText(error));
@@ -20,6 +24,10 @@ Audio* make_audio(void) {
 }
 
 void free_audio(Audio* audio) {
+    /*
+     Deallocate all resources allocated by PortAudio
+     on Pa_Initialize() call.
+     */
     Pa_Terminate();
     
     if (audio) {
@@ -36,15 +44,30 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
     sound = (Sound*)user_data;
     
     if (frame_count > 0) {
+        /* Update the current read location of the file. */
         sf_seek(sound->sound_file, sound->position, SEEK_SET);
+        
+        /*
+         Read data from the sound file (at the sought position)
+         to the output buffer.
+         */
         read_length = sf_readf_int(sound->sound_file, output, frame_count);
         
         if (read_length > 0) {
+            /*
+             Some samples have been read. Tell PortAudio
+             to continue executing the callback.
+             */
             sound->position += read_length;
             return paContinue;
         } else {
-            sound->position = 0;
+            /*
+             No samples read. Reset the position and tell PortAudio
+             to continue executing the callback if the sound is looped,
+             complete the operation if the sound is not looped.
+             */
             if (sound->looped) {
+                sound->position = 0;
                 return paContinue;
             } else {
                 return paComplete;
@@ -63,13 +86,14 @@ Sound* make_sound(Audio* audio, const char* path, int looped) {
     sound = malloc(sizeof(Sound));
     sound->looped = looped;
     
+    /* Open a handle to the file at the given path, in read mode. */
     sound->sound_file = sf_open(path, SFM_READ, &sound->file_info);
     if (!sound->sound_file) {
-        Pa_Terminate();
         printf("[%s] %s\n", path, sf_strerror(sound->sound_file));
         return 0;
     }
     
+    /* Setup stream parameters using the default output device. */
     stream_parameters.device = Pa_GetDefaultOutputDevice();
     stream_parameters.sampleFormat = paInt32;
     stream_parameters.channelCount = sound->file_info.channels;
@@ -77,13 +101,10 @@ Sound* make_sound(Audio* audio, const char* path, int looped) {
         Pa_GetDeviceInfo(stream_parameters.device)->defaultLowOutputLatency;
     stream_parameters.hostApiSpecificStreamInfo = 0;
     
-    /*
-     Setup the stream for the sample with the proper callback.
-     */
+    /* Setup the stream for the sample using the callback mode. */
     error = Pa_OpenStream(&sound->stream, 0, &stream_parameters, sound->file_info.samplerate,
                           SAMPLES_PER_BUFFER, paClipOff, &portaudio_callback, sound);
     if (error != paNoError) {
-        Pa_Terminate();
         printf("[%s] %s\n", path, Pa_GetErrorText(error));
         return 0;
     }
@@ -110,16 +131,14 @@ int start_sound(Sound* sound) {
     PaError error;
     
     if (sound) {
+        /* Reset position and interrupt the stream. */
         sound->position = 0;
         Pa_AbortStream(sound->stream);
         
-        /*
-         Start the stream if it is not already running.
-         */
+        /* Start the stream if it is not already running. */
         if (!Pa_IsStreamActive(sound->stream)) {
             error = Pa_StartStream(sound->stream);
             if (error != paNoError) {
-                Pa_Terminate();
                 printf("%s\n", Pa_GetErrorText(error));
                 return 0;
             }
@@ -135,7 +154,6 @@ int stop_sound(Sound* sound) {
     if (sound) {
         error = Pa_StopStream(sound->stream);
         if (error != paNoError) {
-            Pa_Terminate();
             printf("%s\n", Pa_GetErrorText(error));
             return 0;
         }
