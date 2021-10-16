@@ -4,12 +4,9 @@
 
 #define SAMPLES_PER_BUFFER 512
 
-Audio* make_audio(void) {
-    Audio* audio;
+int initialize_audio(void) {
     PaError error;
-    
-    audio = malloc(sizeof(Audio));
-    
+        
     /*
      Initialize PortAudio library's internal data structures
      and prepare underlying host APIs for use.
@@ -20,19 +17,15 @@ Audio* make_audio(void) {
         return 0;
     }
     
-    return audio;
+    return 1;
 }
 
-void free_audio(Audio* audio) {
+void uninitialize_audio(void) {
     /*
      Deallocate all resources allocated by PortAudio
      on Pa_Initialize() call.
      */
     Pa_Terminate();
-    
-    if (audio) {
-        free(audio);
-    }
 }
 
 int portaudio_callback(const void* input, void* output, unsigned long frame_count,
@@ -78,7 +71,7 @@ int portaudio_callback(const void* input, void* output, unsigned long frame_coun
     return paComplete;
 }
 
-Sound* make_sound(Audio* audio, const char* path, int looped) {
+Sound* make_sound(const char* path, int looped) {
     Sound* sound;
     PaError error;
     PaStreamParameters stream_parameters;
@@ -122,7 +115,6 @@ void free_sound(Sound* sound) {
         }
         
         sf_close(sound->sound_file);
-        
         free(sound);
     }
 }

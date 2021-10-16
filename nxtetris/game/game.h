@@ -19,7 +19,6 @@ typedef struct {
 typedef struct {
     Graphics* graphics;
     Controls* controls;
-    Audio* audio;
     Sounds sounds;
     Tetromino temp_tetronimo;
     Tetromino* tetrominoes;
@@ -28,7 +27,7 @@ typedef struct {
     PlacementState placement_state;
 } Game;
 
-Game* make_game(Graphics* graphics, Controls* controls, Audio* audio);
+Game* make_game(Graphics* graphics, Controls* controls);
 
 void free_game(Game* game);
 

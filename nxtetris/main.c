@@ -18,16 +18,18 @@
 int main(void) {
     Graphics* graphics;
     Controls* controls;
-    Audio* audio;
     Game* game;
     int is_running = 1;
         
     srand((unsigned int)time(0));
-
-    audio = make_audio();
+    
+    if (!initialize_audio()) {
+        return -1;
+    }
+    
     graphics = make_graphics();
     controls = make_controls();
-    game = make_game(graphics, controls, audio);
+    game = make_game(graphics, controls);
     
     /*
      Main process loop.
@@ -45,6 +47,6 @@ int main(void) {
     free_game(game);
     free_controls(controls);
     free_graphics(graphics);
-    free_audio(audio);
+    uninitialize_audio();
     return 0;
 }

@@ -9,19 +9,18 @@
 #define GRAVITY_TIME 0.002
 
 void load_sounds(Game* game) {
-    game->sounds.bg = make_sound(game->audio, "audio/bg.aif", 1);
-    game->sounds.lock = make_sound(game->audio, "audio/lock.aif", 0);
-    game->sounds.rot_cl = make_sound(game->audio, "audio/rot_cl.aif", 0);
-    game->sounds.rot_cc = make_sound(game->audio, "audio/rot_cc.aif", 0);
+    game->sounds.bg = make_sound("audio/bg.aif", 1);
+    game->sounds.lock = make_sound("audio/lock.aif", 0);
+    game->sounds.rot_cl = make_sound("audio/rot_cl.aif", 0);
+    game->sounds.rot_cc = make_sound("audio/rot_cc.aif", 0);
 }
 
-Game* make_game(Graphics* graphics, Controls* controls, Audio* audio) {
+Game* make_game(Graphics* graphics, Controls* controls) {
     Game* game;
     
     game = malloc(sizeof(Game));
     game->graphics = graphics;
     game->controls = controls;
-    game->audio = audio;
     game->tetrominoes = malloc(sizeof(Tetromino) * 100);
     game->tetrominoes_count = 0;
     game->gravity_clock = clock();
