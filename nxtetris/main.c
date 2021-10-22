@@ -13,7 +13,7 @@
 #include "game/tetromino.h"
 #include "game/game.h"
 
-#define FRAME_INTERVAL 12
+#define FRAME_INTERVAL 20
 
 int main(void) {
     Graphics* graphics;
@@ -29,7 +29,7 @@ int main(void) {
     
     graphics = make_graphics();
     controls = make_controls();
-    game = make_game(graphics, controls);
+    game = make_game(graphics, controls, (Rect){0, 0, 10, 20});
     
     /*
      Main process loop.

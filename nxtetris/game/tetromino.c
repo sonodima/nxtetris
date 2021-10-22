@@ -15,7 +15,7 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino) {
                     rect.width = 1;
                     rect.height = 1;
                     
-                    draw_rect(graphics, rect, tetromino.color);
+                    fill_rect(graphics, rect, tetromino.color);
                 }
             }
         }

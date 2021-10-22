@@ -7,7 +7,9 @@
 #include "../engine/media/graphics.h"
 #include "../engine/media/audio.h"
 #include "../engine/controls.h"
+#include "../engine/types/rect.h"
 #include "tetromino.h"
+#include "enums/game_state.h"
 
 typedef struct {
     Sound* bg;
@@ -19,15 +21,17 @@ typedef struct {
 typedef struct {
     Graphics* graphics;
     Controls* controls;
-    Sounds sounds;
+    Rect bounds;
     Tetromino temp_tetronimo;
     Tetromino* tetrominoes;
-    int tetrominoes_count;
+    unsigned int tetrominoes_count;
     clock_t gravity_clock;
-    PlacementState placement_state;
+    GameState state;
+    unsigned int score;
+    Sounds sounds;
 } Game;
 
-Game* make_game(Graphics* graphics, Controls* controls);
+Game* make_game(Graphics* graphics, Controls* controls, Rect bounds);
 
 void free_game(Game* game);
 

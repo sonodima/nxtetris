@@ -59,13 +59,23 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
                VerticalAlignment alignment, int bold, int underline);
 
 /**
- * Adds a rectangle to the graphics buffer.
+ * Adds a filled rectangle to the graphics buffer.
  * @param graphics pointer to the graphics context.
  * @param rect geometric rectangle structure.
  * @param color color structure of the draw operation.
  * @see draw_rect()
  */
-void draw_rect(Graphics* graphics, Rect rect, Color color);
+void fill_rect(Graphics* graphics, Rect rect, Color color);
+
+/**
+ * Adds an empty rectangle to the graphics buffer.
+ * More optimized than the box() function in curses.
+ * @param graphics pointer to the graphics context.
+ * @param rect geometric rectangle structure.
+ * @param color color structure of the draw operation.
+ * @see fill_rect()
+ */
+void draw_rect(Graphics* graphics, Rect rect, Color color, unsigned int thickness);
 
 /**
  * Obtains the size of the terminal window.

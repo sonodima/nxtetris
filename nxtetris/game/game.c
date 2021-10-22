@@ -6,7 +6,11 @@
 
 #include "../utils/utils.h"
 
-#define GRAVITY_TIME 0.002
+/*
+ Delay between gravity clocks.
+ The lower, the faster.
+ */
+#define GRAVITY_TIME 0.0005
 
 void load_sounds(Game* game) {
     game->sounds.bg = make_sound("audio/bg.aif", 1);
@@ -15,17 +19,29 @@ void load_sounds(Game* game) {
     game->sounds.rot_cc = make_sound("audio/rot_cc.aif", 0);
 }
 
-Game* make_game(Graphics* graphics, Controls* controls) {
+Game* make_game(Graphics* graphics, Controls* controls, Rect bounds) {
     Game* game;
     
     game = malloc(sizeof(Game));
     game->graphics = graphics;
     game->controls = controls;
+    game->bounds = bounds;
     game->tetrominoes = malloc(sizeof(Tetromino) * 100);
     game->tetrominoes_count = 0;
     game->gravity_clock = clock();
-    game->placement_state = placed;
     
+    /*
+     Initialized with GAME_STATE_PLACED so that a new
+     temp tetromino is spawned on launch.
+     */
+    game->state = GAME_STATE_PLACED;
+    
+    game->score = 0;
+    
+    /*
+     Load all the sound assets and start
+     the background music.
+     */
     load_sounds(game);
     start_sound(game->sounds.bg);
     
@@ -40,11 +56,7 @@ void free_game(Game* game) {
 
 Tetromino spawn_game_tetromino(Game* game) {
     Tetromino tetromino;
-    Point point;
     Color color;
-    
-    point.x = game->graphics->size.width / 2 - 2;
-    point.y = 1;
     
     color.alpha = light;
     color.foreground = random_number(1, 6);
@@ -52,7 +64,7 @@ Tetromino spawn_game_tetromino(Game* game) {
     
     tetromino.shape = random_number(0, TETROMINOES_COUNT - 1);
     tetromino.rotation = random_number(0, TETROMINOES_ROTATIONS - 1);
-    tetromino.point = point;
+    tetromino.point = game->temp_tetronimo.point;
     tetromino.color = color;
     tetromino.placement = placing;
 
@@ -110,35 +122,59 @@ void tick_game_gravity(Game* game) {
         for (i = 0; i < game->tetrominoes_count; ++i) {
             if (game->tetrominoes[i].placement == falling) {
                 ++game->tetrominoes[i].point.y;
+                game->tetrominoes[i].color.alpha = lighter;
                 
                 if (game->tetrominoes[i].point.y == game->graphics->size.height - 3 /* or collision is detected */) {
                     game->tetrominoes[i].placement = placed;
                     game->tetrominoes[i].color.alpha = darker;
+                    
+                    game->state = GAME_STATE_PLACED;
                 }
             }
         }
     }
 }
 
+void draw_score_text(Game* game) {
+    char score_string[32];
+    Point point;
+    Color color;
+
+    sprintf(score_string, "Score: %d", game->score);
+    
+    point.x = game->bounds.x + game->bounds.width - 1;
+    point.y = game->bounds.y;
+    
+    color.foreground = white;
+    color.background = black;
+    color.alpha = darker;
+    
+    draw_text(game->graphics, score_string, point, color, right, 1, 0);
+}
+
 void tick_game(Game* game) {
     unsigned int i;
         
-    switch (game->placement_state) {
-        case placing:
+    switch (game->state) {
+        case GAME_STATE_PLACING:
             /*
-             When the temporary tetronimo is in 'placing' state,
-             handle mouse and keyoard input to decide where to drop it.
-             Note that y=2x, so we need to move the tetronimo in the x
-             axis two units a time.
+             In placing state, handle mouse input to
+             decide where to drop the temporary tetromino.
+             The x-axis is limited by the bounds of the game.
              */
-            game->temp_tetronimo.point.x = game->controls->mouse_position.x - 1;
+            i = game->controls->mouse_position.x - 1;
+            if (i > game->bounds.x + game->bounds.width) {
+                i = game->bounds.x + game->bounds.width;
+            }
+            game->temp_tetronimo.point.x = i;
+            
+            
             
             if (game->controls->mouse_state == 1) {
                 game->temp_tetronimo.placement = falling;
                 game->tetrominoes[game->tetrominoes_count++] = game->temp_tetronimo;
                 
-                game->placement_state = placed;
-                start_sound(game->sounds.lock);
+                game->state = GAME_STATE_FALLING;
             }
             
             switch (game->controls->pressed_key) {
@@ -167,11 +203,20 @@ void tick_game(Game* game) {
                     break;
             }
             break;
-        case placed:
-            game->placement_state = placing;
-            game->temp_tetronimo = spawn_game_tetromino(game);
+        case GAME_STATE_FALLING:
             break;
-        case falling:
+        case GAME_STATE_PLACED:
+            /*
+             When the state is GAME_STATE_PLACED, the
+             lock sound is played and a new temp tetromino is
+             created.
+             The state switches back to GAME_STATE_PLACING.
+             */
+            game->temp_tetronimo = spawn_game_tetromino(game);
+            start_sound(game->sounds.lock);
+            game->state = GAME_STATE_PLACING;
+            break;
+        case GAME_STATE_FINISHED:
             break;
     }
 
@@ -187,7 +232,14 @@ void tick_game(Game* game) {
     /*
      Draw the temporary tetronimo on top. (before placement)
      */
-    if (game->placement_state == placing) {
+    if (game->state == GAME_STATE_PLACING) {
         draw_tetromino(game->graphics, game->temp_tetronimo);
     }
+    
+    /*
+     Draw game bounds.
+     */
+    draw_rect(game->graphics, game->bounds, (Color){white, black, lighter}, 1);
+    
+    draw_score_text(game);
 }

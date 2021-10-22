@@ -77,6 +77,7 @@
 		43D7D693270F46B9009DD32F /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		43D7D69D270F5E65009DD32F /* graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		43D7D69E270F5E65009DD32F /* graphics.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
+		43EE39EB271B0E12001CFC0F /* game_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game_state.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				434552AE2719ADC9000943FE /* placement_state.h */,
+				43EE39EB271B0E12001CFC0F /* game_state.h */,
 			);
 			path = enums;
 			sourceTree = "<group>";
