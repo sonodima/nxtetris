@@ -148,25 +148,25 @@ void fill_rect(Graphics* graphics, Rect rect, Color color) {
 
 void draw_rect(Graphics* graphics, Rect rect, Color color, unsigned int thickness) {
     /* Draw top side. */
-    mvhline(rect.y, rect.x * 2 + 1, ACS_HLINE, rect.width * 2 - 1);
+    mvhline(rect.y, rect.x * 2, ACS_HLINE, rect.width * 2 );
     
     /* Draw left side. */
-    mvvline(rect.y + 1, rect.x * 2, ACS_VLINE, rect.height - 1);
+    mvvline(rect.y + 1, rect.x * 2 - 1, ACS_VLINE, rect.height - 1);
     
     /* Draw bottom side. */
-    mvhline(rect.y + rect.height, rect.x * 2 + 1, ACS_HLINE, rect.width * 2 - 1);
+    mvhline(rect.y + rect.height, rect.x * 2, ACS_HLINE, rect.width * 2);
     
     /* Draw right side. */
     mvvline(rect.y + 1, (rect.x + rect.width) * 2, ACS_VLINE, rect.height - 1);
     
     /* Draw top-left corner. */
-    mvprintw(rect.y, rect.x * 2, "╭");
+    mvprintw(rect.y, rect.x * 2 - 1, "╭");
     
     /* Draw top-right corner. */
     mvprintw(rect.y, (rect.x + rect.width) * 2, "╮");
     
     /* Draw bottom-left corner. */
-    mvprintw(rect.y + rect.height, rect.x * 2, "╰");
+    mvprintw(rect.y + rect.height, rect.x * 2 - 1, "╰");
     
     /* Draw bottom-left corner. */
     mvprintw(rect.y + rect.height, (rect.x + rect.width) * 2, "╯");

@@ -10,6 +10,7 @@
 #include "../engine/types/rect.h"
 #include "tetromino.h"
 #include "enums/game_state.h"
+#include "enums/game_event.h"
 
 typedef struct {
     Sound* bg;
@@ -42,5 +43,7 @@ void remove_game_tetromino(Game* game);
 void tick_game_gravity(Game* game);
 
 void tick_game(Game* game);
+
+void process_game_event(Game* game, GameEvent event, void* data);
 
 #endif /* game_h */

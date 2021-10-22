@@ -69,6 +69,7 @@
 		434552AA27199D04000943FE /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 		434552AB27199D04000943FE /* utils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = utils.c; sourceTree = "<group>"; };
 		434552AE2719ADC9000943FE /* placement_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = placement_state.h; sourceTree = "<group>"; };
+		436A23FC2722BACD00637F0B /* game_event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game_event.h; sourceTree = "<group>"; };
 		4382ECCF2719E06C00E6E6D8 /* libportaudio.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libportaudio.2.dylib; path = ../../../../../usr/local/Cellar/portaudio/19.7.0/lib/libportaudio.2.dylib; sourceTree = "<group>"; };
 		4382ECD32719E0BE00E6E6D8 /* audio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
 		4382ECD42719E0BE00E6E6D8 /* audio.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = audio.c; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 			children = (
 				434552AE2719ADC9000943FE /* placement_state.h */,
 				43EE39EB271B0E12001CFC0F /* game_state.h */,
+				436A23FC2722BACD00637F0B /* game_event.h */,
 			);
 			path = enums;
 			sourceTree = "<group>";
