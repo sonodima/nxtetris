@@ -157,7 +157,6 @@ void tick_game(Game* game) {
         
     switch (game->state) {
         case GAME_STATE_PLACING:
-
             break;
             
         case GAME_STATE_FALLING:
@@ -204,22 +203,22 @@ void tick_game(Game* game) {
 }
 
 void process_game_event(Game* game, GameEvent event, void* data) {
-    unsigned int i;
+    int i;
     
     switch (event) {
         case GAME_EVENT_SET_X:
             if (game->state == GAME_STATE_PLACING) {
-                i = *(unsigned int*)data;
+                i = *(int*)data;
                 
-                if (i < game->bounds.x) {
-                    i = game->bounds.x;
+                if (i < 0) {
+                    i = 0;
                 }
                 
-                if (i > game->bounds.x + game->bounds.width - 3) {
-                    i = game->bounds.x + game->bounds.width - 3; /* todo: dynamically get tetronimo width. */
+                if (i > game->bounds.width - 3) {
+                    i = game->bounds.width - 3; /* todo: dynamically get tetronimo width. */
                 }
                 
-                game->temp_tetronimo.point.x = i;
+                game->temp_tetronimo.point.x = game->bounds.x + i;
                 game->temp_tetronimo.point.y = game->bounds.y + 1;
             }
             break;
