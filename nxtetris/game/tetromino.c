@@ -10,8 +10,8 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino) {
         for (i = 0; i < 4; ++i) {
             for (j = 0; j < 4; ++j) {
                 if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
-                    rect.x = tetromino.point.x + j;
-                    rect.y = tetromino.point.y + i;
+                    rect.x = tetromino.point.x + j - tetromino.bounds.x;
+                    rect.y = tetromino.point.y + i - tetromino.bounds.y;
                     rect.width = 1;
                     rect.height = 1;
                     
@@ -20,7 +20,7 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino) {
             }
         }
     } else {
-        draw_text(graphics, "UNKN", tetromino.point, tetromino.color, left, 1, 1);
+        draw_text(graphics, "UNKN", tetromino.point, tetromino.color, VERTICAL_ALIGNMENT_LEFT, 1, 1);
     }
 }
 
@@ -32,8 +32,8 @@ int test_tetromino_collision(Graphics* graphics, Tetromino tetromino, Point poin
         for (i = 0; i < 4; ++i) {
             for (j = 0; j < 4; ++j) {
                 if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
-                    rect.x = point.x + j;
-                    rect.y = point.y + i;
+                    rect.x = point.x + j - tetromino.bounds.x;
+                    rect.y = point.y + i - tetromino.bounds.y;
                     rect.width = 1;
                     rect.height = 1;
                     
@@ -76,8 +76,6 @@ Rect get_tetromino_bounds(Tetromino tetromino) {
                         bounds.y = i;
                     }
                     
-                    
-                    
                     /*
                      Calculate height, getting the delta from the
                      start coordinate and the furthest axis point.
@@ -98,32 +96,6 @@ Rect get_tetromino_bounds(Tetromino tetromino) {
 }
 
 void rotate_tetromino(Tetromino* tetromino, int direction) {
-    tetromino->rotation += direction;
-
-    if (tetromino->rotation >= TETROMINOES_ROTATIONS) {
-        tetromino->rotation = 0;
-    }
-    
-    if (tetromino->rotation < 0) {
-        tetromino->rotation = TETROMINOES_ROTATIONS - 1;
-    }
-    
+    tetromino->rotation = (tetromino->rotation + direction) % TETROMINOES_ROTATIONS;
     tetromino->bounds = get_tetromino_bounds(*tetromino);
-
-    
-    /*
-    if (angle > 0) {
-        if (tetromino->rotation < TETROMINOES_ROTATIONS - 1) {
-            tetromino->rotation += angle;
-        } else {
-            tetromino->rotation = 0;
-        }
-    } else if (angle < 0) {
-        if (tetromino->rotation > 0) {
-            tetromino->rotation -= angle;
-        } else {
-            tetromino->rotation = TETROMINOES_ROTATIONS - 1;
-        }
-    }
-    */
 }

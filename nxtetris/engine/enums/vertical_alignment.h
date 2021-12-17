@@ -1,10 +1,10 @@
-#ifndef engine_enums_vertical_alignment_h
-#define engine_enums_vertical_alignment_h
+#ifndef NXTETRIS_ENGINE_ENUMS_VERTICAL_ALIGNMENT_H_
+#define NXTETRIS_ENGINE_ENUMS_VERTICAL_ALIGNMENT_H_
 
 typedef enum {
-    left,
-    center,
-    right
+    VERTICAL_ALIGNMENT_LEFT,
+    VERTICAL_ALIGNMENT_CENTER,
+    VERTICAL_ALIGNMENT_RIGHT
 } VerticalAlignment;
 
-#endif /* engine_enums_vertical_alignment_h */
+#endif /* NXTETRIS_ENGINE_ENUMS_VERTICAL_ALIGNMENT_H_ */

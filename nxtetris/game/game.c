@@ -26,8 +26,7 @@ Game* make_game(Graphics* graphics, Controls* controls, Rect bounds) {
     game->graphics = graphics;
     game->controls = controls;
     game->bounds = bounds;
-    game->tetrominoes = malloc(sizeof(Tetromino) * 100);
-    game->tetrominoes_count = 0;
+    game->tetrominoes = make_vector(sizeof(Tetromino));
     game->gravity_clock = clock();
     
     /*
@@ -58,17 +57,17 @@ Tetromino spawn_game_tetromino(Game* game) {
     Tetromino tetromino;
     Color color;
     
-    color.alpha = light;
+    color.alpha = ALPHA_LIGHT;
     color.foreground = random_number(1, 6);
-    color.background = black;
+    color.background = COLOR_BLACK;
     
     tetromino.shape = random_number(0, TETROMINOES_COUNT - 1);
     tetromino.rotation = random_number(0, TETROMINOES_ROTATIONS - 1);
     tetromino.point = game->temp_tetronimo.point;
     tetromino.color = color;
     tetromino.bounds = get_tetromino_bounds(tetromino);
-    tetromino.placement = placing;
-
+    tetromino.placement = PLACEMENT_STATE_PLACING;
+    
     return tetromino;
 }
 
@@ -80,21 +79,24 @@ void tick_game_gravity(Game* game) {
     unsigned int i;
     clock_t current_clock;
     double delta_time;
+    Tetromino* tetromino;
     
     current_clock = clock();
     delta_time = (double)(current_clock - game->gravity_clock) / CLOCKS_PER_SEC;
     
     if (delta_time > GRAVITY_TIME) {
         game->gravity_clock = current_clock;
-
-        for (i = 0; i < game->tetrominoes_count; ++i) {
-            if (game->tetrominoes[i].placement == falling) {
-                ++game->tetrominoes[i].point.y;
-                game->tetrominoes[i].color.alpha = lighter;
+        
+        for (i = 0; i < game->tetrominoes->count; ++i) {
+            tetromino = vector_get(game->tetrominoes, i);
+            
+            if (tetromino->placement == PLACEMENT_STATE_FALLING) {
+                ++tetromino->point.y;
+                tetromino->color.alpha = ALPHA_LIGHTER;
                 
-                if (game->tetrominoes[i].point.y == game->graphics->size.height - 3 /* or collision is detected */) {
-                    game->tetrominoes[i].placement = placed;
-                    game->tetrominoes[i].color.alpha = darker;
+                if (tetromino->point.y == game->graphics->size.height - tetromino->bounds.height /* or collision is detected */) {
+                    tetromino->placement = PLACEMENT_STATE_PLACED;
+                    tetromino->color.alpha = ALPHA_DARKER;
                     
                     game->state = GAME_STATE_PLACED;
                 }
@@ -113,11 +115,11 @@ void draw_score_text(Game* game) {
     point.x = game->bounds.x + game->bounds.width - 1;
     point.y = game->bounds.y;
     
-    color.foreground = white;
-    color.background = black;
-    color.alpha = darker;
+    color.foreground = COLOR_WHITE;
+    color.background = COLOR_BLACK;
+    color.alpha = ALPHA_DARKER;
     
-    draw_text(game->graphics, score_string, point, color, right, 1, 0);
+    draw_text(game->graphics, score_string, point, color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
 }
 
 void tick_game(Game* game) {
@@ -151,9 +153,10 @@ void tick_game(Game* game) {
     /*
      Draw all the tetrominos in the context.
      */
-    for (i = 0; i < game->tetrominoes_count; ++i) {
-        draw_tetromino(game->graphics, game->tetrominoes[i]);
+    for (i = 0; i < game->tetrominoes->count; ++i) {
+        draw_tetromino(game->graphics, *(Tetromino*)vector_get(game->tetrominoes, i));
     }
+    
     
     /*
      Draw the temporary tetronimo on top. (before placement)
@@ -165,7 +168,8 @@ void tick_game(Game* game) {
     /*
      Draw game bounds.
      */
-    draw_rect(game->graphics, game->bounds, (Color){white, black, lighter}, 1);
+    draw_rect(game->graphics, game->bounds, (Color){COLOR_WHITE, COLOR_BLACK, ALPHA_LIGHTER}, 1);
+    
     
     draw_score_text(game);
 }
@@ -182,8 +186,8 @@ void process_game_event(Game* game, GameEvent event, void* data) {
                     i = 0;
                 }
                 
-                if (i > game->bounds.width - 3) {
-                    i = game->bounds.width - 3; /* todo: dynamically get tetronimo width. */
+                if (i > game->bounds.width - game->temp_tetronimo.bounds.width) {
+                    i = game->bounds.width - game->temp_tetronimo.bounds.width;
                 }
                 
                 game->temp_tetronimo.point.x = game->bounds.x + i;
@@ -193,8 +197,8 @@ void process_game_event(Game* game, GameEvent event, void* data) {
             
         case GAME_EVENT_DROP:
             if (game->state == GAME_STATE_PLACING) {
-                game->temp_tetronimo.placement = falling;
-                game->tetrominoes[game->tetrominoes_count++] = game->temp_tetronimo;
+                game->temp_tetronimo.placement = PLACEMENT_STATE_FALLING;
+                vector_push_back(game->tetrominoes, &game->temp_tetronimo);
                 game->state = GAME_STATE_FALLING;
             }
             break;

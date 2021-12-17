@@ -1,5 +1,5 @@
-#ifndef game_enums_game_state_h
-#define game_enums_game_state_h
+#ifndef NXTETRIS_GAME_ENUMS_GAME_STATE_H_
+#define NXTETRIS_GAME_ENUMS_GAME_STATE_H_
 
 typedef enum {
     GAME_STATE_PLACING,
@@ -8,4 +8,4 @@ typedef enum {
     GAME_STATE_FINISHED
 } GameState;
 
-#endif /* game_enums_game_state_h */
+#endif /* NXTETRIS_GAME_ENUMS_GAME_STATE_H_ */

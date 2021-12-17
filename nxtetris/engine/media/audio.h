@@ -1,5 +1,5 @@
-#ifndef engine_media_audio_h
-#define engine_media_audio_h
+#ifndef NXTETRIS_ENGINE_MEDIA_AUDIO_H_
+#define NXTETRIS_ENGINE_MEDIA_AUDIO_H_
 
 #include <stdio.h>
 
@@ -74,4 +74,4 @@ int start_sound(Sound* sound);
  */
 int stop_sound(Sound* sound);
 
-#endif /* engine_media_audio_h */
+#endif /* NXTETRIS_ENGINE_MEDIA_AUDIO_H_ */

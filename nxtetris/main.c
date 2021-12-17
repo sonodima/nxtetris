@@ -78,7 +78,7 @@ int main(void) {
         tick_game(game);
         
         draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
-                  (Point){0, graphics->size.height - 1}, (Color){black, white, transparent}, left, 1, 0);
+                  (Point){0, graphics->size.height - 1}, (Color){COLOR_BLACK, COLOR_WHITE, ALPHA_TRANSPARENT}, VERTICAL_ALIGNMENT_LEFT, 1, 0);
         
         present_frame();
         usleep(1000 * FRAME_INTERVAL);

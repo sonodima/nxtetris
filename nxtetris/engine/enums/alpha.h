@@ -1,12 +1,12 @@
-#ifndef engine_enums_alpha_h
-#define engine_enums_alpha_h
+#ifndef NXTETRIS_ENGINE_ENUMS_ALPHA_H_
+#define NXTETRIS_ENGINE_ENUMS_ALPHA_H_
 
 typedef enum {
-    transparent,
-    lighter,
-    light,
-    dark,
-    darker
+    ALPHA_TRANSPARENT,
+    ALPHA_LIGHTER,
+    ALPHA_LIGHT,
+    ALPHA_DARK,
+    ALPHA_DARKER
 } Alpha;
 
-#endif /* engine_enums_alpha_h */
+#endif /* NXTETRIS_ENGINE_ENUMS_ALPHA_H_ */

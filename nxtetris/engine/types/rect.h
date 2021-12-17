@@ -1,5 +1,5 @@
-#ifndef engine_types_rect_h
-#define engine_types_rect_h
+#ifndef NXTETRIS_ENGINE_TYPES_RECT_H_
+#define NXTETRIS_ENGINE_TYPES_RECT_H_
 
 typedef struct {
     int x;
@@ -8,4 +8,4 @@ typedef struct {
     int height;
 } Rect;
 
-#endif /* engine_types_rect_h */
+#endif /* NXTETRIS_ENGINE_TYPES_RECT_H_ */

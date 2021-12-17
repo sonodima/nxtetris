@@ -1,5 +1,5 @@
-#ifndef game_enums_game_event_h
-#define game_enums_game_event_h
+#ifndef NXTETRIS_GAME_ENUMS_GAME_EVENT_H_
+#define NXTETRIS_GAME_ENUMS_GAME_EVENT_H_
 
 typedef enum {
     GAME_EVENT_SET_X,
@@ -8,4 +8,4 @@ typedef enum {
     GAME_EVENT_ROT_CC
 } GameEvent;
 
-#endif /* game_enums_game_event_h */
+#endif /* NXTETRIS_GAME_ENUMS_GAME_EVENT_H_ */

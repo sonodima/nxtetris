@@ -1,5 +1,5 @@
-#ifndef engine_controls_h
-#define engine_controls_h
+#ifndef NXTETRIS_ENGINE_CONTROLS_H_
+#define NXTETRIS_ENGINE_CONTROLS_H_
 
 #include <stdio.h>
 
@@ -18,4 +18,4 @@ void free_controls(Controls* controls);
 
 void update_controls(Controls* controls);
 
-#endif /* engine_controls_h */
+#endif /* NXTETRIS_ENGINE_CONTROLS_H_ */

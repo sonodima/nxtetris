@@ -1,5 +1,5 @@
-#ifndef engine_types_point_h
-#define engine_types_point_h
+#ifndef NXTETRIS_ENGINE_TYPES_POINT_H_
+#define NXTETRIS_ENGINE_TYPES_POINT_H_
 
 typedef struct {
     int x;
@@ -8,4 +8,4 @@ typedef struct {
 
 int point_equals(Point first, Point second);
 
-#endif /* engine_types_point_h */
+#endif /* NXTETRIS_ENGINE_TYPES_POINT_H_ */

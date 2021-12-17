@@ -1,5 +1,5 @@
-#ifndef game_h
-#define game_h
+#ifndef NXTETRIS_GAME_H_
+#define NXTETRIS_GAME_H_
 
 #include <stdio.h>
 #include <time.h>
@@ -8,6 +8,7 @@
 #include "../engine/media/audio.h"
 #include "../engine/controls.h"
 #include "../engine/types/rect.h"
+#include "../engine/core/vector.h"
 #include "tetromino.h"
 #include "enums/game_state.h"
 #include "enums/game_event.h"
@@ -24,8 +25,7 @@ typedef struct {
     Controls* controls;
     Rect bounds;
     Tetromino temp_tetronimo;
-    Tetromino* tetrominoes;
-    unsigned int tetrominoes_count;
+    Vector* tetrominoes;
     clock_t gravity_clock;
     GameState state;
     unsigned int score;
@@ -46,4 +46,4 @@ void tick_game(Game* game);
 
 void process_game_event(Game* game, GameEvent event, void* data);
 
-#endif /* game_h */
+#endif /* NXTETRIS_GAME_H_ */

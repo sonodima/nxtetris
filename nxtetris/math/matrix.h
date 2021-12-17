@@ -1,5 +1,5 @@
-#ifndef math_matrix_h
-#define math_matrix_h
+#ifndef NXTETRIS_MATH_MATRIX_H_
+#define NXTETRIS_MATH_MATRIX_H_
 
 typedef struct {
     unsigned int rows;
@@ -17,4 +17,4 @@ void print_matrix(Matrix* matrix);
 
 void rotate_matrix(Matrix* matrix, int steps);
 
-#endif /* math_matrix_h */
+#endif /* NXTETRIS_MATH_MATRIX_H_ */

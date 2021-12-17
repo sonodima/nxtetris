@@ -1,10 +1,10 @@
-#ifndef game_enums_placement_state_h
-#define game_enums_placement_state_h
+#ifndef NXTETRIS_GAME_ENUMS_PLACEMENT_STATE_H_
+#define NXTETRIS_GAME_ENUMS_PLACEMENT_STATE_H_
 
 typedef enum {
-    placing,
-    falling,
-    placed
+    PLACEMENT_STATE_PLACING,
+    PLACEMENT_STATE_FALLING,
+    PLACEMENT_STATE_PLACED
 } PlacementState;
 
-#endif /* game_enums_placement_state_h */
+#endif /* NXTETRIS_GAME_ENUMS_PLACEMENT_STATE_H_ */

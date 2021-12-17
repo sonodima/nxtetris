@@ -1,5 +1,5 @@
-#ifndef engine_collisions_h
-#define engine_collisions_h
+#ifndef NXTETRIS_ENGINE_COLLISIONS_H_
+#define NXTETRIS_ENGINE_COLLISIONS_H_
 
 #include <stdio.h>
 
@@ -8,4 +8,4 @@
 
 int test_box_collision(Rect rect, Point point);
 
-#endif /* engine_collisions_h */
+#endif /* NXTETRIS_ENGINE_COLLISIONS_H_ */

@@ -56,13 +56,13 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
      */
     length = (unsigned int)strlen(text);
     switch (alignment) {
-        case center:
+        case VERTICAL_ALIGNMENT_CENTER:
             point.x -= (int)(length / 4);
             break;
-        case right:
+        case VERTICAL_ALIGNMENT_RIGHT:
             point.x -= length / 2;
             break;
-        case left:
+        case VERTICAL_ALIGNMENT_LEFT:
             break;
     }
     
@@ -187,19 +187,19 @@ char* get_drawable_character(Alpha alpha) {
      each alpha value.
      */
     switch (alpha) {
-        case lighter:
+        case ALPHA_LIGHTER:
             tuple = "░░";
             break;
-        case light:
+        case ALPHA_LIGHT:
             tuple = "▒▒";
             break;
-        case dark:
+        case ALPHA_DARK:
             tuple = "▓▓";
             break;
-        case darker:
+        case ALPHA_DARKER:
             tuple = "██";
             break;
-        case transparent:
+        case ALPHA_TRANSPARENT:
             break;
     }
     

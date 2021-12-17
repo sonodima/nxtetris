@@ -1,9 +1,9 @@
-#ifndef engine_types_size_h
-#define engine_types_size_h
+#ifndef NXTETRIS_ENGINE_TYPES_SIZE_H_
+#define NXTETRIS_ENGINE_TYPES_SIZE_H_
 
 typedef struct {
     int height;
     int width;
 } Size;
 
-#endif /* engine_types_size_h */
+#endif /* NXTETRIS_ENGINE_TYPES_SIZE_H_ */

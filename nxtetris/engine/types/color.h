@@ -1,12 +1,11 @@
-#ifndef engine_types_color_h
-#define engine_types_color_h
+#ifndef NXTETRIS_ENGINE_TYPES_COLOR_H_
+#define NXTETRIS_ENGINE_TYPES_COLOR_H_
 
 #include "../enums/alpha.h"
-#include "../enums/color_module.h"
 
 typedef struct {
-    ColorModule foreground;
-    ColorModule background;
+    unsigned int foreground;
+    unsigned int background;
     Alpha alpha;
 } Color;
 

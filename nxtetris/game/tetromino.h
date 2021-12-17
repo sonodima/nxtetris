@@ -1,5 +1,5 @@
-#ifndef game_tetrominoes_h
-#define game_tetrominoes_h
+#ifndef NXTETRIS_GAME_TETROMINO_H_
+#define NXTETRIS_GAME_TETROMINO_H_
 
 #include <stdio.h>
 
@@ -61,4 +61,4 @@ Rect get_tetromino_bounds(Tetromino tetromino);
 
 void rotate_tetromino(Tetromino* tetromino, int direction);
 
-#endif /* game_tetrominoes_h */
+#endif /* NXTETRIS_GAME_TETROMINO_H_ */

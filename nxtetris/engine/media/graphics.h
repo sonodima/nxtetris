@@ -1,5 +1,5 @@
-#ifndef engine_media_graphics_h
-#define engine_media_graphics_h
+#ifndef NXTETRIS_ENGINE_MEDIA_GRAPHICS_H_
+#define NXTETRIS_ENGINE_MEDIA_GRAPHICS_H_
 
 #include <stdio.h>
 
@@ -95,4 +95,4 @@ Size get_window_size(void);
  */
 char* get_drawable_character(Alpha alpha);
 
-#endif /* engine_media_graphics_h */
+#endif /* NXTETRIS_ENGINE_MEDIA_GRAPHICS_H_ */
