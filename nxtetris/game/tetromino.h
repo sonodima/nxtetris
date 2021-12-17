@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+#include "../engine/types/rect.h"
 #include "../engine/media/graphics.h"
 #include "enums/placement_state.h"
 
@@ -48,6 +49,7 @@ typedef struct {
     unsigned int rotation;
     Point point;
     Color color;
+    Rect bounds;
     PlacementState placement;
 } Tetromino;
 
@@ -55,9 +57,8 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino);
 
 int test_tetromino_collision(Graphics* graphics, Tetromino tetromino, Point point);
 
-/**
- * Obtains the coordinates of the bottom point of a tetronimo.
- */
-Point get_bottom_tetronimo_y(Tetromino tetromino);
+Rect get_tetromino_bounds(Tetromino tetromino);
+
+void rotate_tetromino(Tetromino* tetromino, int direction);
 
 #endif /* game_tetrominoes_h */

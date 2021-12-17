@@ -30,7 +30,7 @@ int main(void) {
     
     graphics = make_graphics();
     controls = make_controls();
-    game = make_game(graphics, controls, (Rect){4, 1, 10, 20});
+    game = make_game(graphics, controls, (Rect){4, 1, 10, 15});
     
     /*
      Main process loop.
@@ -39,6 +39,12 @@ int main(void) {
         update_controls(controls);
         begin_frame(graphics);
         
+        /*
+         Update game position to screen center.
+         */
+        game->bounds.x = (graphics->size.width - game->bounds.width) / 2;
+        game->bounds.y = (graphics->size.height - game->bounds.height) / 2;
+
         /*
          Handle tetronimo placing on mouse left click.
          */
@@ -70,6 +76,9 @@ int main(void) {
         process_game_event(game, GAME_EVENT_SET_X, &mouse_x);
         
         tick_game(game);
+        
+        draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
+                  (Point){0, graphics->size.height - 1}, (Color){black, white, transparent}, left, 1, 0);
         
         present_frame();
         usleep(1000 * FRAME_INTERVAL);

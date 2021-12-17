@@ -66,6 +66,7 @@ Tetromino spawn_game_tetromino(Game* game) {
     tetromino.rotation = random_number(0, TETROMINOES_ROTATIONS - 1);
     tetromino.point = game->temp_tetronimo.point;
     tetromino.color = color;
+    tetromino.bounds = get_tetromino_bounds(tetromino);
     tetromino.placement = placing;
 
     return tetromino;
@@ -73,39 +74,6 @@ Tetromino spawn_game_tetromino(Game* game) {
 
 void remove_game_tetromino(Game* game) {
     
-}
-
-void test_tetronimoes_overlap(Game* game, Tetromino tetronimo) {
-    /*
-    unsigned int i, j, t;
-    unsigned int lower[4];
-    unsigned int upper[4];
-
-    for (i = 0; i < 4; ++i) {
-        lower[i] = 0;
-        for (j = 0; j < 4; ++j) {
-            if (test_tetromino_collision(graphics, tet, <#Point point#>) j > lower[i]) {
-                lower[i] = j;
-            }
-        }
-    }
-    
-    for (t = 0; t < game->tetrominoes_count; ++t) {
-        for (i = 0; i < 4; ++i) {
-            upper[i] = 0;
-            for (j = 0; j < 4; ++j) {
-                if (j > upper[i]) {
-                    upper[i] = j;
-                }
-            }
-        }
-        
-        for (j = 0; j < 4; ++j) {
-            if (
-        }
-        game->tetrominoes[i].point.x
-    }
-    */
 }
 
 void tick_game_gravity(Game* game) {
@@ -141,7 +109,7 @@ void draw_score_text(Game* game) {
     Color color;
 
     sprintf(score_string, "Score: %d", game->score);
-    
+
     point.x = game->bounds.x + game->bounds.width - 1;
     point.y = game->bounds.y;
     
@@ -233,22 +201,14 @@ void process_game_event(Game* game, GameEvent event, void* data) {
             
         case GAME_EVENT_ROT_CL:
             if (game->state == GAME_STATE_PLACING) {
-                if (game->temp_tetronimo.rotation < TETROMINOES_ROTATIONS - 1) {
-                    ++game->temp_tetronimo.rotation;
-                } else {
-                    game->temp_tetronimo.rotation = 0;
-                }
+                rotate_tetromino(&game->temp_tetronimo, 1);
                 start_sound(game->sounds.rot_cl);
             }
             break;
             
         case GAME_EVENT_ROT_CC:
             if (game->state == GAME_STATE_PLACING) {
-                if (game->temp_tetronimo.rotation > 0) {
-                    --game->temp_tetronimo.rotation;
-                } else {
-                    game->temp_tetronimo.rotation = TETROMINOES_ROTATIONS - 1;
-                }
+                rotate_tetromino(&game->temp_tetronimo, -1);
                 start_sound(game->sounds.rot_cc);
             }
             break;
