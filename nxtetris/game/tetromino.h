@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "../engine/types/rect.h"
+#include "../engine/types/point.h"
 #include "../engine/media/graphics.h"
 #include "enums/placement_state.h"
 
@@ -53,9 +54,25 @@ typedef struct {
     PlacementState placement;
 } Tetromino;
 
+int is_tetromino_valid(Tetromino tetromino);
+
+int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigned int y);
+
 void draw_tetromino(Graphics* graphics, Tetromino tetromino);
 
-int test_tetromino_collision(Graphics* graphics, Tetromino tetromino, Point point);
+/**
+ * Checks for collisions between two tetrominoes, with a y-axis offset that can be used for collision prediction.
+ * @param first first tetromino. (must be placed higher than the second)
+ * @param second secnnd tetromino.
+ * @return 1 if the two tetrinubies cikkude at the given offset.
+ */
+int test_tetromino_collision(Tetromino first, Tetromino second, int offset);
+
+/**
+ * Test collisions with the walls.
+ * todo: implement
+ */
+// Point test_tetromino_walls_limit(Rect bounds, Tetromino tetromino);
 
 Rect get_tetromino_bounds(Tetromino tetromino);
 

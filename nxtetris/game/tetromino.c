@@ -2,50 +2,141 @@
 
 #include "../engine/collisions.h"
 
+#include <math.h>
+
+int is_tetromino_valid(Tetromino tetromino) {
+    return tetromino.shape < TETROMINOES_COUNT && tetromino.rotation < TETROMINOES_ROTATIONS;
+}
+
+int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigned int y) {
+    /*
+     If the value we want to check is out of bounds, we can assume
+     that in that point it certainly is not equal to 1.
+     */
+    if (x >= 4 || y >= 4) {
+        return 0;
+    }
+    
+    /*
+     Obtain the value at the given coords, from the bitmask table.
+     */
+    return tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (y * 4 + x));
+}
+
 void draw_tetromino(Graphics* graphics, Tetromino tetromino) {
     Rect rect;
     unsigned int i, j;
     
-    if (tetromino.shape < TETROMINOES_COUNT && tetromino.rotation < TETROMINOES_ROTATIONS) {
-        for (i = 0; i < 4; ++i) {
-            for (j = 0; j < 4; ++j) {
-                if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
-                    rect.x = tetromino.point.x + j - tetromino.bounds.x;
-                    rect.y = tetromino.point.y + i - tetromino.bounds.y;
-                    rect.width = 1;
-                    rect.height = 1;
-                    
-                    fill_rect(graphics, rect, tetromino.color);
-                }
+    /*
+     Only draw the tetromino if its properties are valid.
+     This check should never fail, but if it does, at least you can't blame me.
+     */
+    if (!is_tetromino_valid(tetromino)) {
+        draw_text(graphics, "UNKN", tetromino.point, tetromino.color, VERTICAL_ALIGNMENT_LEFT, 1, 1);
+        return;
+    }
+    
+    /*
+     Iteration can be limited by the bounding box, as we are sure that all the points
+     outside of it are equal to 0.
+     */
+    for (i = 0; i < 4; ++i) {
+        for (j = 0; j < 4; ++j) {
+            /*
+             Check if the value for the current coordinates is equal to 1.
+             In that case, we can draw it to the screen.
+             */
+            if (get_tetromino_value_at(tetromino, j, i)) {
+                rect.x = tetromino.point.x + j;
+                rect.y = tetromino.point.y + i;
+                rect.width = 1;
+                rect.height = 1;
+                
+                fill_rect(graphics, rect, tetromino.color);
             }
         }
-    } else {
-        draw_text(graphics, "UNKN", tetromino.point, tetromino.color, VERTICAL_ALIGNMENT_LEFT, 1, 1);
     }
 }
 
-int test_tetromino_collision(Graphics* graphics, Tetromino tetromino, Point point) {
-    Rect rect;
+int test_tetromino_collision(Tetromino first, Tetromino second, int offset) {
     unsigned int i, j;
-
-    if (tetromino.shape < TETROMINOES_COUNT && tetromino.rotation < TETROMINOES_ROTATIONS) {
-        for (i = 0; i < 4; ++i) {
-            for (j = 0; j < 4; ++j) {
-                if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
-                    rect.x = point.x + j - tetromino.bounds.x;
-                    rect.y = point.y + i - tetromino.bounds.y;
-                    rect.width = 1;
-                    rect.height = 1;
-                    
-                    if (test_box_collision(rect, point)) {
-                        return 1;
-                    }
-                }
+    int delta_x, delta_y;
+    
+    /*
+     Only test collisions if both tetrominoes are valid.
+     We can assume that there is no collision if one of the tetrominoes is invalid.
+     */
+    if (!is_tetromino_valid(first) || !is_tetromino_valid(second)) {
+        return 0;
+    }
+    
+    /*
+     If both tetrominoes do not overlap on the x-axis, we are sure they do not collide.
+     */
+    if (first.point.x + first.bounds.x > second.point.x + second.bounds.x + second.bounds.width ||
+        first.point.x + first.bounds.x + first.bounds.width < second.point.x + second.bounds.x) {
+        return 0;
+    }
+    
+    /*
+     If both tetrominoes do not overlap on the y-axis, we are sure they do not collide.
+     */
+    if (first.point.y + first.bounds.y > second.point.y + second.bounds.y + second.bounds.height ||
+        first.point.y + first.bounds.y + first.bounds.height < second.point.y + second.bounds.y) {
+        return 0;
+    }
+    
+    /*
+     Obtain the delta between the two tetrominoes.
+     Used later for point translation between the first and the second one.
+     */
+    delta_x = first.point.x - second.point.x;
+    delta_y = first.point.y - second.point.y;
+    
+    for (i = 0; i < 4; ++i) {
+        for (j = 0; j < 4; ++j) {
+            /*
+             Check for the collisions in the iterated point and the translated one.
+             */
+            if (get_tetromino_value_at(first, i, j) &&
+                get_tetromino_value_at(first, i + delta_x, j + delta_y)) {
+                return 1;
             }
         }
     }
     
     return 0;
+}
+
+Point test_tetromino_walls_limit(Rect bounds, Tetromino tetromino) {
+    Point overflow;
+    int temp;
+    
+    overflow.x = 0;
+    overflow.y = 0;
+    
+    /*
+    tmp_x = tetromino.point.x + tetromino.bounds.x - bounds.x;
+    if (tmp_x < 0) {
+        overflow.x = tmp_x;
+    }
+    
+    tmp_x = tetromino.point.x + tetromino.bounds.x + tetromino.bounds.width - (bounds.x + bounds.width);
+    if (tmp_x > 0) {
+        overflow.x = tmp_x;
+    }*/
+    
+    temp = tetromino.point.y + tetromino.bounds.y - bounds.y;
+    if (temp < 0) {
+        overflow.y = temp;
+    }
+    
+    temp = tetromino.point.y + tetromino.bounds.y + tetromino.bounds.height - (bounds.y + bounds.height);
+    if (temp > 0) {
+        overflow.y = temp;
+    }
+    
+    return overflow;
 }
 
 Rect get_tetromino_bounds(Tetromino tetromino) {
@@ -61,10 +152,10 @@ Rect get_tetromino_bounds(Tetromino tetromino) {
     bounds.width = 0;
     bounds.height = 0;
     
-    if (tetromino.shape < TETROMINOES_COUNT && tetromino.rotation < TETROMINOES_ROTATIONS) {
+    if (is_tetromino_valid(tetromino)) {
         for (i = 0; i < 4; ++i) {
             for (j = 0; j < 4; ++j) {
-                if (tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (i * 4 + j))) {
+                if (get_tetromino_value_at(tetromino, j, i)) {
                     /*
                      Get the piece position, obtaining the
                      x and y coordinates closer to 0.

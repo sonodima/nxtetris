@@ -13,7 +13,7 @@
 #include "game/tetromino.h"
 #include "game/game.h"
 
-#define FRAME_INTERVAL 20
+#define FRAME_INTERVAL 10
 
 int main(void) {
     Graphics* graphics;

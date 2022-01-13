@@ -24,7 +24,7 @@ typedef struct {
     Graphics* graphics;
     Controls* controls;
     Rect bounds;
-    Tetromino temp_tetronimo;
+    Tetromino temp_tetromino;
     Vector* tetrominoes;
     clock_t gravity_clock;
     GameState state;
