@@ -60,7 +60,7 @@ Tetromino spawn_game_tetromino(Game* game) {
     color.alpha = ALPHA_LIGHT;
     color.foreground = random_number(1, 6);
     color.background = COLOR_BLACK;
-    
+        
     tetromino.shape = random_number(0, TETROMINOES_COUNT - 1);
     tetromino.rotation = random_number(0, TETROMINOES_ROTATIONS - 1);
     tetromino.point = game->temp_tetromino.point;
@@ -113,9 +113,12 @@ void tick_game_gravity(Game* game) {
                     }
                 }
                 
-                if (tetromino->point.y == (game->bounds.y + game->bounds.height) -
-                    (tetromino->bounds.y - tetromino->bounds.height) /*|| collided*/) {
-                    
+                /*
+                 Place the tetronimo if it either hit the bottom side of the game surface or the predicted tetronimo state
+                 with offset=1 collided with another one.
+                 */
+                if (tetromino->point.y + tetromino->bounds.height + tetromino->bounds.y == game->bounds.y + game->bounds.height
+                    || collided) {
                     tetromino->placement = PLACEMENT_STATE_PLACED;
                     tetromino->color.alpha = ALPHA_DARKER;
                     game->state = GAME_STATE_PLACED;

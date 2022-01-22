@@ -68,12 +68,6 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino);
  */
 int test_tetromino_collision(Tetromino first, Tetromino second, int offset);
 
-/**
- * Test collisions with the walls.
- * todo: implement
- */
-// Point test_tetromino_walls_limit(Rect bounds, Tetromino tetromino);
-
 Rect get_tetromino_bounds(Tetromino tetromino);
 
 void rotate_tetromino(Tetromino* tetromino, int direction);

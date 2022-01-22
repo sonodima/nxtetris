@@ -81,8 +81,8 @@ int test_tetromino_collision(Tetromino first, Tetromino second, int offset) {
     /*
      If both tetrominoes do not overlap on the y-axis, we are sure they do not collide.
      */
-    if (first.point.y + first.bounds.y > second.point.y + second.bounds.y + second.bounds.height ||
-        first.point.y + first.bounds.y + first.bounds.height < second.point.y + second.bounds.y) {
+    if (first.point.y + first.bounds.y + offset > second.point.y + second.bounds.y + second.bounds.height ||
+        first.point.y + first.bounds.y + first.bounds.height + offset < second.point.y + second.bounds.y) {
         return 0;
     }
     
@@ -91,52 +91,21 @@ int test_tetromino_collision(Tetromino first, Tetromino second, int offset) {
      Used later for point translation between the first and the second one.
      */
     delta_x = first.point.x - second.point.x;
-    delta_y = first.point.y - second.point.y;
+    delta_y = first.point.y + offset - second.point.y;
     
     for (i = 0; i < 4; ++i) {
         for (j = 0; j < 4; ++j) {
             /*
              Check for the collisions in the iterated point and the translated one.
              */
-            if (get_tetromino_value_at(first, i, j) &&
-                get_tetromino_value_at(first, i + delta_x, j + delta_y)) {
+            if (get_tetromino_value_at(first, j, i) &&
+                get_tetromino_value_at(second, j + delta_x, i + delta_y)) {
                 return 1;
             }
         }
     }
     
     return 0;
-}
-
-Point test_tetromino_walls_limit(Rect bounds, Tetromino tetromino) {
-    Point overflow;
-    int temp;
-    
-    overflow.x = 0;
-    overflow.y = 0;
-    
-    /*
-    tmp_x = tetromino.point.x + tetromino.bounds.x - bounds.x;
-    if (tmp_x < 0) {
-        overflow.x = tmp_x;
-    }
-    
-    tmp_x = tetromino.point.x + tetromino.bounds.x + tetromino.bounds.width - (bounds.x + bounds.width);
-    if (tmp_x > 0) {
-        overflow.x = tmp_x;
-    }*/
-    
-    temp = tetromino.point.y + tetromino.bounds.y - bounds.y;
-    if (temp < 0) {
-        overflow.y = temp;
-    }
-    
-    temp = tetromino.point.y + tetromino.bounds.y + tetromino.bounds.height - (bounds.y + bounds.height);
-    if (temp > 0) {
-        overflow.y = temp;
-    }
-    
-    return overflow;
 }
 
 Rect get_tetromino_bounds(Tetromino tetromino) {
