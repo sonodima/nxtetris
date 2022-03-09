@@ -128,6 +128,58 @@ void tick_game_gravity(Game* game) {
     }
 }
 
+int is_line_full(Game* game, unsigned int index) {
+    unsigned int i, j;
+    Tetromino* current;
+    
+    for (i = 0; i < game->tetrominoes->count; ++i) {
+        current = vector_get(game->tetrominoes, i);
+        
+        /*
+         If the tetromino does not overlap on the y-axis, we are sure it does not appear in this line.
+         */
+        if (current->point.y - game->bounds.y + current->bounds.y > index) {
+            continue;
+        }
+                
+        /*
+         Iterate all the cols of the current row.
+         */
+        for (j = 0; j < game->bounds.width; ++j) {
+            
+            /*
+             If there is at least one point where a tetromino is not placed, the check fails.
+             todo: game-relative to tetromino-relative space translation
+             */
+            if (!get_tetromino_value_at(*current, j, i)) {
+                return 0;
+            }
+        }
+    }
+    
+    return 1;
+}
+
+// todo: add check to ignore falling tetrominoes
+unsigned int check_full_lines(Game* game) {
+    unsigned int i, removed = 0;
+    
+    /*
+     Iterate rows, starting from the bottom.
+     */
+    for (i = game->bounds.height - 1; i >= 0; --i) {
+        if (is_line_full(game, i)) {
+            
+            
+            
+            
+            ++removed;
+        }
+    }
+    
+    return removed;
+}
+
 void draw_score_text(Game* game) {
     char score_string[32];
     Point point;
@@ -147,6 +199,7 @@ void draw_score_text(Game* game) {
 
 void tick_game(Game* game) {
     unsigned int i;
+    Color bounds_color;
         
     switch (game->state) {
         case GAME_STATE_PLACING:
@@ -174,33 +227,47 @@ void tick_game(Game* game) {
     tick_game_gravity(game);
     
     /*
+     Handle completed row removal.
+     Score is incremented for each line removed.
+     */
+    switch (check_full_lines(game)) {
+        case 1:
+            game->score += 1;
+            break;
+        case 2:
+            game->score += 3;
+            break;
+        case 3:
+            game->score += 6;
+            break;
+        case 4:
+            game->score += 12;
+            break;
+        default:
+            break;
+    }
+        
+    /*
      Draw all the tetrominos in the context.
      */
     for (i = 0; i < game->tetrominoes->count; ++i) {
         draw_tetromino(game->graphics, *(Tetromino*)vector_get(game->tetrominoes, i));
     }
     
-    
     /*
      Draw the temporary tetronimo on top. (before placement)
      */
     if (game->state == GAME_STATE_PLACING) {
         draw_tetromino(game->graphics, game->temp_tetromino);
-        
-        char buf[50];
-        
-        sprintf(buf, "x: %d, y: %d", game->temp_tetromino.bounds.x, game->temp_tetromino.bounds.y);
-        draw_text(game->graphics, buf, (Point){0,0}, (Color){COLOR_WHITE, COLOR_BLACK, ALPHA_DARKER}, VERTICAL_ALIGNMENT_LEFT, 0, 0);
-        
-        sprintf(buf, "w: %d, h: %d", game->temp_tetromino.bounds.width, game->temp_tetromino.bounds.height);
-        draw_text(game->graphics, buf, (Point){0,1}, (Color){COLOR_WHITE, COLOR_BLACK, ALPHA_DARKER}, VERTICAL_ALIGNMENT_LEFT, 0, 0);
     }
     
     /*
      Draw game bounds.
      */
-    draw_rect(game->graphics, game->bounds, (Color){COLOR_WHITE, COLOR_BLACK, ALPHA_LIGHTER}, 1);
-    
+    bounds_color.background = COLOR_WHITE;
+    bounds_color.foreground = COLOR_BLACK;
+    bounds_color.alpha = ALPHA_LIGHTER;
+    draw_rect(game->graphics, game->bounds, bounds_color, 1);
     
     draw_score_text(game);
 }
