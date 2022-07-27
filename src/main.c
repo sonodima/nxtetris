@@ -6,7 +6,7 @@
 #include "engine/controls.h"
 #include "game/game.h"
 
-#define FRAME_INTERVAL 10
+#define FRAME_INTERVAL 20
 
 int main() {
   Graphics* graphics;
@@ -71,6 +71,10 @@ int main() {
          Handle piece switch.
          */
         process_game_event(game, GAME_EVENT_CHP_DN, NULL);
+        break;
+
+      case KEY_EXIT:
+        is_running = false;
         break;
     }
 

@@ -1,72 +1,39 @@
 #include "tetromino.h"
 
-int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigned int y) {
+TetrominoState get_tetromino_state(Tetromino tetromino) {
+  return tetrominoes[tetromino.shape][tetromino.rotation];
+}
+
+unsigned int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigned int y) {
+  TetrominoState state;
+
+  /* Avoid useless checks and segfaults */
+  if (!is_tetromino_valid(tetromino)) {
+    return 0;
+  }
+
+  state = get_tetromino_state(tetromino);
+
   /*
    If the value we want to check is out of bounds, we can assume
    that in that point it certainly is not equal to 1.
    */
-  if (x >= 4 || y >= 4) {
+  if (x >= state.width || y >= state.height) {
     return 0;
   }
 
   /*
-   Obtain the value at the given coords, from the bitmask table.
+   Obtain the value at the given coords.
    */
-  return tetrominoes[tetromino.shape][tetromino.rotation] & (0x8000 >> (y * 4 + x));
+  return state.data >> (y * 4 + x) & 1;
 }
 
-int is_tetromino_valid(Tetromino tetromino) {
+unsigned int is_tetromino_valid(Tetromino tetromino) {
   return tetromino.shape < TETROMINOES_COUNT && tetromino.rotation < TETROMINOES_ROTATIONS;
 }
 
-Rect get_tetromino_bounds(Tetromino tetromino) {
-  Rect bounds;
-  unsigned int i, j;
-
-  /*
-   Set up the bounds to the correct initial values
-   so that further checks are easier.
-   */
-  bounds.x = 3;
-  bounds.y = 3;
-  bounds.width = 0;
-  bounds.height = 0;
-
-  if (is_tetromino_valid(tetromino)) {
-    for (i = 0; i < 4; ++i) {
-      for (j = 0; j < 4; ++j) {
-        if (get_tetromino_value_at(tetromino, j, i)) {
-          /*
-           Get the piece position, obtaining the
-           x and y coordinates closer to 0.
-           */
-          if (j < bounds.x) {
-            bounds.x = j;
-          }
-          if (i < bounds.y) {
-            bounds.y = i;
-          }
-
-          /*
-           Calculate height, getting the delta from the
-           start coordinate and the furthest axis point.
-           Size is >1, so the value is incremented by 1.
-           */
-          if (j - bounds.x + 1 > bounds.width) {
-            bounds.width = j - bounds.x + 1;
-          }
-          if (i - bounds.y + 1 > bounds.height) {
-            bounds.height = i - bounds.y + 1;
-          }
-        }
-      }
-    }
-  }
-
-  return bounds;
-}
-
 void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position) {
+  TetrominoState state;
   Rect rect;
   unsigned int i, j;
 
@@ -79,19 +46,21 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position) {
     return;
   }
 
+  state = get_tetromino_state(tetromino);
+
   /*
    Iteration can be limited by the bounding box, as we are sure that all the points
    outside it are equal to 0.
    */
-  for (i = 0; i < 4; ++i) {
-    for (j = 0; j < 4; ++j) {
+  for (i = 0; i < state.height; ++i) {      /* Y */
+    for (j = 0; j < state.width; ++j) {     /* X */
       /*
        Check if the value for the current coordinates is equal to 1.
        In that case, we can draw it to the screen.
        */
       if (get_tetromino_value_at(tetromino, j, i)) {
-        rect.x = position.x + j;
-        rect.y = position.y + i;
+        rect.x = (int)(position.x + j);
+        rect.y = (int)(position.y + i);
         rect.width = 1;
         rect.height = 1;
 
@@ -100,3 +69,26 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position) {
     }
   }
 }
+
+Size get_tetromino_size(Tetromino tetromino) {
+  Size result;
+  TetrominoState state;
+
+  result.height = 0;
+  result.width = 0;
+
+  /*
+   Only draw the tetromino if its properties are valid.
+   This check should never fail, but if it does, at least you can't blame me.
+   */
+  if (!is_tetromino_valid(tetromino)) {
+    return result;
+  }
+
+  state = get_tetromino_state(tetromino);
+
+  result.height = (int)state.height;
+  result.width = (int)state.width;
+  return result;
+}
+

@@ -5,7 +5,6 @@
 #include "../engine/utils.h"
 
 #include "game.h"
-#include "board.h"
 
 Game* make_game(Graphics* graphics, Controls* controls, Rect bounds) {
   Game* game;
@@ -56,7 +55,7 @@ void draw_game_bounds(Game* game) {
   bounds_rect.y -= 1;
   bounds_rect.width += 1;
   bounds_rect.height += 1;
-  draw_rect(game->graphics, bounds_rect, bounds_color, 1);
+  draw_rect(game->graphics, bounds_rect, bounds_color);
 
   sprintf(score_buffer, " Score: %d ", game->score);
   score_point.x = bounds_rect.x + 1;
@@ -69,10 +68,12 @@ void draw_game_bounds(Game* game) {
  * @param game Pointer to the game.
  */
 void initialize_placing_piece(Game* game) {
+  // todo add counter for the pieces starting to 20
   int color = random_number(1, 6);
+
   game->placing_piece.color.background = COLOR_BLACK;
   game->placing_piece.color.foreground = color;
-  game->placing_piece.color.alpha = ALPHA_LIGHT;
+  game->placing_piece.color.alpha = ALPHA_DARKER;
   game->placing_piece.rotation = random_number(0, TETROMINOES_ROTATIONS - 1);
   game->placing_piece.shape = random_number(0, TETROMINOES_COUNT - 1);
 }
@@ -86,9 +87,9 @@ void initialize_placing_piece(Game* game) {
  */
 Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   Point placing_point;
-  Rect tetromino_bounds;
+  Size tetromino_size;
 
-  tetromino_bounds = get_tetromino_bounds(piece);
+  tetromino_size = get_tetromino_size(piece);
 
   /*
    * Limit its position in the X axis.
@@ -96,19 +97,21 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
    */
   if (placing_x < -1) {
     placing_x = -1;
-  } else if (placing_x + tetromino_bounds.width > bounds.width - 1) {
-    placing_x = bounds.width - tetromino_bounds.width;
+  } else if (placing_x + tetromino_size.width > bounds.width - 1) {
+    placing_x = bounds.width - tetromino_size.width;
   }
 
-  placing_point.x = placing_x - tetromino_bounds.x;
-  placing_point.y = -tetromino_bounds.y;
+  placing_point.x = placing_x;
+  placing_point.y = 0;
+
   return placing_point;
 }
 
 void tick_game(Game* game) {
+  Tetromino preview_piece;
   Point placing_point;
   Point board_offset;
-  
+
   board_offset.x = game->bounds.x;
   board_offset.y = game->bounds.y;
   draw_board(game->graphics, game->board, board_offset);
@@ -120,14 +123,15 @@ void tick_game(Game* game) {
       break;
 
     case GAME_STATE_PLACING:
+      /* Draw the top tetromino */
       placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
-      placing_point.x += board_offset.x;
-      placing_point.y += board_offset.y;
-      draw_tetromino(game->graphics, game->placing_piece, placing_point);
-      break;
+      draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
 
-    case GAME_STATE_FALLING:
-
+      /* Draw the dynamic bottom preview tetromino */
+      preview_piece = game->placing_piece;
+      preview_piece.color.alpha = ALPHA_LIGHTER;
+      placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
+      draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, placing_point));
       break;
 
     case GAME_STATE_FINISHED:
@@ -150,9 +154,9 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       break;
 
     case GAME_EVENT_DROP:
+      /* Calculates the intersection point with the board and adds the current tetromino to it */
       placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
-      placing_point.y = intersect_tetromino_with_board(game->board, game->placing_piece, (int)game->placing_piece_x);
-
+      placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
       add_tetromino_to_board(
           game->board,
           game->placing_piece,
@@ -162,12 +166,15 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       break;
 
     case GAME_EVENT_ROT_CL:
-      temp = ((int)game->placing_piece.rotation + 1) % TETROMINOES_ROTATIONS;
+      temp = ((short)game->placing_piece.rotation + 1) % TETROMINOES_ROTATIONS;
       game->placing_piece.rotation = temp;
       break;
 
     case GAME_EVENT_ROT_CC:
-      temp = ((int)game->placing_piece.rotation - 1) % TETROMINOES_ROTATIONS;
+      temp = ((short)game->placing_piece.rotation - 1) % TETROMINOES_ROTATIONS;
+      if (temp < 0) {
+        temp += TETROMINOES_ROTATIONS;
+      }
       game->placing_piece.rotation = temp;
       break;
 
@@ -178,10 +185,20 @@ void process_game_event(Game* game, GameEvent event, void* data) {
 
     case GAME_EVENT_CHP_DN:
       temp = ((int)game->placing_piece.shape - 1) % TETROMINOES_COUNT;
+      if (temp < 0) {
+        temp += TETROMINOES_COUNT;
+      }
       game->placing_piece.shape = temp;
       break;
 
     default:
       break;
   }
+}
+
+Point game_rel_to_abs(Game *game, Point point) {
+  Point result;
+  result.x = game->bounds.x + point.x;
+  result.y = game->bounds.y + point.y;
+  return result;
 }

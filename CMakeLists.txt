@@ -9,7 +9,7 @@ else()
     add_compile_options(-Wall -Wextra -Wpedantic -Wno-unused-function)
 endif()
 
-project(nxtetris C)
+project(nxtetris)
 add_executable(nxtetris
         src/main.c
         src/engine/media/graphics.c

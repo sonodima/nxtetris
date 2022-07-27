@@ -9,13 +9,13 @@
 #include "../engine/core/matrix.h"
 
 #include "tetromino.h"
+#include "board.h"
 
 #define PER_PIECE_COUNT 20;
 
 typedef enum {
   GAME_STATE_IDLE,
   GAME_STATE_PLACING,
-  GAME_STATE_FALLING,
   GAME_STATE_FINISHED
 } GameState;
 
@@ -39,7 +39,7 @@ typedef struct {
   Tetromino placing_piece;
   unsigned int placing_piece_x;
 
-  Matrix* board;
+  Board board;
 } Game;
 
 Game* make_game(Graphics* graphics, Controls* controls, Rect bounds);
@@ -59,5 +59,13 @@ void tick_game(Game* game);
  * @param data Optional event data.
  */
 void process_game_event(Game* game, GameEvent event, void* data);
+
+/**
+ * Helper function that converts game-relative coords to absolute CLI coords.
+ * @param game Pointer to the game.
+ * @param point Point to convert.
+ * @return Converted point.
+ */
+Point game_rel_to_abs(Game* game, Point point);
 
 #endif //NXTETRIS_SRC_GAME_GAME_H_

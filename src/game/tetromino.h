@@ -10,52 +10,73 @@
 #define TETROMINOES_COUNT 7
 #define TETROMINOES_ROTATIONS 4
 
-/**
- * Bitmask encoding idea from: https://stackoverflow.com/a/38596291
- */
-static int tetrominoes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
-    {
-        /* T */
-        0x4640, 0x0E40, 0x4C40, 0x4E00
-    },
-    {
-        /* S */
-        0x8C40, 0x6C00, 0x8C40, 0x6C00
-    },
-    {
-        /* Z */
-        0x4C80, 0xC600, 0x4C80, 0xC600
-    },
-    {
-        /* I */
-        0x4444, 0x0F00, 0x4444, 0x0F00
-    },
-    {
-        /* J */
-        0x44C0, 0x8E00, 0xC880, 0xE200
-    },
-    {
-        /* L */
-        0x88C0, 0xE800, 0xC440, 0x2E00
-    },
-    {
-        /* O */
-        0xCC00, 0xCC00, 0xCC00, 0xCC00
-    },
-};
+typedef struct {
+  unsigned int data;
+  unsigned int width;
+  unsigned int height;
+} TetrominoState;
 
 typedef struct {
-  unsigned int shape;
-  unsigned int rotation;
+  unsigned short shape;
+  unsigned short rotation;
   Color color;
 } Tetromino;
 
-int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigned int y);
+/*
+ * Tetrominoes can get represented with a 16x16 matrix that only needs to contain [1;0].
+ * We can store them in a single uint16_t.
+ *
+ * Starting from the least significant bit (horizontal flip), we can consider a piece as:
+ *    xxxx  -> [FIRST_ROW]  [4..1]
+ *    xxxx  -> [SECOND_ROW] [4..1]
+ *    xxxx  -> [THIRD_ROW]  [4..1]
+ *    xxxx  -> [FOURTH_ROW] [4..1]
+ */
+static TetrominoState tetrominoes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
+    {
+        /* I */
+        { 0x000F, 4, 1 }, { 0x1111, 1, 4 }, { 0x000F, 4, 1 }, { 0x1111, 1, 4 },
+    },
+    {
+        /* J */
+        { 0x0071, 3, 2 }, { 0x0113, 2, 3 },{ 0x0047, 3, 2 },{ 0x0322, 2, 3 },
+    },
+    {
+        /* L */
+        { 0x0074, 3, 2 }, { 0x0311, 2, 3 },{ 0x0017, 3, 2 },{ 0x0223, 2, 3 },
+    },
+    {
+        /* O */
+        { 0x0033, 2, 2 }, { 0x0033, 2, 2 },{ 0x0033, 2, 2 },{ 0x0033, 2, 2 },
+    },
+    {
+        /* S */
+        { 0x0036, 3, 2 }, { 0x0231, 2, 3 },{ 0x0036, 3, 2 },{ 0x0231, 2, 3 },
+    },
+    {
+        /* T */
+        { 0x0072, 3, 2 }, { 0x0131, 2, 3 },{ 0x0027, 3, 2 },{ 0x0232, 2, 3 },
+    },
+    {
+        /* Z */
+        { 0x0063, 3, 2 }, { 0x0132, 2, 3 },{ 0x0063, 3, 2 },{ 0x0132, 2, 3 },
+    },
+};
 
-int is_tetromino_valid(Tetromino tetromino);
+TetrominoState get_tetromino_state(Tetromino tetromino);
 
-Rect get_tetromino_bounds(Tetromino tetromino);
+unsigned int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigned int y);
+
+unsigned int is_tetromino_valid(Tetromino tetromino);
 
 void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position);
+
+/**
+ * Obtains the 2-dimensional size of the given tetromino, obtaining
+ * it from its state.
+ * @param tetromino
+ * @return
+ */
+Size get_tetromino_size(Tetromino tetromino);
 
 #endif //NXTETRIS_SRC_GAME_TETROMINO_H_

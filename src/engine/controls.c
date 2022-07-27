@@ -7,36 +7,28 @@
 Controls* make_controls(void) {
   Controls* controls;
 
-  /*
-   Disable keypress echoing.
-   */
+  /* Disable keypress echoing */
   noecho();
 
   /*
-   Enable keypad mode. Also cause mouse events
-   to report correctly.
+   * Enable keypad mode.
+   * Also cause mouse events to report correctly.
    */
   keypad(stdscr, 1);
 
   /*
-   Turn getch() into a non-blocking function.
-   If no input is ready, ERR is returned.
+   * Turn getch() into a non-blocking function.
+   * If no input is ready, ERR is returned.
    */
   nodelay(stdscr, 1);
 
-  /*
-   Make mouse events visible to the window.
-   */
+  /* Make mouse events visible to the window */
   mousemask(BUTTON1_PRESSED | REPORT_MOUSE_POSITION, 0);
 
-  /*
-   Disable line buffering.
-   */
+  /* Disable line buffering */
   cbreak();
 
-  /*
-   Tell XTerm to report the mouse position.
-   */
+  /* Tell XTerm to report the mouse position */
   printf("\033[?1003h\n");
 
   controls = malloc(sizeof(Controls));
@@ -52,9 +44,7 @@ void free_controls(Controls* controls) {
     free(controls);
   }
 
-  /*
-   Tell XTerm to stop reporting the mouse position.
-   */
+  /* Tell XTerm to stop reporting the mouse position */
   printf("\033[?1003l\n");
 }
 
@@ -71,9 +61,7 @@ void update_controls(Controls* controls) {
             controls->mouse_state = 1;
           }
 
-          /*
-           Mouse X is divided by two because, in the screen space, y=2x.
-           */
+          /* Mouse X is divided by two because, in the screen space, y=2x */
           controls->mouse_position.x = mouse_event.x / 2;
           controls->mouse_position.y = mouse_event.y;
         }

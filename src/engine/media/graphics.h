@@ -72,7 +72,7 @@ void fill_rect(Graphics* graphics, Rect rect, Color color);
  * @param color color structure of the draw operation.
  * @see fill_rect()
  */
-void draw_rect(Graphics* graphics, Rect rect, Color color, unsigned int thickness);
+void draw_rect(Graphics* graphics, Rect rect, Color color);
 
 /**
  * Obtains the size of the terminal window.
