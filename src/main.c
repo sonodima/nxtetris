@@ -12,20 +12,31 @@ int main() {
   Graphics* graphics;
   Controls* controls;
   Game* game;
-  unsigned int is_running = 1;
-  int mouse_x = 0;
+  unsigned int is_running;
+  int mouse_x;
+  Rect game_bounds;
+  Point footer_pos;
+  Color footer_color;
 
-  Rect game_bounds = {0, 0, 10, 15};
-  Point footer_pos = {0, 0};
-  Color footer_color = {COLOR_BLACK, COLOR_WHITE, ALPHA_TRANSPARENT};
+  is_running = 1;
+  mouse_x = 0;
+
+  game_bounds.x = 0;
+  game_bounds.y = 0;
+  game_bounds.width = 10;
+  game_bounds.height = 15;
+
+  footer_pos.x = 0;
+  footer_pos.y = 0;
+  footer_color.alpha = ALPHA_TRANSPARENT;
+  footer_color.background = COLOR_BLACK;
+  footer_color.foreground = COLOR_WHITE;
 
   graphics = make_graphics();
   controls = make_controls();
   game = make_game(graphics, controls, game_bounds);
 
-  /*
-   Main process loop.
-   */
+  /* Main process loop */
   while (is_running) {
     update_controls(controls);
     begin_frame(graphics);
@@ -37,39 +48,29 @@ int main() {
     game->bounds.x = (graphics->size.width - game->bounds.width) / 2;
     game->bounds.y = (graphics->size.height - game->bounds.height) / 2 - 1;
 
-    /*
-     Handle tetronimo placing on mouse left click.
-     */
+    /* Handle tetromino placing on mouse left click */
     if (game->controls->mouse_state == 1) {
       process_game_event(game, GAME_EVENT_DROP, NULL);
     }
 
     switch (game->controls->pressed_key) {
       case KEY_RIGHT:
-        /*
-         Handle clockwise tetronimo rotation.
-         */
+        /* Handle clockwise tetromino rotation */
         process_game_event(game, GAME_EVENT_ROT_CL, NULL);
         break;
 
       case KEY_LEFT:
-        /*
-         Handle counter-clockwise tetronimo rotation.
-         */
+        /* Handle counter-clockwise tetromino rotation */
         process_game_event(game, GAME_EVENT_ROT_CC, NULL);
         break;
 
       case KEY_UP:
-        /*
-         Handle piece switch.
-         */
+        /* Handle piece switch */
         process_game_event(game, GAME_EVENT_CHP_UP, NULL);
         break;
 
       case KEY_DOWN:
-        /*
-         Handle piece switch.
-         */
+        /* Handle piece switch */
         process_game_event(game, GAME_EVENT_CHP_DN, NULL);
         break;
 
@@ -79,8 +80,8 @@ int main() {
     }
 
     /*
-     Handle mouse input to place the temporary tetromino.
-     The x-axis is limited by the bounds of the game.
+     * Handle mouse input to place the temporary tetromino.
+     * The x-axis is limited by the bounds of the game.
      */
     mouse_x = game->controls->mouse_position.x - game->bounds.x;
     process_game_event(game, GAME_EVENT_SET_X, &mouse_x);

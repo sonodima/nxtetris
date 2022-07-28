@@ -107,7 +107,7 @@ unsigned int attempt_board_line_removal(Board* board) {
 
   for (y = 0; y < board->rows; ++y) {
     filled = 1;
-    for (x = 0; x < board->cols; ++x) {
+    for (x = 0; x <= board->cols; ++x) {
       if (board->data[y][x] == 0) {
         filled = 0;
       }

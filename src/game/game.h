@@ -11,6 +11,10 @@
 #include "tetromino.h"
 #include "board.h"
 
+/**
+ * Number of pieces available for each shape.
+ * Related to the X-Tetris rules.
+ */
 #define PER_PIECE_COUNT 20;
 
 typedef enum {
@@ -33,6 +37,7 @@ typedef struct {
   Controls* controls;
   Rect bounds;
   GameState state;
+  unsigned int pieces_count[TETROMINOES_COUNT];
   unsigned int score;
 
   Tetromino placing_piece;
@@ -68,9 +73,24 @@ void process_game_event(Game* game, GameEvent event, void* data);
 Point game_rel_to_abs(Game* game, Point point);
 
 /**
- * C
- * @param count
- * @return
+ * Checks if there are available pieces to drop in the game.
+ * @param game Pointer to the game.
+ * @return 1 if there is at least one piece left, otherwise 0.
+ */
+unsigned int has_pieces_left(Game* game);
+
+/**
+ * Checks if a given piece is still available in the game.
+ * @param game Pointer to the game.
+ * @param piece Target piece type.
+ * @return 1 if there is at least one piece with this shape left, otherwise 0.
+ */
+unsigned int is_piece_available(Game* game, unsigned int piece);
+
+/**
+ * Handles removed lines count -> gained points conversion.
+ * @param count Number of lines removed.
+ * @return Gained points for this action.
  */
 unsigned int removed_lines_to_points(unsigned int count);
 
