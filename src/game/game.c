@@ -144,6 +144,7 @@ void tick_game(Game* game) {
 }
 
 void process_game_event(Game* game, GameEvent event, void* data) {
+  unsigned int removed_lines;
   int temp;
   Point placing_point;
 
@@ -156,12 +157,9 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       /* Calculates the intersection point with the board and adds the current tetromino to it */
       placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
       placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
-      add_tetromino_to_board(
-          game->board,
-          game->placing_piece,
-          placing_point
-      );
-      attempt_board_line_removal(game->board);
+      add_tetromino_to_board(game->board, game->placing_piece, placing_point);
+      removed_lines = attempt_board_line_removal(game->board);
+      game->score += removed_lines_to_points(removed_lines);
       game->state = GAME_STATE_IDLE;
       break;
 
@@ -201,4 +199,28 @@ Point game_rel_to_abs(Game *game, Point point) {
   result.x = game->bounds.x + point.x;
   result.y = game->bounds.y + point.y;
   return result;
+}
+
+unsigned int removed_lines_to_points(unsigned int count) {
+  unsigned int points;
+
+  switch (count) {
+    case 0:
+      points = 0;
+      break;
+    case 1:
+      points = 1;
+      break;
+    case 2:
+      points = 3;
+      break;
+    case 3:
+      points = 6;
+      break;
+    default:
+      points = 12;
+      break;
+  }
+
+  return points;
 }

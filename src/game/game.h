@@ -67,4 +67,11 @@ void process_game_event(Game* game, GameEvent event, void* data);
  */
 Point game_rel_to_abs(Game* game, Point point);
 
+/**
+ * C
+ * @param count
+ * @return
+ */
+unsigned int removed_lines_to_points(unsigned int count);
+
 #endif //NXTETRIS_SRC_GAME_GAME_H_
