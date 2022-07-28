@@ -32,14 +32,13 @@ typedef struct {
   Graphics* graphics;
   Controls* controls;
   Rect bounds;
-  clock_t gravity_clock;
   GameState state;
   unsigned int score;
 
   Tetromino placing_piece;
   unsigned int placing_piece_x;
 
-  Board board;
+  Board* board;
 } Game;
 
 Game* make_game(Graphics* graphics, Controls* controls, Rect bounds);

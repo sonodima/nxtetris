@@ -2,7 +2,7 @@
 
 #include <curses.h>
 
-void draw_board(Graphics* graphics, Board board, Point offset) {
+void draw_board(Graphics* graphics, Board* board, Point offset) {
   unsigned int i, j;
   int col_key;
   Rect rect;
@@ -29,7 +29,7 @@ void draw_board(Graphics* graphics, Board board, Point offset) {
   }
 }
 
-void add_tetromino_to_board(Board board, Tetromino tetromino, Point position) {
+void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
   int i, j;
 
   if (!is_tetromino_valid(tetromino)) {
@@ -45,7 +45,7 @@ void add_tetromino_to_board(Board board, Tetromino tetromino, Point position) {
   }
 }
 
-int check_board_collision(Board board, Tetromino tetromino, Point point) {
+unsigned int check_board_collision(Board* board, Tetromino tetromino, Point point) {
   Size tetromino_size;
   unsigned int x, y, b_x, b_y;
 
@@ -70,7 +70,7 @@ int check_board_collision(Board board, Tetromino tetromino, Point point) {
   return 0;
 }
 
-Point intersect_tetromino_with_board(Board board, Tetromino tetromino, Point point) {
+Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point point) {
   Point test_point;
   Size tetromino_size;
   unsigned int r_shift;
@@ -90,10 +90,34 @@ Point intersect_tetromino_with_board(Board board, Tetromino tetromino, Point poi
   return test_point;
 }
 
-int attempt_board_line_removal(Board board) {
-  unsigned int i, j;
-  int temp;
+void remove_board_line(Board* board, unsigned int row) {
+  unsigned int x, y;
 
+  for (x = 0; x < board->cols; ++x) {
+    for (y = row; y > 1; --y) {
+      board->data[y][x] = board->data[y - 1][x];
+    }
+  }
+}
 
-  return 0;
+unsigned int attempt_board_line_removal(Board* board) {
+  unsigned int x, y, filled, removed_lines;
+
+  removed_lines = 0;
+
+  for (y = 0; y < board->rows; ++y) {
+    filled = 1;
+    for (x = 0; x < board->cols; ++x) {
+      if (board->data[y][x] == 0) {
+        filled = 0;
+      }
+    }
+
+    if (filled) {
+      remove_board_line(board, y);
+      removed_lines++;
+    }
+  }
+
+  return removed_lines;
 }

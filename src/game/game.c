@@ -13,7 +13,6 @@ Game* make_game(Graphics* graphics, Controls* controls, Rect bounds) {
   game->graphics = graphics;
   game->controls = controls;
   game->bounds = bounds;
-  game->gravity_clock = clock();
   game->score = 0;
 
   /*
@@ -162,6 +161,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
           game->placing_piece,
           placing_point
       );
+      attempt_board_line_removal(game->board);
       game->state = GAME_STATE_IDLE;
       break;
 
