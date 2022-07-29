@@ -6,25 +6,33 @@
 #include "engine/controls.h"
 #include "game/game.h"
 #include "game/cpu.h"
-#include "game/ui/main_menu.h"
 
 #define FRAME_INTERVAL 20
-#define HIDE_MENU false
+#define SHOW_MENU 1
+
+#if SHOW_MENU
+#include "game/ui/main_menu.h"
+#endif
 
 int main() {
   Graphics* graphics;
   Controls* controls;
-  MainMenu* main_menu;
   Game* game;
   CPU* cpu;
-  unsigned int in_menu;
   unsigned int is_running;
   int mouse_x;
   Rect game_bounds;
   Point footer_pos;
   Color footer_color;
 
+#if SHOW_MENU
+  MainMenu* main_menu;
+  unsigned int in_menu;
+#endif
+
+#if SHOW_MENU
   in_menu = 1;
+#endif
   is_running = 1;
   mouse_x = 0;
 
@@ -40,10 +48,13 @@ int main() {
 
   graphics = make_graphics();
   controls = make_controls();
+#if SHOW_MENU
   main_menu = make_main_menu(graphics);
+#endif
   game = make_game(graphics, game_bounds);
   cpu = make_cpu(game);
 
+#if SHOW_MENU
   while (in_menu) {
     update_controls(controls);
     begin_frame(graphics);
@@ -71,6 +82,7 @@ int main() {
     present_frame();
     usleep(1000 * FRAME_INTERVAL);
   }
+#endif
 
   /* Main process loop */
   while (is_running) {
