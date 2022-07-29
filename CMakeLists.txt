@@ -17,7 +17,7 @@ add_executable(nxtetris
         src/engine/core/vector.c
         src/engine/core/matrix.c
         src/engine/controls.c
-        src/engine/utils.c src/game/game.c src/game/game.h src/game/tetromino.h src/game/tetromino.c src/game/board.h src/game/board.c)
+        src/engine/utils.c src/game/game.c src/game/game.h src/game/tetromino.h src/game/tetromino.c src/game/board.h src/game/board.c src/game/cpu.h src/game/cpu.c src/game/ui/main_menu.h src/game/ui/main_menu.c)
 
 find_package(Curses REQUIRED)
 target_link_libraries(nxtetris curses)

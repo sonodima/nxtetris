@@ -15,7 +15,7 @@
  * Number of pieces available for each shape.
  * Related to the X-Tetris rules.
  */
-#define PER_PIECE_COUNT 20;
+#define PER_PIECE_COUNT 1
 
 typedef enum {
   GAME_STATE_IDLE,
@@ -34,11 +34,11 @@ typedef enum {
 
 typedef struct {
   Graphics* graphics;
-  Controls* controls;
   Rect bounds;
   GameState state;
   unsigned int pieces_count[TETROMINOES_COUNT];
   unsigned int score;
+  unsigned int disable_input;
 
   Tetromino placing_piece;
   unsigned int placing_piece_x;
@@ -46,15 +46,43 @@ typedef struct {
   Board* board;
 } Game;
 
-Game* make_game(Graphics* graphics, Controls* controls, Rect bounds);
+/**
+ * Creates an instance of the game.
+ * @param graphics Pointer to the graphics manager.
+ * @param bounds Rectangle in which the game is drawn.
+ * @return Pointer to the created game.
+ */
+Game* make_game(Graphics* graphics, Rect bounds);
 
+/**
+ * Destroys an instance of the game.
+ * @param game Pointer to the game.
+ */
 void free_game(Game* game);
+
+/**
+ * Draws a rectangle outside the game bounds, the score and the current piece's count.
+ * @param game Pointer to the game.
+ */
+void draw_game_bounds(Game* game);
+
+/**
+ * Sets the placing_piece to a random tetromino.
+ * @param game Pointer to the game.
+ */
+void initialize_placing_piece(Game* game);
 
 /**
  * Game loop routine. All drawing should be made here.
  * @param game Pointer to the game.
  */
 void tick_game(Game* game);
+
+/**
+ * Internal routine that drops a piece in the board and handles board update.
+ * @param game Pointer to the game.
+ */
+void drop_piece(Game* game);
 
 /**
  * Event dispatcher. All manual-input game events should get processed here.

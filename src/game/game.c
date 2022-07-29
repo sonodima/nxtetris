@@ -5,15 +5,15 @@
 
 #include "game.h"
 
-Game* make_game(Graphics* graphics, Controls* controls, Rect bounds) {
+Game* make_game(Graphics* graphics, Rect bounds) {
   Game* game;
   unsigned int i;
 
   game = malloc(sizeof(Game));
   game->graphics = graphics;
-  game->controls = controls;
   game->bounds = bounds;
   game->score = 0;
+  game->disable_input = 0;
 
   /* Initialize all piece counts to the maximum value */
   for (i = 0; i < TETROMINOES_COUNT; ++i) {
@@ -41,19 +41,16 @@ void free_game(Game* game) {
   }
 }
 
-/**
- * Draws a rectangle outside the game bounds, the score and the current piece's count.
- * @param game Pointer to the game.
- */
 void draw_game_bounds(Game* game) {
-  Color bounds_color;
+  Color draw_color;
   Rect bounds_rect;
   Point text_point;
   char text_buffer[32];
+  unsigned int pieces_count;
 
-  bounds_color.alpha = ALPHA_TRANSPARENT;
-  bounds_color.background = COLOR_BLACK;
-  bounds_color.foreground = COLOR_WHITE;
+  draw_color.alpha = ALPHA_TRANSPARENT;
+  draw_color.background = COLOR_BLACK;
+  draw_color.foreground = COLOR_WHITE;
 
   /* The drawn game border must be bigger than the actual game. */
   bounds_rect = game->bounds;
@@ -61,25 +58,33 @@ void draw_game_bounds(Game* game) {
   bounds_rect.y -= 1;
   bounds_rect.width += 1;
   bounds_rect.height += 1;
-  draw_rect(game->graphics, bounds_rect, bounds_color);
+  draw_rect(game->graphics, bounds_rect, draw_color);
 
   sprintf(text_buffer, " Score: %d ", game->score);
   text_point.x = bounds_rect.x + 1;
   text_point.y = bounds_rect.y;
-  draw_text(game->graphics, text_buffer, text_point, bounds_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+  draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 
-  sprintf(text_buffer, " Count: %d ", game->pieces_count[game->placing_piece.shape]);
+  /* Color the count text accordingly to the remaining pieces count */
+  pieces_count = game->pieces_count[game->placing_piece.shape];
+  if (pieces_count > PER_PIECE_COUNT / 2) {
+    draw_color.foreground = COLOR_CYAN;
+  } else if (pieces_count > PER_PIECE_COUNT / 4) {
+    draw_color.foreground = COLOR_YELLOW;
+  } else if (pieces_count > 1) {
+    draw_color.foreground = COLOR_RED;
+  } else {
+    draw_color.foreground = COLOR_WHITE;
+    draw_color.background = COLOR_RED;
+  }
+
+  sprintf(text_buffer, " Count: %d ", pieces_count);
   text_point.x = bounds_rect.x + bounds_rect.width - 1;
   text_point.y = bounds_rect.y + bounds_rect.height;
-  draw_text(game->graphics, text_buffer, text_point, bounds_color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
+  draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
 }
 
-/**
- * Sets the placing_piece to a random tetromino.
- * @param game Pointer to the game.
- */
 void initialize_placing_piece(Game* game) {
-  // todo add counter for the pieces starting to 20
   int color = random_number(1, 6);
 
   game->placing_piece.color.background = COLOR_BLACK;
@@ -121,6 +126,22 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   return placing_point;
 }
 
+void draw_game_end_alert(Game* game) {
+  Rect bounds;
+  Color color;
+
+  bounds.x = game->bounds.x;
+  bounds.y = game->bounds.y + game->bounds.height / 2 - 6;
+  bounds.width = game->bounds.width;
+  bounds.height = 12;
+
+  color.background = COLOR_WHITE;
+  color.foreground = COLOR_WHITE;
+  color.alpha = ALPHA_DARKER;
+
+  fill_rect(game->graphics, bounds, color);
+}
+
 void tick_game(Game* game) {
   Tetromino preview_piece;
   Point placing_point;
@@ -132,8 +153,13 @@ void tick_game(Game* game) {
 
   switch (game->state) {
     case GAME_STATE_IDLE:
-      initialize_placing_piece(game);
-      game->state = GAME_STATE_PLACING;
+      /* Finish the game if all the pieces were used */
+      if (has_pieces_left(game)) {
+        initialize_placing_piece(game);
+        game->state = GAME_STATE_PLACING;
+      } else {
+        game->state = GAME_STATE_FINISHED;
+      }
       break;
 
     case GAME_STATE_PLACING:
@@ -149,6 +175,7 @@ void tick_game(Game* game) {
       break;
 
     case GAME_STATE_FINISHED:
+      draw_game_end_alert(game);
       break;
 
     default:
@@ -183,6 +210,10 @@ void drop_piece(Game* game) {
 void process_game_event(Game* game, GameEvent event, void* data) {
   int temp;
 
+  if (game->disable_input) {
+    return;
+  }
+
   switch (event) {
     case GAME_EVENT_SET_X:
       game->placing_piece_x = *(int*)data - 1;
@@ -207,9 +238,9 @@ void process_game_event(Game* game, GameEvent event, void* data) {
 
     case GAME_EVENT_CHP_UP:
       temp = ((int)game->placing_piece.shape + 1) % TETROMINOES_COUNT;
-
-      // while not placing point available increment - also add check for when all pieces all finished
-
+      while (!is_piece_available(game, temp)) {
+        temp = ((int)temp + 1) % TETROMINOES_COUNT;
+      }
       game->placing_piece.shape = temp;
       break;
 
@@ -217,6 +248,12 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       temp = ((int)game->placing_piece.shape - 1) % TETROMINOES_COUNT;
       if (temp < 0) {
         temp += TETROMINOES_COUNT;
+      }
+      while (!is_piece_available(game, temp)) {
+        temp = ((int)temp - 1) % TETROMINOES_COUNT;
+        if (temp < 0) {
+          temp += TETROMINOES_COUNT;
+        }
       }
       game->placing_piece.shape = temp;
       break;

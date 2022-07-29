@@ -5,19 +5,26 @@
 #include "engine/media/graphics.h"
 #include "engine/controls.h"
 #include "game/game.h"
+#include "game/cpu.h"
+#include "game/ui/main_menu.h"
 
 #define FRAME_INTERVAL 20
+#define HIDE_MENU false
 
 int main() {
   Graphics* graphics;
   Controls* controls;
+  MainMenu* main_menu;
   Game* game;
+  CPU* cpu;
+  unsigned int in_menu;
   unsigned int is_running;
   int mouse_x;
   Rect game_bounds;
   Point footer_pos;
   Color footer_color;
 
+  in_menu = 1;
   is_running = 1;
   mouse_x = 0;
 
@@ -27,14 +34,43 @@ int main() {
   game_bounds.height = 15;
 
   footer_pos.x = 0;
-  footer_pos.y = 0;
   footer_color.alpha = ALPHA_TRANSPARENT;
-  footer_color.background = COLOR_BLACK;
-  footer_color.foreground = COLOR_WHITE;
+  footer_color.background = COLOR_WHITE;
+  footer_color.foreground = COLOR_BLACK;
 
   graphics = make_graphics();
   controls = make_controls();
-  game = make_game(graphics, controls, game_bounds);
+  main_menu = make_main_menu(graphics);
+  game = make_game(graphics, game_bounds);
+  cpu = make_cpu(game);
+
+  while (in_menu) {
+    update_controls(controls);
+    begin_frame(graphics);
+
+    switch (controls->pressed_key) {
+      case KEY_UP:
+        if (main_menu->selected_mode <= 0) {
+          main_menu->selected_mode = GAME_MODES_COUNT - 1;
+        } else {
+          main_menu->selected_mode--;
+        };
+        break;
+
+      case KEY_DOWN:
+        main_menu->selected_mode = (main_menu->selected_mode + 1) % GAME_MODES_COUNT;
+        break;
+
+      case KEY_RIGHT:
+        in_menu = 0;
+        break;
+    }
+
+    draw_main_menu(main_menu);
+
+    present_frame();
+    usleep(1000 * FRAME_INTERVAL);
+  }
 
   /* Main process loop */
   while (is_running) {
@@ -49,11 +85,11 @@ int main() {
     game->bounds.y = (graphics->size.height - game->bounds.height) / 2 - 1;
 
     /* Handle tetromino placing on mouse left click */
-    if (game->controls->mouse_state == 1) {
+    if (controls->mouse_state == 1) {
       process_game_event(game, GAME_EVENT_DROP, NULL);
     }
 
-    switch (game->controls->pressed_key) {
+    switch (controls->pressed_key) {
       case KEY_RIGHT:
         /* Handle clockwise tetromino rotation */
         process_game_event(game, GAME_EVENT_ROT_CL, NULL);
@@ -83,7 +119,7 @@ int main() {
      * Handle mouse input to place the temporary tetromino.
      * The x-axis is limited by the bounds of the game.
      */
-    mouse_x = game->controls->mouse_position.x - game->bounds.x;
+    mouse_x = controls->mouse_position.x - game->bounds.x;
     process_game_event(game, GAME_EVENT_SET_X, &mouse_x);
 
     tick_game(game);
@@ -96,7 +132,9 @@ int main() {
     usleep(1000 * FRAME_INTERVAL);
   }
 
+  free_cpu(cpu);
   free_game(game);
+  // free main menu
   free_controls(controls);
   free_graphics(graphics);
   return 0;
