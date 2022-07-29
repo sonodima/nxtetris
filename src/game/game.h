@@ -10,12 +10,18 @@
 
 #include "tetromino.h"
 #include "board.h"
+#include "pieces_pool.h"
 
-/**
- * Number of pieces available for each shape.
- * Related to the X-Tetris rules.
- */
-#define PER_PIECE_COUNT 1
+typedef struct {
+  unsigned int is_running;
+
+} GameDataSP;
+
+typedef struct {
+  unsigned int is_running;
+  unsigned int active_player;
+} GameDataMP;
+
 
 typedef enum {
   GAME_STATE_IDLE,
@@ -34,9 +40,9 @@ typedef enum {
 
 typedef struct {
   Graphics* graphics;
+  PiecesPool* pieces_pool;
   Rect bounds;
   GameState state;
-  unsigned int pieces_count[TETROMINOES_COUNT];
   unsigned int score;
   unsigned int disable_input;
 
@@ -49,16 +55,19 @@ typedef struct {
 /**
  * Creates an instance of the game.
  * @param graphics Pointer to the graphics manager.
+ * @param pieces_pool Pointer to the pool that contains the remaining pieces.
  * @param bounds Rectangle in which the game is drawn.
  * @return Pointer to the created game.
  */
-Game* make_game(Graphics* graphics, Rect bounds);
+Game* make_game(Graphics* graphics, PiecesPool* pieces_pool, Rect bounds);
 
 /**
  * Destroys an instance of the game.
  * @param game Pointer to the game.
  */
 void free_game(Game* game);
+
+void reset_game(Game* game);
 
 /**
  * Draws a rectangle outside the game bounds, the score and the current piece's count.
@@ -99,21 +108,6 @@ void process_game_event(Game* game, GameEvent event, void* data);
  * @return Converted point.
  */
 Point game_rel_to_abs(Game* game, Point point);
-
-/**
- * Checks if there are available pieces to drop in the game.
- * @param game Pointer to the game.
- * @return 1 if there is at least one piece left, otherwise 0.
- */
-unsigned int has_pieces_left(Game* game);
-
-/**
- * Checks if a given piece is still available in the game.
- * @param game Pointer to the game.
- * @param piece Target piece type.
- * @return 1 if there is at least one piece with this shape left, otherwise 0.
- */
-unsigned int is_piece_available(Game* game, unsigned int piece);
 
 /**
  * Handles removed lines count -> gained points conversion.

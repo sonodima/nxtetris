@@ -11,6 +11,12 @@ MainMenu *make_main_menu(Graphics *graphics) {
   return main_menu;
 }
 
+void free_main_menu(MainMenu *menu) {
+  if (menu) {
+    free(menu);
+  }
+}
+
 void draw_main_menu(MainMenu *menu) {
   unsigned int i;
   Point point;

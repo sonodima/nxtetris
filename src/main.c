@@ -4,37 +4,45 @@
 #include "engine/types/color.h"
 #include "engine/media/graphics.h"
 #include "engine/controls.h"
+#include "game/pieces_pool.h"
 #include "game/game.h"
 #include "game/cpu.h"
+#include "game/game_modes.h"
 
-#define FRAME_INTERVAL 20
+#define FRAME_INTERVAL 2
 #define SHOW_MENU 1
 
 #if SHOW_MENU
-#include "game/ui/main_menu.h"
+#include "main_menu.h"
 #endif
 
 int main() {
   Graphics* graphics;
   Controls* controls;
-  Game* game;
+  PiecesPool *pieces_pool;
+  Game* game_a;
+  Game* game_b;
   CPU* cpu;
-  unsigned int is_running;
-  int mouse_x;
+  GameDataSP data_sp;
+  GameDataMP data_mp;
   Rect game_bounds;
   Point footer_pos;
   Color footer_color;
+  GameMode game_mode;
 
 #if SHOW_MENU
   MainMenu* main_menu;
+  unsigned int prog_running;
   unsigned int in_menu;
 #endif
 
 #if SHOW_MENU
+  prog_running = 1;
   in_menu = 1;
 #endif
-  is_running = 1;
-  mouse_x = 0;
+  data_sp.is_running = 1;
+  data_mp.is_running = 1; // todo remove
+  data_mp.active_player = 0;
 
   game_bounds.x = 0;
   game_bounds.y = 0;
@@ -46,107 +54,107 @@ int main() {
   footer_color.background = COLOR_WHITE;
   footer_color.foreground = COLOR_BLACK;
 
+  game_mode = GAME_MODE_SP;
+
   graphics = make_graphics();
   controls = make_controls();
 #if SHOW_MENU
   main_menu = make_main_menu(graphics);
 #endif
-  game = make_game(graphics, game_bounds);
-  cpu = make_cpu(game);
+  pieces_pool = make_pieces_pool(2);
+  game_a = make_game(graphics, pieces_pool, game_bounds);
+  game_b = make_game(graphics, pieces_pool, game_bounds);
+  cpu = make_cpu(game_b);
 
+  while (prog_running) {
 #if SHOW_MENU
-  while (in_menu) {
-    update_controls(controls);
-    begin_frame(graphics);
+    while (in_menu) {
+      update_controls(controls);
+      begin_frame(graphics);
 
-    switch (controls->pressed_key) {
-      case KEY_UP:
-        if (main_menu->selected_mode <= 0) {
-          main_menu->selected_mode = GAME_MODES_COUNT - 1;
-        } else {
-          main_menu->selected_mode--;
-        };
-        break;
+      switch (controls->pressed_key) {
+        case KEY_UP:
+          if (main_menu->selected_mode <= 0) {
+            main_menu->selected_mode = GAME_MODES_COUNT - 1;
+          } else {
+            main_menu->selected_mode--;
+          };
+          break;
 
-      case KEY_DOWN:
-        main_menu->selected_mode = (main_menu->selected_mode + 1) % GAME_MODES_COUNT;
-        break;
+        case KEY_DOWN:main_menu->selected_mode = (main_menu->selected_mode + 1) % GAME_MODES_COUNT;
+          break;
 
-      case KEY_RIGHT:
-        in_menu = 0;
-        break;
+        case KEY_RIGHT:in_menu = 0;
+          game_mode = main_menu->selected_mode;
+          break;
+      }
+
+      draw_main_menu(main_menu);
+
+      present_frame();
+      usleep(1000 * FRAME_INTERVAL);
     }
-
-    draw_main_menu(main_menu);
-
-    present_frame();
-    usleep(1000 * FRAME_INTERVAL);
-  }
 #endif
 
-  /* Main process loop */
-  while (is_running) {
-    update_controls(controls);
-    begin_frame(graphics);
+    // todo clear both games and put everything in an inf loop
+    // todo 2 also add game end screen
 
-    /*
-     Update game position to screen center.
-     todo: 2 players: handle bounds correctly
-     */
-    game->bounds.x = (graphics->size.width - game->bounds.width) / 2;
-    game->bounds.y = (graphics->size.height - game->bounds.height) / 2 - 1;
+    reset_game(game_a);
+    reset_game(game_b);
 
-    /* Handle tetromino placing on mouse left click */
-    if (controls->mouse_state == 1) {
-      process_game_event(game, GAME_EVENT_DROP, NULL);
+    switch (game_mode) {
+      case GAME_MODE_SP:
+        reset_pieces_pool(pieces_pool, 1); // todo put 20
+        break;
+
+      case GAME_MODE_MP:
+      case GAME_MODE_CPU:
+        reset_pieces_pool(pieces_pool, 40);
+        break;
+
+      default:break;
     }
 
-    switch (controls->pressed_key) {
-      case KEY_RIGHT:
-        /* Handle clockwise tetromino rotation */
-        process_game_event(game, GAME_EVENT_ROT_CL, NULL);
-        break;
+    /* Main process loop */
+    while ((game_mode == GAME_MODE_SP && game_a->state != GAME_STATE_FINISHED)
+        || ((game_mode == GAME_MODE_MP || game_mode == GAME_MODE_CPU)
+          && (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED))) {
+      update_controls(controls);
+      begin_frame(graphics);
 
-      case KEY_LEFT:
-        /* Handle counter-clockwise tetromino rotation */
-        process_game_event(game, GAME_EVENT_ROT_CC, NULL);
-        break;
+      switch (game_mode) {
+        case GAME_MODE_SP:
+          handle_game_mode_sp(game_a, controls, &data_sp);
+          break;
 
-      case KEY_UP:
-        /* Handle piece switch */
-        process_game_event(game, GAME_EVENT_CHP_UP, NULL);
-        break;
+        case GAME_MODE_MP:
+          handle_game_mode_mp(game_a, game_b, controls, &data_mp);
+          break;
 
-      case KEY_DOWN:
-        /* Handle piece switch */
-        process_game_event(game, GAME_EVENT_CHP_DN, NULL);
-        break;
+        case GAME_MODE_CPU:
+          handle_game_mode_cpu(game_a, game_b, controls, &data_mp);
+          break;
+      }
 
-      case KEY_EXIT:
-        is_running = false;
-        break;
+      /* Draw footer text and rectangle */
+      footer_pos.y = graphics->size.height - 1;
+      draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
+                footer_pos, footer_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+
+      present_frame();
+      usleep(1000 * FRAME_INTERVAL);
     }
 
-    /*
-     * Handle mouse input to place the temporary tetromino.
-     * The x-axis is limited by the bounds of the game.
-     */
-    mouse_x = controls->mouse_position.x - game->bounds.x;
-    process_game_event(game, GAME_EVENT_SET_X, &mouse_x);
+    // todo: show win/loss screen
 
-    tick_game(game);
-
-    footer_pos.y = graphics->size.height - 1;
-    draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
-              footer_pos, footer_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
-
-    present_frame();
-    usleep(1000 * FRAME_INTERVAL);
+    in_menu = 1;
   }
 
   free_cpu(cpu);
-  free_game(game);
-  // free main menu
+  free_game(game_a);
+  free_game(game_b);
+  free_pieces_pool(pieces_pool);
+  free_main_menu(main_menu);
   free_controls(controls);
   free_graphics(graphics);
   return 0;

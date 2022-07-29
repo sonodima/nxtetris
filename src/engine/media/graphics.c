@@ -38,7 +38,7 @@ void begin_frame(Graphics* graphics) {
     graphics->size = get_window_size();
   }
 
-  clear();
+  erase();
 }
 
 void present_frame(void) {

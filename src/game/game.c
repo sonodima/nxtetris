@@ -5,20 +5,21 @@
 
 #include "game.h"
 
-Game* make_game(Graphics* graphics, Rect bounds) {
+Game* make_game(Graphics* graphics, PiecesPool * pieces_pool, Rect bounds) {
   Game* game;
-  unsigned int i;
 
   game = malloc(sizeof(Game));
   game->graphics = graphics;
+  game->pieces_pool = pieces_pool;
   game->bounds = bounds;
+  reset_game(game);
+
+  return game;
+}
+
+void reset_game(Game *game) {
   game->score = 0;
   game->disable_input = 0;
-
-  /* Initialize all piece counts to the maximum value */
-  for (i = 0; i < TETROMINOES_COUNT; ++i) {
-    game->pieces_count[i] = PER_PIECE_COUNT;
-  }
 
   /*
    * Initialized with GAME_STATE_IDLE so that a new
@@ -29,9 +30,10 @@ Game* make_game(Graphics* graphics, Rect bounds) {
   /*
    * Create the matrix that will hold the board.
    */
+  if (game->board) {
+    free_matrix(game->board);
+  }
   game->board = make_matrix(game->bounds.height, game->bounds.width);
-
-  return game;
 }
 
 void free_game(Game* game) {
@@ -66,10 +68,10 @@ void draw_game_bounds(Game* game) {
   draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 
   /* Color the count text accordingly to the remaining pieces count */
-  pieces_count = game->pieces_count[game->placing_piece.shape];
-  if (pieces_count > PER_PIECE_COUNT / 2) {
+  pieces_count = get_piece_count(game->pieces_pool, game->placing_piece.shape);
+  if (pieces_count > game->pieces_pool->count_per_piece / 2) {
     draw_color.foreground = COLOR_CYAN;
-  } else if (pieces_count > PER_PIECE_COUNT / 4) {
+  } else if (pieces_count > game->pieces_pool->count_per_piece / 4) {
     draw_color.foreground = COLOR_YELLOW;
   } else if (pieces_count > 1) {
     draw_color.foreground = COLOR_RED;
@@ -94,7 +96,7 @@ void initialize_placing_piece(Game* game) {
 
   do {
     game->placing_piece.shape = random_number(0, TETROMINOES_COUNT - 1);
-  } while (!is_piece_available(game, game->placing_piece.shape));
+  } while (!is_piece_available(game->pieces_pool, game->placing_piece.shape));
 }
 
 /**
@@ -154,7 +156,7 @@ void tick_game(Game* game) {
   switch (game->state) {
     case GAME_STATE_IDLE:
       /* Finish the game if all the pieces were used */
-      if (has_pieces_left(game)) {
+      if (has_pieces_left(game->pieces_pool)) {
         initialize_placing_piece(game);
         game->state = GAME_STATE_PLACING;
       } else {
@@ -163,15 +165,17 @@ void tick_game(Game* game) {
       break;
 
     case GAME_STATE_PLACING:
-      /* Draw the top tetromino */
-      placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
-      draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
+      if (!game->disable_input) {
+        /* Draw the top tetromino */
+        placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
+        draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
 
-      /* Draw the dynamic bottom preview tetromino */
-      preview_piece = game->placing_piece;
-      preview_piece.color.alpha = ALPHA_LIGHTER;
-      placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
-      draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, placing_point));
+        /* Draw the dynamic bottom preview tetromino */
+        preview_piece = game->placing_piece;
+        preview_piece.color.alpha = ALPHA_LIGHTER;
+        placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
+        draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, placing_point));
+      }
       break;
 
     case GAME_STATE_FINISHED:
@@ -199,8 +203,8 @@ void drop_piece(Game* game) {
   game->score += removed_lines_to_points(removed_lines);
 
   /* Decrement the pieces count for the current shape */
-  if (game->pieces_count[game->placing_piece.shape] > 0) {
-    game->pieces_count[game->placing_piece.shape]--;
+  if (get_piece_count(game->pieces_pool, game->placing_piece.shape) > 0) {
+    game->pieces_pool->counts[game->placing_piece.shape]--;
   }
 
   /* Revert game state to idle to allow inputs */
@@ -238,7 +242,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
 
     case GAME_EVENT_CHP_UP:
       temp = ((int)game->placing_piece.shape + 1) % TETROMINOES_COUNT;
-      while (!is_piece_available(game, temp)) {
+      while (!is_piece_available(game->pieces_pool, temp)) {
         temp = ((int)temp + 1) % TETROMINOES_COUNT;
       }
       game->placing_piece.shape = temp;
@@ -249,7 +253,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       if (temp < 0) {
         temp += TETROMINOES_COUNT;
       }
-      while (!is_piece_available(game, temp)) {
+      while (!is_piece_available(game->pieces_pool, temp)) {
         temp = ((int)temp - 1) % TETROMINOES_COUNT;
         if (temp < 0) {
           temp += TETROMINOES_COUNT;
@@ -268,25 +272,6 @@ Point game_rel_to_abs(Game *game, Point point) {
   result.x = game->bounds.x + point.x;
   result.y = game->bounds.y + point.y;
   return result;
-}
-
-unsigned int has_pieces_left(Game* game) {
-  unsigned int i, accum;
-
-  accum = 0;
-  for (i = 0; i < TETROMINOES_COUNT; ++i) {
-    accum += game->pieces_count[i];
-  }
-
-  return accum > 0;
-}
-
-unsigned int is_piece_available(Game* game, unsigned int piece) {
-  if (piece < 0 || piece >= TETROMINOES_COUNT) {
-    return 0;
-  }
-
-  return game->pieces_count[piece] > 0;
 }
 
 unsigned int removed_lines_to_points(unsigned int count) {
