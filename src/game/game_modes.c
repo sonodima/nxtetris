@@ -4,7 +4,7 @@
 
 #include <curses.h>
 
-void handle_game_mode_sp(Game* game, Controls* controls, GameDataSP* data) {
+void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
   unsigned int mouse_x;
 
   /* Update game position to screen center */
@@ -37,8 +37,7 @@ void handle_game_mode_sp(Game* game, Controls* controls, GameDataSP* data) {
       process_game_event(game, GAME_EVENT_CHP_DN, NULL);
       break;
 
-    case KEY_EXIT:
-      data->is_running = 0;
+    case KEY_EXIT:data->is_running = 0;
       break;
   }
 
@@ -52,10 +51,10 @@ void handle_game_mode_sp(Game* game, Controls* controls, GameDataSP* data) {
   tick_game(game);
 }
 
-void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDataMP* data) {
+void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDataMP *data) {
   unsigned int mouse_x;
-  Graphics* s_graphics;
-  Game* active_game;
+  Graphics *s_graphics;
+  Game *active_game;
 
   s_graphics = game_a->graphics;
 
@@ -69,7 +68,7 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
   game_a->disable_input = 1;
   game_b->disable_input = 1;
   active_game->disable_input = 0;
-
+  
   /* Handle tetromino placing on mouse left click */
   if (controls->mouse_state == 1) {
     process_game_event(active_game, GAME_EVENT_DROP, NULL);
@@ -98,8 +97,7 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
       process_game_event(active_game, GAME_EVENT_CHP_DN, NULL);
       break;
 
-    case KEY_EXIT:
-      data->is_running = 0;
+    case KEY_EXIT:data->is_running = 0;
       break;
   }
 
@@ -114,6 +112,6 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
   tick_game(game_b);
 }
 
-void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, GameDataMP* data) {
+void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, GameDataMP *data) {
 
 }

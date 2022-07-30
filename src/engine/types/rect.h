@@ -8,4 +8,4 @@ typedef struct {
   int height;
 } Rect;
 
-#endif //NXTETRIS_SRC_ENGINE_TYPES_RECT_H_
+#endif

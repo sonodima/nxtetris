@@ -17,21 +17,21 @@ typedef struct {
  * @see make_graphics()
  * @return Pointer to the graphics context.
  */
-Graphics* make_graphics(void);
+Graphics *make_graphics(void);
 
 /**
  * Releases the memory allocated for the graphics context.
  * @param graphics pointer to the graphics context.
  * @see free_graphics()
  */
-void free_graphics(Graphics* graphics);
+void free_graphics(Graphics *graphics);
 
 /**
  * Clears the terminal window and updates the size property.
  * @param graphics pointer to the graphics context.
  * @see begin_frame()
  */
-void begin_frame(Graphics* graphics);
+void begin_frame(Graphics *graphics);
 
 /**
  * Refreshes the terminal window, pushing any changes
@@ -52,7 +52,7 @@ void present_frame(void);
  * @see draw_text()
  * @return The size of the drawn string.
  */
-Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
+Size draw_text(Graphics *graphics, const char *text, Point point, Color color,
                VerticalAlignment alignment, int bold, int underline);
 
 /**
@@ -62,7 +62,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
  * @param color color structure of the draw operation.
  * @see draw_rect()
  */
-void fill_rect(Graphics* graphics, Rect rect, Color color);
+void fill_rect(Graphics *graphics, Rect rect, Color color);
 
 /**
  * Adds an empty rectangle to the graphics buffer.
@@ -72,7 +72,7 @@ void fill_rect(Graphics* graphics, Rect rect, Color color);
  * @param color color structure of the draw operation.
  * @see fill_rect()
  */
-void draw_rect(Graphics* graphics, Rect rect, Color color);
+void draw_rect(Graphics *graphics, Rect rect, Color color);
 
 /**
  * Obtains the size of the terminal window.
@@ -90,6 +90,6 @@ Size get_window_size(void);
  * @see get_drawable_character()
  * @return The string to draw.
  */
-char* get_drawable_character(Alpha alpha);
+char *get_drawable_character(Alpha alpha);
 
-#endif //NXTETRIS_SRC_ENGINE_MEDIA_GRAPHICS_H_
+#endif

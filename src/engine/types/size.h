@@ -6,4 +6,4 @@ typedef struct {
   int width;
 } Size;
 
-#endif //NXTETRIS_SRC_ENGINE_TYPES_SIZE_H_
+#endif

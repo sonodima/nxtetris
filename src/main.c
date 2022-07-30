@@ -17,12 +17,12 @@
 #endif
 
 int main() {
-  Graphics* graphics;
-  Controls* controls;
+  Graphics *graphics;
+  Controls *controls;
   PiecesPool *pieces_pool;
-  Game* game_a;
-  Game* game_b;
-  CPU* cpu;
+  Game *game_a;
+  Game *game_b;
+  CPU *cpu;
   GameDataSP data_sp;
   GameDataMP data_mp;
   Rect game_bounds;
@@ -31,17 +31,16 @@ int main() {
   GameMode game_mode;
 
 #if SHOW_MENU
-  MainMenu* main_menu;
+  MainMenu *main_menu;
   unsigned int prog_running;
   unsigned int in_menu;
 #endif
 
 #if SHOW_MENU
   prog_running = 1;
-  in_menu = 1;
 #endif
   data_sp.is_running = 1;
-  data_mp.is_running = 1; // todo remove
+  data_mp.is_running = 1; /* todo remove */
   data_mp.active_player = 0;
 
   game_bounds.x = 0;
@@ -68,6 +67,7 @@ int main() {
 
   while (prog_running) {
 #if SHOW_MENU
+    in_menu = 1;
     while (in_menu) {
       update_controls(controls);
       begin_frame(graphics);
@@ -96,20 +96,17 @@ int main() {
     }
 #endif
 
-    // todo clear both games and put everything in an inf loop
-    // todo 2 also add game end screen
-
+    /* Handle initialization routines that are always executed */
     reset_game(game_a);
     reset_game(game_b);
 
+    /* Handle initialization routines that depend on the game mode */
     switch (game_mode) {
-      case GAME_MODE_SP:
-        reset_pieces_pool(pieces_pool, 1); // todo put 20
+      case GAME_MODE_SP:reset_pieces_pool(pieces_pool, 1); /* todo put 20 */
         break;
 
       case GAME_MODE_MP:
-      case GAME_MODE_CPU:
-        reset_pieces_pool(pieces_pool, 40);
+      case GAME_MODE_CPU:reset_pieces_pool(pieces_pool, 40);
         break;
 
       default:break;
@@ -118,22 +115,21 @@ int main() {
     /* Main process loop */
     while ((game_mode == GAME_MODE_SP && game_a->state != GAME_STATE_FINISHED)
         || ((game_mode == GAME_MODE_MP || game_mode == GAME_MODE_CPU)
-          && (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED))) {
+            && (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED))) {
       update_controls(controls);
       begin_frame(graphics);
 
       switch (game_mode) {
-        case GAME_MODE_SP:
-          handle_game_mode_sp(game_a, controls, &data_sp);
+        case GAME_MODE_SP:handle_game_mode_sp(game_a, controls, &data_sp);
           break;
 
-        case GAME_MODE_MP:
-          handle_game_mode_mp(game_a, game_b, controls, &data_mp);
+        case GAME_MODE_MP:handle_game_mode_mp(game_a, game_b, controls, &data_mp);
           break;
 
-        case GAME_MODE_CPU:
-          handle_game_mode_cpu(game_a, game_b, controls, &data_mp);
+        case GAME_MODE_CPU:handle_game_mode_cpu(game_a, game_b, controls, &data_mp);
           break;
+
+        default:break;
       }
 
       /* Draw footer text and rectangle */
@@ -145,11 +141,11 @@ int main() {
       usleep(1000 * FRAME_INTERVAL);
     }
 
-    // todo: show win/loss screen
+    /* todo: show win/loss screen */
 
-    in_menu = 1;
   }
 
+  /* Program cleanup */
   free_cpu(cpu);
   free_game(game_a);
   free_game(game_b);

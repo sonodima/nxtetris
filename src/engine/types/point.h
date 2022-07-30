@@ -8,4 +8,4 @@ typedef struct {
 
 int point_equals(Point first, Point second);
 
-#endif //NXTETRIS_SRC_ENGINE_TYPES_POINT_H_
+#endif

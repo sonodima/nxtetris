@@ -6,8 +6,8 @@
 
 #include <curses.h>
 
-Graphics* make_graphics(void) {
-  Graphics* graphics;
+Graphics *make_graphics(void) {
+  Graphics *graphics;
 
   /* Enable wchar console output */
   setlocale(LC_ALL, "");
@@ -27,13 +27,13 @@ Graphics* make_graphics(void) {
   return graphics;
 }
 
-void free_graphics(Graphics* graphics) {
+void free_graphics(Graphics *graphics) {
   if (graphics) {
     free(graphics);
   }
 }
 
-void begin_frame(Graphics* graphics) {
+void begin_frame(Graphics *graphics) {
   if (graphics) {
     graphics->size = get_window_size();
   }
@@ -45,7 +45,7 @@ void present_frame(void) {
   refresh();
 }
 
-Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
+Size draw_text(Graphics *graphics, const char *text, Point point, Color color,
                VerticalAlignment alignment, int bold, int underline) {
   unsigned int length;
   Size size;
@@ -53,16 +53,13 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
   /*
    * Calculate the correct x-axis coordinate for text alignment.
    */
-  length = (unsigned int)strlen(text);
+  length = (unsigned int) strlen(text);
   switch (alignment) {
-    case VERTICAL_ALIGNMENT_CENTER:
-      point.x -= (int)(length / 4);
+    case VERTICAL_ALIGNMENT_CENTER:point.x -= (int) (length / 4);
       break;
-    case VERTICAL_ALIGNMENT_RIGHT:
-      point.x -= (int)(length / 2);
+    case VERTICAL_ALIGNMENT_RIGHT:point.x -= (int) (length / 2);
       break;
-    default:
-      break;
+    default:break;
   }
 
   /* Enable styling attributes */
@@ -99,11 +96,11 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
 
   /* The height of the string is always 1 unit, the width gets divided by 2 */
   size.height = 1;
-  size.width = (int)(length / 2);
+  size.width = (int) (length / 2);
   return size;
 }
 
-void fill_rect(Graphics* graphics, Rect rect, Color color) {
+void fill_rect(Graphics *graphics, Rect rect, Color color) {
   int i, j;
 
   if (graphics) {
@@ -133,16 +130,16 @@ void fill_rect(Graphics* graphics, Rect rect, Color color) {
   }
 }
 
-void draw_rect(Graphics* graphics, Rect rect, Color color) {
+void draw_rect(Graphics *graphics, Rect rect, Color color) {
   /*
    * Create and enable the color pair. Color pair range goes from 0 to 77.
    * The first digit describes the foreground color, the second one describes the background color.
    */
-  init_pair((short)(color.foreground * 8) + color.background, (short)color.foreground, (short)color.background);
+  init_pair((short) (color.foreground * 8 + color.background), (short) color.foreground, (short) color.background);
   attron(COLOR_PAIR(color.foreground * 8 + color.background));
 
   /* Draw top side */
-  mvhline(rect.y, rect.x * 2, ACS_HLINE, rect.width * 2 );
+  mvhline(rect.y, rect.x * 2, ACS_HLINE, rect.width * 2);
 
   /* Draw left side */
   mvvline(rect.y + 1, rect.x * 2 - 1, ACS_VLINE, rect.height - 1);
@@ -173,25 +170,20 @@ Size get_window_size(void) {
   return size;
 }
 
-char* get_drawable_character(Alpha alpha) {
-  char* tuple = "  ";
+char *get_drawable_character(Alpha alpha) {
+  char *tuple = "  ";
 
   /* Assign a tuple of characters to each alpha value */
   switch (alpha) {
-    case ALPHA_LIGHTER:
-      tuple = "░░";
+    case ALPHA_LIGHTER:tuple = "░░";
       break;
-    case ALPHA_LIGHT:
-      tuple = "▒▒";
+    case ALPHA_LIGHT:tuple = "▒▒";
       break;
-    case ALPHA_DARK:
-      tuple = "▓▓";
+    case ALPHA_DARK:tuple = "▓▓";
       break;
-    case ALPHA_DARKER:
-      tuple = "██";
+    case ALPHA_DARKER:tuple = "██";
       break;
-    default:
-      break;
+    default:break;
   }
 
   return tuple;

@@ -4,13 +4,13 @@
 #include "game.h"
 
 typedef struct {
-  Game* game;
+  Game *game;
 } CPU;
 
-CPU* make_cpu(Game* game);
+CPU *make_cpu(Game *game);
 
-void free_cpu(CPU* cpu);
+void free_cpu(CPU *cpu);
 
-void do_cpu_action(CPU* cpu);
+void do_cpu_action(CPU *cpu);
 
-#endif //NXTETRIS_SRC_GAME_CPU_H_
+#endif

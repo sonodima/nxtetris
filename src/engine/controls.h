@@ -10,10 +10,10 @@ typedef struct {
   int mouse_state;
 } Controls;
 
-Controls* make_controls(void);
+Controls *make_controls(void);
 
-void free_controls(Controls* controls);
+void free_controls(Controls *controls);
 
-void update_controls(Controls* controls);
+void update_controls(Controls *controls);
 
-#endif //NXTETRIS_SRC_ENGINE_CONTROLS_H_
+#endif

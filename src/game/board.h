@@ -15,7 +15,7 @@ typedef Matrix Board;
  * @param board Pointer to the board.
  * @param offset Board draw offset.
  */
-void draw_board(Graphics* graphics, Board* board, Point offset);
+void draw_board(Graphics *graphics, Board *board, Point offset);
 
 /**
  * Adds a tetromino to a board matrix.
@@ -24,7 +24,7 @@ void draw_board(Graphics* graphics, Board* board, Point offset);
  * @param tetromino Target tetromino.
  * @param position Position of the tetromino in 2d space.
  */
-void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position);
+void add_tetromino_to_board(Board *board, Tetromino tetromino, Point position);
 
 /**
  * Check if a tetromino (at a given position) collides with other elements in the board.
@@ -33,7 +33,7 @@ void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position);
  * @param point Test position of the tetromino in 2d space.
  * @return 1 if the tetromino collided with other elements, otherwise 0.
  */
-unsigned int check_board_collision(Board* board, Tetromino tetromino, Point point);
+unsigned int check_board_collision(Board *board, Tetromino tetromino, Point point);
 
 /**
  * Gets the first available insertion point in the board.
@@ -43,14 +43,14 @@ unsigned int check_board_collision(Board* board, Tetromino tetromino, Point poin
  * @param point Starting point for the intersection.
  * @return Intersected point.
  */
-Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point point);
+Point intersect_tetromino_with_board(Board *board, Tetromino tetromino, Point point);
 
 /**
  * Internal function that removes a line by shifting all the elements of the board [bottom to top].
  * @param board Pointer to the board.
  * @param row Row to remove.
  */
-void remove_board_line(Board* board, unsigned int row);
+void remove_board_line(Board *board, unsigned int row);
 
 /**
  * Removes all the filled lines in the board.
@@ -58,6 +58,6 @@ void remove_board_line(Board* board, unsigned int row);
  * @param board Pointer to the board.
  * @return The number of lines removed.
  */
-unsigned int attempt_board_line_removal(Board* board);
+unsigned int attempt_board_line_removal(Board *board);
 
-#endif //NXTETRIS_SRC_GAME_BOARD_H_
+#endif

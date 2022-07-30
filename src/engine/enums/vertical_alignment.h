@@ -7,4 +7,4 @@ typedef enum {
   VERTICAL_ALIGNMENT_RIGHT
 } VerticalAlignment;
 
-#endif //NXTETRIS_SRC_ENGINE_ENUMS_VERTICAL_ALIGNMENT_H_
+#endif

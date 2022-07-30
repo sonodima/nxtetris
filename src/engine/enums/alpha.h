@@ -9,4 +9,4 @@ typedef enum {
   ALPHA_DARKER
 } Alpha;
 
-#endif //NXTETRIS_SRC_ENGINE_ENUMS_ALPHA_H_
+#endif

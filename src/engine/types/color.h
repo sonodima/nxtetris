@@ -9,4 +9,4 @@ typedef struct {
   Alpha alpha;
 } Color;
 
-#endif //NXTETRIS_SRC_ENGINE_TYPES_COLOR_H_
+#endif

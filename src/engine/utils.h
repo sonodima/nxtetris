@@ -3,4 +3,4 @@
 
 int random_number(int min, int max);
 
-#endif //NXTETRIS_SRC_ENGINE_UTILS_H_
+#endif

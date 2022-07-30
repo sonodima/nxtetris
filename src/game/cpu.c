@@ -7,7 +7,7 @@
 #include "tetromino.h"
 
 CPU *make_cpu(Game *game) {
-  CPU* cpu;
+  CPU *cpu;
   cpu = malloc(sizeof(CPU));
   cpu->game = game;
   return cpu;
@@ -21,7 +21,7 @@ void free_cpu(CPU *cpu) {
 
 void do_cpu_action(CPU *cpu) {
   unsigned int r, s, x;
-  Board* board;
+  Board *board;
   Tetromino temp_tetromino;
   Size tetromino_size;
   Point start_point;
@@ -37,7 +37,7 @@ void do_cpu_action(CPU *cpu) {
     for (r = 0; r < TETROMINOES_ROTATIONS; ++r) {
       tetromino_size = get_tetromino_size(temp_tetromino);
       for (x = 0; x < board->cols - tetromino_size.width; ++x) {
-        start_point.x = (int)x;
+        start_point.x = (int) x;
         intersect_tetromino_with_board(board, temp_tetromino, start_point);
       }
     }

@@ -2,7 +2,7 @@
 
 #include <curses.h>
 
-void draw_board(Graphics* graphics, Board* board, Point offset) {
+void draw_board(Graphics *graphics, Board *board, Point offset) {
   unsigned int x, y;
   int col_key;
   Rect rect;
@@ -17,8 +17,8 @@ void draw_board(Graphics* graphics, Board* board, Point offset) {
       /* Ignore black pixels (unset) */
       col_key = board->data[y][x];
       if (col_key != COLOR_BLACK) {
-        rect.y = (int)y + offset.y;
-        rect.x = (int)x + offset.x - 1;
+        rect.y = (int) y + offset.y;
+        rect.x = (int) x + offset.x - 1;
         color.background = col_key;
         color.foreground = col_key;
         fill_rect(graphics, rect, color);
@@ -27,7 +27,7 @@ void draw_board(Graphics* graphics, Board* board, Point offset) {
   }
 }
 
-void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
+void add_tetromino_to_board(Board *board, Tetromino tetromino, Point position) {
   int x, y;
 
   if (!is_tetromino_valid(tetromino)) {
@@ -37,20 +37,20 @@ void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
   for (y = 0; y < 4; ++y) {
     for (x = 0; x < 4; ++x) {
       if (get_tetromino_value_at(tetromino, x, y)) {
-        board->data[position.y + y][position.x + x + 1] = (int)tetromino.color.foreground;
+        board->data[position.y + y][position.x + x + 1] = (int) tetromino.color.foreground;
       }
     }
   }
 }
 
-unsigned int check_board_collision(Board* board, Tetromino tetromino, Point point) {
+unsigned int check_board_collision(Board *board, Tetromino tetromino, Point point) {
   Size tetromino_size;
   unsigned int x, y, b_x, b_y;
 
   tetromino_size = get_tetromino_size(tetromino);
 
-  for (y = 0; y < (unsigned int)tetromino_size.height; ++y) {
-    for (x = 0; x < (unsigned int)tetromino_size.width; ++x) {
+  for (y = 0; y < (unsigned int) tetromino_size.height; ++y) {
+    for (x = 0; x < (unsigned int) tetromino_size.width; ++x) {
       if (get_tetromino_value_at(tetromino, x, y)) {
         b_x = point.x + x + 1;
         b_y = point.y + y;
@@ -67,7 +67,7 @@ unsigned int check_board_collision(Board* board, Tetromino tetromino, Point poin
   return 0;
 }
 
-Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point point) {
+Point intersect_tetromino_with_board(Board *board, Tetromino tetromino, Point point) {
   Point test_point;
   Size tetromino_size;
   unsigned int r_shift;
@@ -76,7 +76,7 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
   tetromino_size = get_tetromino_size(tetromino);
 
   for (r_shift = point.y; r_shift <= board->rows - tetromino_size.height; ++r_shift) {
-    test_point.y = (int)r_shift;
+    test_point.y = (int) r_shift;
     if (check_board_collision(board, tetromino, test_point)) {
       /* Decrement the y coordinate, as we want to return the first available placement point */
       test_point.y--;
@@ -87,17 +87,17 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
   return test_point;
 }
 
-void remove_board_line(Board* board, unsigned int row) {
+void remove_board_line(Board *board, unsigned int row) {
   unsigned int x, y;
 
   for (y = row; y > 1; --y) {
     for (x = 0; x <= board->cols; ++x) {
-        board->data[y][x] = board->data[y - 1][x];
+      board->data[y][x] = board->data[y - 1][x];
     }
   }
 }
 
-unsigned int attempt_board_line_removal(Board* board) {
+unsigned int attempt_board_line_removal(Board *board) {
   unsigned int x, y, filled, removed_lines;
 
   removed_lines = 0;

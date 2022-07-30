@@ -5,8 +5,8 @@
 
 #include "game.h"
 
-Game* make_game(Graphics* graphics, PiecesPool * pieces_pool, Rect bounds) {
-  Game* game;
+Game *make_game(Graphics *graphics, PiecesPool *pieces_pool, Rect bounds) {
+  Game *game;
 
   game = malloc(sizeof(Game));
   game->graphics = graphics;
@@ -36,14 +36,17 @@ void reset_game(Game *game) {
   game->board = make_matrix(game->bounds.height, game->bounds.width);
 }
 
-void free_game(Game* game) {
+void free_game(Game *game) {
   if (game) {
-    free(game->board);
+    if (game->board) {
+      free_matrix(game->board);
+    }
+
     free(game);
   }
 }
 
-void draw_game_bounds(Game* game) {
+void draw_game_bounds(Game *game) {
   Color draw_color;
   Rect bounds_rect;
   Point text_point;
@@ -86,7 +89,7 @@ void draw_game_bounds(Game* game) {
   draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
 }
 
-void initialize_placing_piece(Game* game) {
+void initialize_placing_piece(Game *game) {
   int color = random_number(1, 6);
 
   game->placing_piece.color.background = COLOR_BLACK;
@@ -128,7 +131,7 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   return placing_point;
 }
 
-void draw_game_end_alert(Game* game) {
+void draw_game_end_alert(Game *game) {
   Rect bounds;
   Color color;
 
@@ -144,7 +147,7 @@ void draw_game_end_alert(Game* game) {
   fill_rect(game->graphics, bounds, color);
 }
 
-void tick_game(Game* game) {
+void tick_game(Game *game) {
   Tetromino preview_piece;
   Point placing_point;
   Point board_offset;
@@ -167,7 +170,7 @@ void tick_game(Game* game) {
     case GAME_STATE_PLACING:
       if (!game->disable_input) {
         /* Draw the top tetromino */
-        placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
+        placing_point = get_placing_point(game->placing_piece, game->bounds, (int) game->placing_piece_x);
         draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
 
         /* Draw the dynamic bottom preview tetromino */
@@ -178,23 +181,21 @@ void tick_game(Game* game) {
       }
       break;
 
-    case GAME_STATE_FINISHED:
-      draw_game_end_alert(game);
+    case GAME_STATE_FINISHED:draw_game_end_alert(game);
       break;
 
-    default:
-      break;
+    default:break;
   }
 
   draw_game_bounds(game);
 }
 
-void drop_piece(Game* game) {
+void drop_piece(Game *game) {
   Point placing_point;
   unsigned int removed_lines;
 
   /* Calculate the intersection point with the board and adds the current tetromino to it */
-  placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
+  placing_point = get_placing_point(game->placing_piece, game->bounds, (int) game->placing_piece_x);
   placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
   add_tetromino_to_board(game->board, game->placing_piece, placing_point);
 
@@ -211,7 +212,7 @@ void drop_piece(Game* game) {
   game->state = GAME_STATE_IDLE;
 }
 
-void process_game_event(Game* game, GameEvent event, void* data) {
+void process_game_event(Game *game, GameEvent event, void *data) {
   int temp;
 
   if (game->disable_input) {
@@ -219,42 +220,36 @@ void process_game_event(Game* game, GameEvent event, void* data) {
   }
 
   switch (event) {
-    case GAME_EVENT_SET_X:
-      game->placing_piece_x = *(int*)data - 1;
+    case GAME_EVENT_SET_X:game->placing_piece_x = *(int *) data - 1;
       break;
 
-    case GAME_EVENT_DROP:
-      drop_piece(game);
+    case GAME_EVENT_DROP:drop_piece(game);
       break;
 
-    case GAME_EVENT_ROT_CL:
-      temp = ((short)game->placing_piece.rotation + 1) % TETROMINOES_ROTATIONS;
+    case GAME_EVENT_ROT_CL:temp = ((short) game->placing_piece.rotation + 1) % TETROMINOES_ROTATIONS;
       game->placing_piece.rotation = temp;
       break;
 
-    case GAME_EVENT_ROT_CC:
-      temp = ((short)game->placing_piece.rotation - 1) % TETROMINOES_ROTATIONS;
+    case GAME_EVENT_ROT_CC:temp = ((short) game->placing_piece.rotation - 1) % TETROMINOES_ROTATIONS;
       if (temp < 0) {
         temp += TETROMINOES_ROTATIONS;
       }
       game->placing_piece.rotation = temp;
       break;
 
-    case GAME_EVENT_CHP_UP:
-      temp = ((int)game->placing_piece.shape + 1) % TETROMINOES_COUNT;
+    case GAME_EVENT_CHP_UP:temp = ((int) game->placing_piece.shape + 1) % TETROMINOES_COUNT;
       while (!is_piece_available(game->pieces_pool, temp)) {
-        temp = ((int)temp + 1) % TETROMINOES_COUNT;
+        temp = ((int) temp + 1) % TETROMINOES_COUNT;
       }
       game->placing_piece.shape = temp;
       break;
 
-    case GAME_EVENT_CHP_DN:
-      temp = ((int)game->placing_piece.shape - 1) % TETROMINOES_COUNT;
+    case GAME_EVENT_CHP_DN:temp = ((int) game->placing_piece.shape - 1) % TETROMINOES_COUNT;
       if (temp < 0) {
         temp += TETROMINOES_COUNT;
       }
       while (!is_piece_available(game->pieces_pool, temp)) {
-        temp = ((int)temp - 1) % TETROMINOES_COUNT;
+        temp = ((int) temp - 1) % TETROMINOES_COUNT;
         if (temp < 0) {
           temp += TETROMINOES_COUNT;
         }
@@ -262,8 +257,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       game->placing_piece.shape = temp;
       break;
 
-    default:
-      break;
+    default:break;
   }
 }
 
@@ -278,24 +272,19 @@ unsigned int removed_lines_to_points(unsigned int count) {
   unsigned int points;
 
   switch (count) {
-    case 0:
-      points = 0;
+    case 0:points = 0;
       break;
 
-    case 1:
-      points = 1;
+    case 1:points = 1;
       break;
 
-    case 2:
-      points = 3;
+    case 2:points = 3;
       break;
 
-    case 3:
-      points = 6;
+    case 3:points = 6;
       break;
 
-    default:
-      points = 12;
+    default:points = 12;
       break;
   }
 
