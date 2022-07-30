@@ -125,7 +125,7 @@ int main() {
         case GAME_MODE_MP:handle_game_mode_mp(game_a, game_b, controls, &data_mp);
           break;
 
-        case GAME_MODE_CPU:handle_game_mode_cpu(game_a, game_b, controls, &data_mp);
+        case GAME_MODE_CPU:handle_game_mode_cpu(game_a, game_b, controls, cpu, &data_mp);
           break;
 
         default:break;

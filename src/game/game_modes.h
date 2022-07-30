@@ -3,6 +3,7 @@
 
 #include "engine/controls.h"
 #include "game.h"
+#include "cpu.h"
 
 typedef enum {
   GAME_MODE_SP,
@@ -52,8 +53,9 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
  * @param game_a Pointer to the first game.
  * @param game_b Pointer to the second game.
  * @param controls Pointer to the controls handler.
+ * @param cpu Pointer to the cpu.
  * @param data Pointer to the game data.
  */
-void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, GameDataMP *data);
+void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, CPU *cpu, GameDataMP *data);
 
 #endif

@@ -88,6 +88,31 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
   tick_game(game_b);
 }
 
-void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, GameDataMP *data) {
+void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, CPU *cpu, GameDataMP *data) {
+  Graphics *s_graphics;
+  Game *active_game;
 
+  s_graphics = game_a->graphics;
+
+  /* Update games positions */
+  game_a->bounds.x = (s_graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
+  game_b->bounds.x = (s_graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
+  game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
+
+  active_game = data->active_player == 0 ? game_a : game_b;
+
+  game_a->disable_input = 1;
+  game_b->disable_input = 1;
+  active_game->disable_input = 0;
+
+  if (data->active_player == 0) {
+    if (handle_shared_game_input(active_game, controls, &data->is_running)) {
+      data->active_player = !data->active_player;
+    }
+  } else {
+    /* do cpu logic */
+  }
+
+  tick_game(game_a);
+  tick_game(game_b);
 }
