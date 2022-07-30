@@ -56,7 +56,7 @@ unsigned int check_board_collision(Board *board, Tetromino tetromino, Point poin
         b_y = point.y + y;
 
         if (b_x >= 0 && b_x < board->cols + 1 && b_y >= 0 && b_y < board->rows) {
-          if (board->data[b_y][b_x] != 0) {
+          if (board->data[b_y][b_x] != COLOR_BLACK) {
             return 1;
           }
         }
@@ -105,7 +105,7 @@ unsigned int attempt_board_line_removal(Board *board) {
   for (y = 0; y < board->rows; ++y) {
     filled = 1;
     for (x = 0; x <= board->cols; ++x) {
-      if (board->data[y][x] == 0) {
+      if (board->data[y][x] == COLOR_BLACK) {
         filled = 0;
       }
     }
@@ -117,4 +117,16 @@ unsigned int attempt_board_line_removal(Board *board) {
   }
 
   return removed_lines;
+}
+
+void invert_board_lines(Board *board, unsigned int from, unsigned int to) {
+  unsigned int x, y;
+
+  if (from >= 0 && from < board->rows && to >= 0 && to < board->rows) {
+    for (y = from; y <= to; ++y) {
+      for (x = 0; x <= board->cols; ++x) {
+        board->data[y][x] = board->data[y][x] != COLOR_BLACK ? COLOR_BLACK : COLOR_WHITE;
+      }
+    }
+  }
 }

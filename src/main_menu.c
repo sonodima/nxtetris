@@ -36,7 +36,7 @@ void draw_main_menu(MainMenu *menu) {
 
   for (i = 0; i < GAME_MODES_COUNT; ++i) {
     is_current = menu->selected_mode == game_modes[i].game_mode;
-    color.foreground = is_current ? COLOR_GREEN : COLOR_WHITE;
+    color.foreground = is_current ? COLOR_YELLOW : COLOR_WHITE;
     draw_text(menu->graphics, game_modes[i].name, point, color, VERTICAL_ALIGNMENT_LEFT, is_current, is_current);
     point.y++;
   }

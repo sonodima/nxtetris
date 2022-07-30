@@ -60,4 +60,13 @@ void remove_board_line(Board *board, unsigned int row);
  */
 unsigned int attempt_board_line_removal(Board *board);
 
+/**
+ * Inverts the values in the given range of rows.
+ * Empty cells will become white, coloured cells will become empty.
+ * @param board Pointer to the board.
+ * @param from Starting row. (from 0)
+ * @param to Ending row. (from 0)
+ */
+void invert_board_lines(Board *board, unsigned int from, unsigned int to);
+
 #endif

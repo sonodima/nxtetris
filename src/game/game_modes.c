@@ -9,7 +9,7 @@ void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
 
   /* Update game position to screen center */
   game->bounds.x = (game->graphics->size.width - game->bounds.width) / 2;
-  game->bounds.y = (game->graphics->size.height - game->bounds.height) / 2 - 1;
+  game->bounds.y = (game->graphics->size.height - game->bounds.height) / 2;
 
   /* Handle tetromino placing on mouse left click */
   if (controls->mouse_state == 1) {
@@ -61,14 +61,14 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
   /* Update games positions */
   game_a->bounds.x = (s_graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
   game_b->bounds.x = (s_graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
-  game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2 - 1;
+  game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
 
   active_game = data->active_player == 0 ? game_a : game_b;
 
   game_a->disable_input = 1;
   game_b->disable_input = 1;
   active_game->disable_input = 0;
-  
+
   /* Handle tetromino placing on mouse left click */
   if (controls->mouse_state == 1) {
     process_game_event(active_game, GAME_EVENT_DROP, NULL);
