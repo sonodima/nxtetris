@@ -53,13 +53,13 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
   /*
    * Calculate the correct x-axis coordinate for text alignment.
    */
-  length = (unsigned int) strlen(text);
+  length = (unsigned int)strlen(text);
   switch (alignment) {
     case VERTICAL_ALIGNMENT_CENTER:
-      point.x -= (int) (length / 4);
+      point.x -= (int)(length / 4);
       break;
     case VERTICAL_ALIGNMENT_RIGHT:
-      point.x -= (int) (length / 2);
+      point.x -= (int)(length / 2);
       break;
     default:
       break;
@@ -77,7 +77,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
    * Create and enable the color pair. Color pair range goes from 0 to 77.
    * The first digit describes the foreground color, the second one describes the background color.
    */
-  init_pair(color.foreground * 10 + color.background, color.foreground, color.background);
+  init_pair((short)(color.foreground * 10 + color.background), (short)color.foreground, (short)color.background);
   attron(COLOR_PAIR(color.foreground * 10 + color.background));
 
   /*
@@ -99,7 +99,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
 
   /* The height of the string is always 1 unit, the width gets divided by 2 */
   size.height = 1;
-  size.width = (int) (length / 2);
+  size.width = (int)(length / 2);
   return size;
 }
 
@@ -111,7 +111,7 @@ void fill_rect(Graphics* graphics, Rect rect, Color color) {
      * Create and enable the color pair. Color pair range goes from 0 to 77.
      * The first digit describes the foreground color, the second one describes the background color.
      */
-    init_pair(color.foreground * 8 + color.background, color.foreground, color.background);
+    init_pair((short)(color.foreground * 8 + color.background), (short)color.foreground, (short)color.background);
     attron(COLOR_PAIR(color.foreground * 8 + color.background));
 
     /* Iterate all the units in the rect, and only draw those that would be drawn inside the graphics context */
@@ -138,7 +138,7 @@ void draw_rect(Graphics* graphics, Rect rect, Color color) {
    * Create and enable the color pair. Color pair range goes from 0 to 77.
    * The first digit describes the foreground color, the second one describes the background color.
    */
-  init_pair((short) (color.foreground * 8 + color.background), (short) color.foreground, (short) color.background);
+  init_pair((short)(color.foreground * 8 + color.background), (short)color.foreground, (short)color.background);
   attron(COLOR_PAIR(color.foreground * 8 + color.background));
 
   /* Draw top side */

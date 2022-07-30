@@ -17,8 +17,8 @@ void draw_board(Graphics* graphics, Board* board, Point offset) {
       /* Ignore black pixels (unset) */
       col_key = board->data[y][x];
       if (col_key != COLOR_BLACK) {
-        rect.y = (int) y + offset.y;
-        rect.x = (int) x + offset.x - 1;
+        rect.y = (int)y + offset.y;
+        rect.x = (int)x + offset.x - 1;
         color.background = col_key;
         color.foreground = col_key;
         fill_rect(graphics, rect, color);
@@ -37,7 +37,7 @@ void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
   for (y = 0; y < 4; ++y) {
     for (x = 0; x < 4; ++x) {
       if (get_tetromino_value_at(tetromino, x, y)) {
-        board->data[position.y + y][position.x + x + 1] = (int) tetromino.color.foreground;
+        board->data[position.y + y][position.x + x + 1] = (int)tetromino.color.foreground;
       }
     }
   }
@@ -49,8 +49,8 @@ unsigned int check_board_collision(Board* board, Tetromino tetromino, Point poin
 
   tetromino_size = get_tetromino_size(tetromino);
 
-  for (y = 0; y < (unsigned int) tetromino_size.height; ++y) {
-    for (x = 0; x < (unsigned int) tetromino_size.width; ++x) {
+  for (y = 0; y < (unsigned int)tetromino_size.height; ++y) {
+    for (x = 0; x < (unsigned int)tetromino_size.width; ++x) {
       if (get_tetromino_value_at(tetromino, x, y)) {
         b_x = point.x + x + 1;
         b_y = point.y + y;
@@ -77,7 +77,7 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
 
   /* todo check for collisions in the first top line */
   for (r_shift = point.y; r_shift <= board->rows - tetromino_size.height; ++r_shift) {
-    test_point.y = (int) r_shift;
+    test_point.y = (int)r_shift;
     if (check_board_collision(board, tetromino, test_point)) {
       /* Decrement the y coordinate, as we want to return the first available placement point */
       test_point.y--;

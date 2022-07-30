@@ -48,7 +48,7 @@ void present_frame(void);
  * @param color color structure of the draw operation.
  * @param alignment vertical string alignment.
  * @param bold text weight control.
- * @param underline text undeline control.
+ * @param underline text underline control.
  * @see draw_text()
  * @return The size of the drawn string.
  */

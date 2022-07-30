@@ -22,15 +22,10 @@ void reset_game(Game* game) {
   game->finished_for_overflow = 0;
   game->disable_input = 0;
 
-  /*
-   * Initialized with GAME_STATE_IDLE so that a new
-   * temp tetromino is spawned on launch.
-   */
+  /* Initialized with GAME_STATE_IDLE so that a new temp tetromino is spawned on launch */
   game->state = GAME_STATE_IDLE;
 
-  /*
-   * Create the matrix that will hold the board.
-   */
+  /* Create the matrix that will hold the board */
   if (game->board) {
     free_matrix(game->board);
   }
@@ -157,7 +152,7 @@ void tick_game(Game* game) {
     case GAME_STATE_PLACING:
       if (!game->disable_input) {
         /* Draw the top tetromino */
-        placing_point = get_placing_point(game->placing_piece, game->bounds, (int) game->placing_piece_x);
+        placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
 
         /* Draw the dynamic bottom preview tetromino */
         preview_piece = game->placing_piece;
@@ -188,7 +183,7 @@ void drop_piece(Game* game) {
   unsigned int removed_lines;
 
   /* Calculate the intersection point with the board and adds the current tetromino to it */
-  placing_point = get_placing_point(game->placing_piece, game->bounds, (int) game->placing_piece_x);
+  placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
   placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
 
   /* Check if the tetromino would overflow the board vertically */
@@ -209,7 +204,7 @@ void drop_piece(Game* game) {
   } else {
     game->finished_for_overflow = 1;
     game->state = GAME_STATE_FINISHED;
-  };
+  }
 }
 
 void process_game_event(Game* game, GameEvent event, void* data) {
@@ -221,7 +216,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
 
   switch (event) {
     case GAME_EVENT_SET_X:
-      game->placing_piece_x = *(int*) data - 1;
+      game->placing_piece_x = *(int*)data - 1;
       break;
 
     case GAME_EVENT_DROP:
@@ -229,12 +224,12 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       break;
 
     case GAME_EVENT_ROT_CL:
-      temp = ((short) game->placing_piece.rotation + 1) % TETROMINOES_ROTATIONS;
+      temp = ((short)game->placing_piece.rotation + 1) % TETROMINOES_ROTATIONS;
       game->placing_piece.rotation = temp;
       break;
 
     case GAME_EVENT_ROT_CC:
-      temp = ((short) game->placing_piece.rotation - 1) % TETROMINOES_ROTATIONS;
+      temp = ((short)game->placing_piece.rotation - 1) % TETROMINOES_ROTATIONS;
       if (temp < 0) {
         temp += TETROMINOES_ROTATIONS;
       }
@@ -242,7 +237,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       break;
 
     case GAME_EVENT_SET_ROT:
-      temp = *(int*) data;
+      temp = *(int*)data;
       if (temp >= 0 && temp < TETROMINOES_ROTATIONS) {
         game->placing_piece.rotation = temp;
       }
@@ -257,7 +252,7 @@ void process_game_event(Game* game, GameEvent event, void* data) {
       break;
 
     case GAME_EVENT_SET_CHP:
-      temp = *(int*) data;
+      temp = *(int*)data;
       if (temp >= 0 && temp < TETROMINOES_COUNT) {
         game->placing_piece.shape = temp;
       }
@@ -328,9 +323,9 @@ int get_next_available_tetromino(Game* game) {
 
   available = -1;
   if (has_pieces_left(game->pieces_pool)) {
-    available = ((int) game->placing_piece.shape + 1) % TETROMINOES_COUNT;
+    available = ((int)game->placing_piece.shape + 1) % TETROMINOES_COUNT;
     while (!is_piece_available(game->pieces_pool, available)) {
-      available = ((int) available + 1) % TETROMINOES_COUNT;
+      available = ((int)available + 1) % TETROMINOES_COUNT;
     }
   }
 
@@ -342,12 +337,12 @@ int get_previous_available_tetromino(Game* game) {
 
   available = -1;
   if (has_pieces_left(game->pieces_pool)) {
-    available = ((int) game->placing_piece.shape - 1) % TETROMINOES_COUNT;
+    available = ((int)game->placing_piece.shape - 1) % TETROMINOES_COUNT;
     if (available < 0) {
       available += TETROMINOES_COUNT;
     }
     while (!is_piece_available(game->pieces_pool, available)) {
-      available = ((int) available - 1) % TETROMINOES_COUNT;
+      available = ((int)available - 1) % TETROMINOES_COUNT;
       if (available < 0) {
         available += TETROMINOES_COUNT;
       }

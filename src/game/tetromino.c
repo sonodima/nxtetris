@@ -57,8 +57,8 @@ void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position) {
        * In that case, we can draw it to the screen.
        */
       if (get_tetromino_value_at(tetromino, x, y)) {
-        rect.x = (int) (position.x + x);
-        rect.y = (int) (position.y + y);
+        rect.x = (int)(position.x + x);
+        rect.y = (int)(position.y + y);
         rect.width = 1;
         rect.height = 1;
 
@@ -85,7 +85,7 @@ Size get_tetromino_size(Tetromino tetromino) {
 
   state = get_tetromino_state(tetromino);
 
-  result.height = (int) state.height;
-  result.width = (int) state.width;
+  result.height = (int)state.height;
+  result.width = (int)state.width;
   return result;
 }

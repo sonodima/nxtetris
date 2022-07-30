@@ -136,6 +136,14 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
     }
 
 
+    event_param = result.rotation;
+    game_b->placing_piece.shape = result.shape;
+    game_b->placing_piece.rotation = result.rotation;
+    game_b->placing_piece_x = result.x_off;
+
+    process_game_event(game_b, GAME_EVENT_DROP, NULL);
+    data->active_player = 0;
+
     /*
     event_param = 0;
     process_game_event(game_b, GAME_EVENT_SET_CHP, &event_param);
@@ -159,13 +167,6 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
       }*/
 
 
-    event_param = result.rotation;
-    game_b->placing_piece.shape = result.shape;
-    game_b->placing_piece.rotation = result.rotation;
-    game_b->placing_piece_x = result.x_off;
-
-    process_game_event(game_b, GAME_EVENT_DROP, NULL);
-    data->active_player = 0;
   }
 
   tick_game(game_a);

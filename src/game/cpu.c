@@ -40,7 +40,7 @@ CPUAction do_cpu_action(CPU* cpu) {
     for (r = 0; r < TETROMINOES_ROTATIONS; ++r) {
       tetromino_size = get_tetromino_size(temp_tetromino);
       for (x = 0; x < board->cols - tetromino_size.width; ++x) {
-        start_point.x = (int) x;
+        start_point.x = (int)x;
         intersect_tetromino_with_board(board, temp_tetromino, start_point);
       }
     }
