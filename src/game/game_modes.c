@@ -91,6 +91,7 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
 void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, CPU *cpu, GameDataMP *data) {
   Graphics *s_graphics;
   Game *active_game;
+  int event_param;
 
   s_graphics = game_a->graphics;
 
@@ -111,6 +112,18 @@ void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, CPU *c
     }
   } else {
     /* do cpu logic */
+
+    event_param = 0;
+    process_game_event(game_b, GAME_EVENT_SET_ROT, &event_param);
+
+    event_param = 0;
+    process_game_event(game_b, GAME_EVENT_SET_CHP, &event_param);
+
+    event_param = 0;
+    process_game_event(game_b, GAME_EVENT_SET_X, &event_param);
+
+    process_game_event(game_b, GAME_EVENT_DROP, NULL);
+    data->active_player = 0;
   }
 
   tick_game(game_a);

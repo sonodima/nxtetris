@@ -234,6 +234,12 @@ void process_game_event(Game *game, GameEvent event, void *data) {
       game->placing_piece.rotation = temp;
       break;
 
+    case GAME_EVENT_SET_ROT:temp = *(int *) data;
+      if (temp >= 0 && temp < TETROMINOES_ROTATIONS) {
+        game->placing_piece.rotation = temp;
+      }
+      break;
+
     case GAME_EVENT_CHP_UP:temp = ((int) game->placing_piece.shape + 1) % TETROMINOES_COUNT;
       while (!is_piece_available(game->pieces_pool, temp)) {
         temp = ((int) temp + 1) % TETROMINOES_COUNT;
@@ -252,6 +258,12 @@ void process_game_event(Game *game, GameEvent event, void *data) {
         }
       }
       game->placing_piece.shape = temp;
+      break;
+
+    case GAME_EVENT_SET_CHP:temp = *(int *) data;
+      if (temp >= 0 && temp < TETROMINOES_COUNT) {
+        game->placing_piece.shape = temp;
+      }
       break;
 
     default:break;

@@ -11,7 +11,7 @@ CPU *make_cpu(Game *game) {
 
   cpu = malloc(sizeof(CPU));
   cpu->game = game;
-  
+
   return cpu;
 }
 
@@ -21,7 +21,8 @@ void free_cpu(CPU *cpu) {
   }
 }
 
-void do_cpu_action(CPU *cpu) {
+CPUAction do_cpu_action(CPU *cpu) {
+  CPUAction action;
   unsigned int r, s, x;
   Board *board;
   Tetromino temp_tetromino;
@@ -44,4 +45,9 @@ void do_cpu_action(CPU *cpu) {
       }
     }
   }
+
+  action.rotation = r;
+  action.shape = s;
+  action.x_off = x;
+  return action;
 }

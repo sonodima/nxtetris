@@ -7,10 +7,16 @@ typedef struct {
   Game *game;
 } CPU;
 
+typedef struct {
+  unsigned int rotation;
+  unsigned int shape;
+  unsigned int x_off;
+} CPUAction;
+
 CPU *make_cpu(Game *game);
 
 void free_cpu(CPU *cpu);
 
-void do_cpu_action(CPU *cpu);
+CPUAction do_cpu_action(CPU *cpu);
 
 #endif
