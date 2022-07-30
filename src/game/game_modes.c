@@ -4,16 +4,16 @@
 
 #include <curses.h>
 
-void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
+unsigned int handle_shared_game_input(Game *game, Controls *controls, unsigned int *is_running) {
   unsigned int mouse_x;
+  unsigned int ret;
 
-  /* Update game position to screen center */
-  game->bounds.x = (game->graphics->size.width - game->bounds.width) / 2;
-  game->bounds.y = (game->graphics->size.height - game->bounds.height) / 2;
+  ret = 0;
 
   /* Handle tetromino placing on mouse left click */
   if (controls->mouse_state == 1) {
     process_game_event(game, GAME_EVENT_DROP, NULL);
+    ret = 1;
   }
 
   switch (controls->pressed_key) {
@@ -37,7 +37,9 @@ void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
       process_game_event(game, GAME_EVENT_CHP_DN, NULL);
       break;
 
-    case KEY_EXIT:data->is_running = 0;
+    case KEY_EXIT:
+      /* Stop the execution of the game */
+      is_running = 0;
       break;
   }
 
@@ -47,6 +49,16 @@ void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
    */
   mouse_x = controls->mouse_position.x - game->bounds.x;
   process_game_event(game, GAME_EVENT_SET_X, &mouse_x);
+
+  return ret;
+}
+
+void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
+  /* Update game position to screen center */
+  game->bounds.x = (game->graphics->size.width - game->bounds.width) / 2;
+  game->bounds.y = (game->graphics->size.height - game->bounds.height) / 2;
+
+  handle_shared_game_input(game, controls, &data->is_running);
 
   tick_game(game);
 }
@@ -69,44 +81,9 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
   game_b->disable_input = 1;
   active_game->disable_input = 0;
 
-  /* Handle tetromino placing on mouse left click */
-  if (controls->mouse_state == 1) {
-    process_game_event(active_game, GAME_EVENT_DROP, NULL);
-    /* Also switch active player */
+  if (handle_shared_game_input(active_game, controls, &data->is_running)) {
     data->active_player = !data->active_player;
   }
-
-  switch (controls->pressed_key) {
-    case KEY_RIGHT:
-      /* Handle clockwise tetromino rotation */
-      process_game_event(active_game, GAME_EVENT_ROT_CL, NULL);
-      break;
-
-    case KEY_LEFT:
-      /* Handle counter-clockwise tetromino rotation */
-      process_game_event(active_game, GAME_EVENT_ROT_CC, NULL);
-      break;
-
-    case KEY_UP:
-      /* Handle piece switch */
-      process_game_event(active_game, GAME_EVENT_CHP_UP, NULL);
-      break;
-
-    case KEY_DOWN:
-      /* Handle piece switch */
-      process_game_event(active_game, GAME_EVENT_CHP_DN, NULL);
-      break;
-
-    case KEY_EXIT:data->is_running = 0;
-      break;
-  }
-
-  /*
-   * Handle mouse input to place the temporary tetromino.
-   * The x-axis is limited by the bounds of the game.
-   */
-  mouse_x = controls->mouse_position.x - active_game->bounds.x;
-  process_game_event(active_game, GAME_EVENT_SET_X, &mouse_x);
 
   tick_game(game_a);
   tick_game(game_b);
