@@ -8,8 +8,10 @@
 
 CPU *make_cpu(Game *game) {
   CPU *cpu;
+
   cpu = malloc(sizeof(CPU));
   cpu->game = game;
+  
   return cpu;
 }
 

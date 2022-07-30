@@ -64,7 +64,6 @@ void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data) {
 }
 
 void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDataMP *data) {
-  unsigned int mouse_x;
   Graphics *s_graphics;
   Game *active_game;
 

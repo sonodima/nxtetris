@@ -29,16 +29,15 @@ int main() {
   Point footer_pos;
   Color footer_color;
   GameMode game_mode;
-
+  unsigned int prog_running;
+  unsigned int in_end_scene;
 #if SHOW_MENU
   MainMenu *main_menu;
-  unsigned int prog_running;
   unsigned int in_menu;
 #endif
 
-#if SHOW_MENU
   prog_running = 1;
-#endif
+
   data_sp.is_running = 1;
   data_mp.is_running = 1; /* todo remove */
   data_mp.active_player = 0;
@@ -102,7 +101,7 @@ int main() {
 
     /* Handle initialization routines that depend on the game mode */
     switch (game_mode) {
-      case GAME_MODE_SP:reset_pieces_pool(pieces_pool, 1); /* todo put 20 */
+      case GAME_MODE_SP:reset_pieces_pool(pieces_pool, 20);
         break;
 
       case GAME_MODE_MP:
@@ -141,8 +140,40 @@ int main() {
       usleep(1000 * FRAME_INTERVAL);
     }
 
-    /* todo: show win/loss screen */
+    in_end_scene = 1;
+    while (in_end_scene) {
+      update_controls(controls);
+      begin_frame(graphics);
 
+      switch (controls->pressed_key) {
+        case KEY_RIGHT:in_end_scene = 0;
+          break;
+      }
+
+      if (game_mode == GAME_MODE_SP) {
+        draw_game_end_screen(graphics, "You Lost");
+      } else {
+
+        if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
+          if (game_a->finished_for_overflow) {
+            draw_game_end_screen(graphics, "Player [B] Won!");
+          } else if (game_b->finished_for_overflow) {
+            draw_game_end_screen(graphics, "Player [A] Won!");
+          }
+        } else {
+          if (game_a->score > game_b->score) {
+            draw_game_end_screen(graphics, "Player [A] Won! Reason: Score");
+          } else if (game_a->score < game_b->score) {
+            draw_game_end_screen(graphics, "Player [B] Won! Reason: Score");
+          } else {
+            draw_game_end_screen(graphics, "Tie!");
+          }
+        }
+      }
+
+      present_frame();
+      usleep(1000 * FRAME_INTERVAL);
+    }
   }
 
   /* Program cleanup */

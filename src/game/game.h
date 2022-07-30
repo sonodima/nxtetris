@@ -14,7 +14,6 @@
 
 typedef struct {
   unsigned int is_running;
-
 } GameDataSP;
 
 typedef struct {
@@ -43,6 +42,7 @@ typedef struct {
   Rect bounds;
   GameState state;
   unsigned int score;
+  unsigned int finished_for_overflow;
   unsigned int disable_input;
 
   Tetromino placing_piece;
@@ -66,6 +66,10 @@ Game *make_game(Graphics *graphics, PiecesPool *pieces_pool, Rect bounds);
  */
 void free_game(Game *game);
 
+/**
+ * Clears the state of the game.
+ * @param game Pointer to the game.
+ */
 void reset_game(Game *game);
 
 /**
@@ -114,5 +118,12 @@ Point game_rel_to_abs(Game *game, Point point);
  * @return Gained points for this action.
  */
 unsigned int removed_lines_to_points(unsigned int count);
+
+/**
+ * Draws a simple popup that should be displayed at game end.
+ * @param graphics Pointer to the graphics manager.
+ * @param sub_message Secondary label.
+ */
+void draw_game_end_screen(Graphics *graphics, const char *sub_message);
 
 #endif

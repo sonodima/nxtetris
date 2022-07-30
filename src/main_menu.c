@@ -5,9 +5,11 @@
 
 MainMenu *make_main_menu(Graphics *graphics) {
   MainMenu *main_menu;
+  
   main_menu = malloc(sizeof(MainMenu));
   main_menu->graphics = graphics;
   main_menu->selected_mode = GAME_MODE_SP;
+
   return main_menu;
 }
 

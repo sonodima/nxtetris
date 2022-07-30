@@ -19,6 +19,7 @@ Game *make_game(Graphics *graphics, PiecesPool *pieces_pool, Rect bounds) {
 
 void reset_game(Game *game) {
   game->score = 0;
+  game->finished_for_overflow = 0;
   game->disable_input = 0;
 
   /*
@@ -131,22 +132,6 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   return placing_point;
 }
 
-void draw_game_end_alert(Game *game) {
-  Rect bounds;
-  Color color;
-
-  bounds.x = game->bounds.x;
-  bounds.y = game->bounds.y + game->bounds.height / 2 - 6;
-  bounds.width = game->bounds.width;
-  bounds.height = 12;
-
-  color.background = COLOR_WHITE;
-  color.foreground = COLOR_WHITE;
-  color.alpha = ALPHA_DARKER;
-
-  fill_rect(game->graphics, bounds, color);
-}
-
 void tick_game(Game *game) {
   Tetromino preview_piece;
   Point placing_point, intersected_point;
@@ -178,16 +163,15 @@ void tick_game(Game *game) {
         intersected_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
 
         if (intersected_point.y >= placing_point.y) {
+          /* Only draw the placing (top preview) tetromino if the intersected preview is lower*/
           draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
         } else {
-          preview_piece.color.foreground = COLOR_RED;
+          /* Highlight with white the tetrominoes that when placed would result in the game to finish */
+          preview_piece.color.foreground = COLOR_WHITE;
         }
 
         draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, intersected_point));
       }
-      break;
-
-    case GAME_STATE_FINISHED:draw_game_end_alert(game);
       break;
 
     default:break;
@@ -220,6 +204,7 @@ void drop_piece(Game *game) {
     /* Revert game state to idle to allow inputs */
     game->state = GAME_STATE_IDLE;
   } else {
+    game->finished_for_overflow = 1;
     game->state = GAME_STATE_FINISHED;
   };
 }
@@ -301,4 +286,24 @@ unsigned int removed_lines_to_points(unsigned int count) {
   }
 
   return points;
+}
+
+void draw_game_end_screen(Graphics *graphics, const char *sub_message) {
+  Color color;
+  Point point;
+
+  color.background = COLOR_BLACK;
+  color.foreground = COLOR_WHITE;
+  color.alpha = ALPHA_DARKER;
+
+  point.x = graphics->size.width / 2;
+  point.y = graphics->size.height / 2 - 1;
+  draw_text(graphics, "Game Over", point, color, VERTICAL_ALIGNMENT_CENTER, 1, 0);
+
+  point.y += 2;
+  draw_text(graphics, sub_message, point, color, VERTICAL_ALIGNMENT_CENTER, 0, 0);
+
+  point.x = 0;
+  point.y = graphics->size.height - 1;
+  draw_text(graphics, " [→] NEW GAME ", point, color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 }

@@ -4,9 +4,11 @@
 
 PiecesPool *make_pieces_pool(unsigned int count) {
   PiecesPool *pool;
+
   pool = malloc(sizeof(PiecesPool));
   pool->count_per_piece = count;
   reset_pieces_pool(pool, count);
+  
   return pool;
 }
 

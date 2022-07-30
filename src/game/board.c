@@ -75,6 +75,7 @@ Point intersect_tetromino_with_board(Board *board, Tetromino tetromino, Point po
   test_point = point;
   tetromino_size = get_tetromino_size(tetromino);
 
+  /* todo check for collisions in the first top line */
   for (r_shift = point.y; r_shift <= board->rows - tetromino_size.height; ++r_shift) {
     test_point.y = (int) r_shift;
     if (check_board_collision(board, tetromino, test_point)) {
