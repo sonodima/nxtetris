@@ -1,9 +1,9 @@
 #ifndef NXTETRIS_SRC_GAME_BOARD_H_
 #define NXTETRIS_SRC_GAME_BOARD_H_
 
-#include "../engine/media/graphics.h"
-#include "../engine/types/point.h"
-#include "../engine/core/matrix.h"
+#include "engine/media/graphics.h"
+#include "engine/types/point.h"
+#include "engine/core/matrix.h"
 
 #include "tetromino.h"
 

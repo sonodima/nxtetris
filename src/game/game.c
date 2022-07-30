@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <curses.h>
 
-#include "../engine/utils.h"
+#include "engine/utils.h"
 
 #include "game.h"
 

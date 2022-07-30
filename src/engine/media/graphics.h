@@ -1,11 +1,11 @@
 #ifndef NXTETRIS_SRC_ENGINE_MEDIA_GRAPHICS_H_
 #define NXTETRIS_SRC_ENGINE_MEDIA_GRAPHICS_H_
 
-#include "../enums/vertical_alignment.h"
-#include "../types/color.h"
-#include "../types/point.h"
-#include "../types/rect.h"
-#include "../types/size.h"
+#include "engine/enums/vertical_alignment.h"
+#include "engine/types/color.h"
+#include "engine/types/point.h"
+#include "engine/types/rect.h"
+#include "engine/types/size.h"
 
 typedef struct {
   Size size;

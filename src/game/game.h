@@ -3,10 +3,10 @@
 
 #include <sys/times.h>
 
-#include "../engine/types/rect.h"
-#include "../engine/media/graphics.h"
-#include "../engine/controls.h"
-#include "../engine/core/matrix.h"
+#include "engine/types/rect.h"
+#include "engine/media/graphics.h"
+#include "engine/controls.h"
+#include "engine/core/matrix.h"
 
 #include "tetromino.h"
 #include "board.h"

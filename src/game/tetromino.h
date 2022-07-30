@@ -1,11 +1,11 @@
 #ifndef NXTETRIS_SRC_GAME_TETROMINO_H_
 #define NXTETRIS_SRC_GAME_TETROMINO_H_
 
-#include "../engine/types/rect.h"
-#include "../engine/types/color.h"
-#include "../engine/types/point.h"
-#include "../engine/media/graphics.h"
-#include "../engine/core/matrix.h"
+#include "engine/types/rect.h"
+#include "engine/types/color.h"
+#include "engine/types/point.h"
+#include "engine/media/graphics.h"
+#include "engine/core/matrix.h"
 
 #define TETROMINOES_COUNT 7
 #define TETROMINOES_ROTATIONS 4

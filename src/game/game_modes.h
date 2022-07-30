@@ -1,7 +1,7 @@
 #ifndef NXTETRIS_SRC_GAME_GAME_MODES_H_
 #define NXTETRIS_SRC_GAME_GAME_MODES_H_
 
-#include "../engine/controls.h"
+#include "engine/controls.h"
 #include "game.h"
 
 typedef enum {
