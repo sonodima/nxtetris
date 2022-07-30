@@ -149,7 +149,7 @@ void draw_game_end_alert(Game *game) {
 
 void tick_game(Game *game) {
   Tetromino preview_piece;
-  Point placing_point;
+  Point placing_point, intersected_point;
   Point board_offset;
 
   board_offset.x = game->bounds.x;
@@ -171,13 +171,19 @@ void tick_game(Game *game) {
       if (!game->disable_input) {
         /* Draw the top tetromino */
         placing_point = get_placing_point(game->placing_piece, game->bounds, (int) game->placing_piece_x);
-        draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
 
         /* Draw the dynamic bottom preview tetromino */
         preview_piece = game->placing_piece;
         preview_piece.color.alpha = ALPHA_LIGHTER;
-        placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
-        draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, placing_point));
+        intersected_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
+
+        if (intersected_point.y >= placing_point.y) {
+          draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
+        } else {
+          preview_piece.color.foreground = COLOR_RED;
+        }
+
+        draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, intersected_point));
       }
       break;
 
