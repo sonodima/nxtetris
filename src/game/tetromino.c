@@ -30,7 +30,7 @@ unsigned int is_tetromino_valid(Tetromino tetromino) {
   return tetromino.shape < TETROMINOES_COUNT && tetromino.rotation < TETROMINOES_ROTATIONS;
 }
 
-void draw_tetromino(Graphics *graphics, Tetromino tetromino, Point position) {
+void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position) {
   TetrominoState state;
   Rect rect;
   unsigned int x, y;

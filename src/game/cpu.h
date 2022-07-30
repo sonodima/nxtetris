@@ -4,7 +4,7 @@
 #include "game.h"
 
 typedef struct {
-  Game *game;
+  Game* game;
 } CPU;
 
 typedef struct {
@@ -13,10 +13,10 @@ typedef struct {
   unsigned int x_off;
 } CPUAction;
 
-CPU *make_cpu(Game *game);
+CPU* make_cpu(Game* game);
 
-void free_cpu(CPU *cpu);
+void free_cpu(CPU* cpu);
 
-CPUAction do_cpu_action(CPU *cpu);
+CPUAction do_cpu_action(CPU* cpu);
 
 #endif

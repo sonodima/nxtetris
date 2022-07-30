@@ -3,16 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Matrix *make_matrix(unsigned int rows, unsigned int cols) {
-  Matrix *matrix;
-  int **data;
+Matrix* make_matrix(unsigned int rows, unsigned int cols) {
+  Matrix* matrix;
+  int** data;
   unsigned int i;
 
   matrix = malloc(sizeof(Matrix));
   matrix->rows = rows;
   matrix->cols = cols;
 
-  data = calloc(rows, sizeof(int *));
+  data = calloc(rows, sizeof(int*));
   for (i = 0; i < rows; ++i) {
     data[i] = calloc(cols, sizeof(int));
   }
@@ -21,8 +21,8 @@ Matrix *make_matrix(unsigned int rows, unsigned int cols) {
   return matrix;
 }
 
-Matrix *make_matrix_with_data(const int *data, unsigned int rows, unsigned int cols) {
-  Matrix *matrix = 0;
+Matrix* make_matrix_with_data(const int* data, unsigned int rows, unsigned int cols) {
+  Matrix* matrix = 0;
   unsigned int i, j;
 
   if (data) {
@@ -37,7 +37,7 @@ Matrix *make_matrix_with_data(const int *data, unsigned int rows, unsigned int c
   return matrix;
 }
 
-void free_matrix(Matrix *matrix) {
+void free_matrix(Matrix* matrix) {
   unsigned int i;
 
   if (matrix) {
@@ -52,7 +52,7 @@ void free_matrix(Matrix *matrix) {
   }
 }
 
-void print_matrix(Matrix *matrix) {
+void print_matrix(Matrix* matrix) {
   unsigned int i, j;
 
   if (matrix) {

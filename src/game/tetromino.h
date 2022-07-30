@@ -92,7 +92,7 @@ unsigned int is_tetromino_valid(Tetromino tetromino);
  * @param tetromino Tetromino to draw.
  * @param position Draw coordinates.
  */
-void draw_tetromino(Graphics *graphics, Tetromino tetromino, Point position);
+void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position);
 
 /**
  * Obtains the 2-dimensional size of the given tetromino, obtaining it from its state.

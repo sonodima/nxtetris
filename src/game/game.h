@@ -35,12 +35,12 @@ typedef enum {
   GAME_EVENT_SET_ROT,
   GAME_EVENT_CHP_UP,
   GAME_EVENT_CHP_DN,
-  GAME_EVENT_SET_CHP,
+  GAME_EVENT_SET_CHP
 } GameEvent;
 
 typedef struct {
-  Graphics *graphics;
-  PiecesPool *pieces_pool;
+  Graphics* graphics;
+  PiecesPool* pieces_pool;
   Rect bounds;
   GameState state;
   unsigned int score;
@@ -50,7 +50,7 @@ typedef struct {
   Tetromino placing_piece;
   unsigned int placing_piece_x;
 
-  Board *board;
+  Board* board;
 } Game;
 
 /**
@@ -60,43 +60,43 @@ typedef struct {
  * @param bounds Rectangle in which the game is drawn.
  * @return Pointer to the created game.
  */
-Game *make_game(Graphics *graphics, PiecesPool *pieces_pool, Rect bounds);
+Game* make_game(Graphics* graphics, PiecesPool* pieces_pool, Rect bounds);
 
 /**
  * Destroys an instance of the game.
  * @param game Pointer to the game.
  */
-void free_game(Game *game);
+void free_game(Game* game);
 
 /**
  * Clears the state of the game.
  * @param game Pointer to the game.
  */
-void reset_game(Game *game);
+void reset_game(Game* game);
 
 /**
  * Draws a rectangle outside the game bounds, the score and the current piece's count.
  * @param game Pointer to the game.
  */
-void draw_game_bounds(Game *game);
+void draw_game_bounds(Game* game);
 
 /**
  * Sets the placing_piece to a random tetromino.
  * @param game Pointer to the game.
  */
-void initialize_placing_piece(Game *game);
+void initialize_placing_piece(Game* game);
 
 /**
  * Game loop routine. All drawing should be made here.
  * @param game Pointer to the game.
  */
-void tick_game(Game *game);
+void tick_game(Game* game);
 
 /**
  * Internal routine that drops a piece in the board and handles board update.
  * @param game Pointer to the game.
  */
-void drop_piece(Game *game);
+void drop_piece(Game* game);
 
 /**
  * Event dispatcher. All manual-input game events should get processed here.
@@ -104,7 +104,7 @@ void drop_piece(Game *game);
  * @param event Event type.
  * @param data Optional event data.
  */
-void process_game_event(Game *game, GameEvent event, void *data);
+void process_game_event(Game* game, GameEvent event, void* data);
 
 /**
  * Helper function that converts game-relative coords to absolute CLI coords.
@@ -112,7 +112,7 @@ void process_game_event(Game *game, GameEvent event, void *data);
  * @param point Point to convert.
  * @return Converted point.
  */
-Point game_rel_to_abs(Game *game, Point point);
+Point game_rel_to_abs(Game* game, Point point);
 
 /**
  * Handles removed lines count -> gained points conversion.
@@ -126,6 +126,20 @@ unsigned int removed_lines_to_points(unsigned int count);
  * @param graphics Pointer to the graphics manager.
  * @param sub_message Secondary label.
  */
-void draw_game_end_screen(Graphics *graphics, const char *sub_message);
+void draw_game_end_screen(Graphics* graphics, const char* sub_message);
+
+/**
+ * Gets the next available tetromino in the game.
+ * @param game Pointer to the game.
+ * @return -1 if no piece is available, otherwise the next available tetromino.
+ */
+int get_next_available_tetromino(Game* game);
+
+/**
+ * Gets the previous available tetromino in the game.
+ * @param game Pointer to the game.
+ * @return -1 if no piece is available, otherwise the previous available tetromino.
+ */
+int get_previous_available_tetromino(Game* game);
 
 #endif

@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <curses.h>
 
-MainMenu *make_main_menu(Graphics *graphics) {
-  MainMenu *main_menu;
-  
+MainMenu* make_main_menu(Graphics* graphics) {
+  MainMenu* main_menu;
+
   main_menu = malloc(sizeof(MainMenu));
   main_menu->graphics = graphics;
   main_menu->selected_mode = GAME_MODE_SP;
@@ -13,13 +13,13 @@ MainMenu *make_main_menu(Graphics *graphics) {
   return main_menu;
 }
 
-void free_main_menu(MainMenu *menu) {
+void free_main_menu(MainMenu* menu) {
   if (menu) {
     free(menu);
   }
 }
 
-void draw_main_menu(MainMenu *menu) {
+void draw_main_menu(MainMenu* menu) {
   unsigned int i;
   Point point;
   Color color;

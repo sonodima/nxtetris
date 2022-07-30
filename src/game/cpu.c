@@ -6,8 +6,8 @@
 #include "game.h"
 #include "tetromino.h"
 
-CPU *make_cpu(Game *game) {
-  CPU *cpu;
+CPU* make_cpu(Game* game) {
+  CPU* cpu;
 
   cpu = malloc(sizeof(CPU));
   cpu->game = game;
@@ -15,16 +15,16 @@ CPU *make_cpu(Game *game) {
   return cpu;
 }
 
-void free_cpu(CPU *cpu) {
+void free_cpu(CPU* cpu) {
   if (cpu) {
     free(cpu);
   }
 }
 
-CPUAction do_cpu_action(CPU *cpu) {
+CPUAction do_cpu_action(CPU* cpu) {
   CPUAction action;
   unsigned int r, s, x;
-  Board *board;
+  Board* board;
   Tetromino temp_tetromino;
   Size tetromino_size;
   Point start_point;

@@ -7,14 +7,14 @@
 #define GAME_MODES_COUNT 3
 
 typedef struct {
-  Graphics *graphics;
+  Graphics* graphics;
   GameMode selected_mode;
 } MainMenu;
 
-MainMenu *make_main_menu(Graphics *graphics);
+MainMenu* make_main_menu(Graphics* graphics);
 
-void free_main_menu(MainMenu *menu);
+void free_main_menu(MainMenu* menu);
 
-void draw_main_menu(MainMenu *menu);
+void draw_main_menu(MainMenu* menu);
 
 #endif

@@ -2,7 +2,7 @@
 
 #include <curses.h>
 
-void draw_board(Graphics *graphics, Board *board, Point offset) {
+void draw_board(Graphics* graphics, Board* board, Point offset) {
   unsigned int x, y;
   int col_key;
   Rect rect;
@@ -27,7 +27,7 @@ void draw_board(Graphics *graphics, Board *board, Point offset) {
   }
 }
 
-void add_tetromino_to_board(Board *board, Tetromino tetromino, Point position) {
+void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
   int x, y;
 
   if (!is_tetromino_valid(tetromino)) {
@@ -43,7 +43,7 @@ void add_tetromino_to_board(Board *board, Tetromino tetromino, Point position) {
   }
 }
 
-unsigned int check_board_collision(Board *board, Tetromino tetromino, Point point) {
+unsigned int check_board_collision(Board* board, Tetromino tetromino, Point point) {
   Size tetromino_size;
   unsigned int x, y, b_x, b_y;
 
@@ -67,7 +67,7 @@ unsigned int check_board_collision(Board *board, Tetromino tetromino, Point poin
   return 0;
 }
 
-Point intersect_tetromino_with_board(Board *board, Tetromino tetromino, Point point) {
+Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point point) {
   Point test_point;
   Size tetromino_size;
   unsigned int r_shift;
@@ -88,7 +88,7 @@ Point intersect_tetromino_with_board(Board *board, Tetromino tetromino, Point po
   return test_point;
 }
 
-void remove_board_line(Board *board, unsigned int row) {
+void remove_board_line(Board* board, unsigned int row) {
   unsigned int x, y;
 
   for (y = row; y > 1; --y) {
@@ -98,7 +98,7 @@ void remove_board_line(Board *board, unsigned int row) {
   }
 }
 
-unsigned int attempt_board_line_removal(Board *board) {
+unsigned int attempt_board_line_removal(Board* board) {
   unsigned int x, y, filled, removed_lines;
 
   removed_lines = 0;
@@ -120,7 +120,7 @@ unsigned int attempt_board_line_removal(Board *board) {
   return removed_lines;
 }
 
-void invert_board_lines(Board *board, unsigned int from, unsigned int to) {
+void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
   unsigned int x, y;
 
   if (from >= 0 && from < board->rows && to >= 0 && to < board->rows) {

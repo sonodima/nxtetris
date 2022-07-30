@@ -4,8 +4,8 @@
 
 #include <curses.h>
 
-Controls *make_controls(void) {
-  Controls *controls;
+Controls* make_controls(void) {
+  Controls* controls;
 
   /* Disable keypress echoing */
   noecho();
@@ -39,7 +39,7 @@ Controls *make_controls(void) {
   return controls;
 }
 
-void free_controls(Controls *controls) {
+void free_controls(Controls* controls) {
   if (controls) {
     free(controls);
   }
@@ -48,7 +48,7 @@ void free_controls(Controls *controls) {
   printf("\033[?1003l\n");
 }
 
-void update_controls(Controls *controls) {
+void update_controls(Controls* controls) {
   int pressed_key;
   MEVENT mouse_event;
 

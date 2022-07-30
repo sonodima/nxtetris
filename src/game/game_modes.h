@@ -13,12 +13,12 @@ typedef enum {
 
 typedef struct {
   GameMode game_mode;
-  char *name;
+  char* name;
 } GameModeDescriptor;
 
 static GameModeDescriptor game_modes[] = {
-    {GAME_MODE_SP, "Single Player"},
-    {GAME_MODE_MP, "Multi Player"},
+    {GAME_MODE_SP,  "Single Player"},
+    {GAME_MODE_MP,  "Multi Player"},
     {GAME_MODE_CPU, "Against CPU"},
 };
 
@@ -29,7 +29,7 @@ static GameModeDescriptor game_modes[] = {
  * @param is_running Pointer to a is_running state.
  * @return 1 if the user dropped dropped a piece this tick, otherwise 0.
  */
-unsigned int handle_shared_game_input(Game *game, Controls *controls, unsigned int *is_running);
+unsigned int handle_shared_game_input(Game* game, Controls* controls, unsigned int* is_running);
 
 /**
  * Single player game mode tick handler.
@@ -37,7 +37,7 @@ unsigned int handle_shared_game_input(Game *game, Controls *controls, unsigned i
  * @param controls Pointer to the controls handler.
  * @param data Pointer to the game data.
  */
-void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data);
+void handle_game_mode_sp(Game* game, Controls* controls, GameDataSP* data);
 
 /**
  * Multi player (a vs b) game mode tick handler.
@@ -46,7 +46,7 @@ void handle_game_mode_sp(Game *game, Controls *controls, GameDataSP *data);
  * @param controls Pointer to the controls handler.
  * @param data Pointer to the game data.
  */
-void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDataMP *data);
+void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDataMP* data);
 
 /**
  * Multi player (player vs cpu) game mode tick handler.
@@ -56,6 +56,6 @@ void handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, GameDat
  * @param cpu Pointer to the cpu.
  * @param data Pointer to the game data.
  */
-void handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, CPU *cpu, GameDataMP *data);
+void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* cpu, GameDataMP* data);
 
 #endif
