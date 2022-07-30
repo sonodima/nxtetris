@@ -120,6 +120,20 @@ unsigned int attempt_board_line_removal(Board* board) {
   return removed_lines;
 }
 
+unsigned int test_board_line_removal_for_action(Board* board, Tetromino tetromino, Point position) {
+  Board* temp;
+  unsigned int removed_lines;
+
+  /* Note to future self, this is a bit hacky and could be improved */
+  temp = make_matrix_with_data(*board->data, board->rows, board->cols);
+  /* 100% sure this seg faults */
+  add_tetromino_to_board(temp, tetromino, position);
+  removed_lines = attempt_board_line_removal(temp);
+  free_matrix(temp);
+
+  return removed_lines;
+}
+
 void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
   unsigned int x, y;
 

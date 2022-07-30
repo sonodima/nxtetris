@@ -92,15 +92,16 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
   Graphics* s_graphics;
   Game* active_game;
   int event_param;
-  int s, r, x;
-  Point placing_point;
-  int cur_size, min_size;
+  unsigned int s, r, x;
+  Point placing_point, test_point;
+  int max_size, max_removed_lines, removed_lines;
 
   CPUAction result;
 
   s_graphics = game_a->graphics;
   placing_point.y = 0;
-  min_size = INT32_MAX;
+  max_removed_lines = -1;
+  max_size = -1;
 
   /* Update games positions */
   game_a->bounds.x = (s_graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
@@ -114,32 +115,50 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
   active_game->disable_input = 0;
 
   if (data->active_player == 0) {
+    /* User round */
     if (handle_shared_game_input(active_game, controls, &data->is_running)) {
       data->active_player = !data->active_player;
     }
   } else {
+    /* CPU round */
     for (s = 0; s < TETROMINOES_COUNT; ++s) {
       process_game_event(game_b, GAME_EVENT_CHP_UP, NULL);
       for (r = 0; r < TETROMINOES_ROTATIONS; ++r) {
         process_game_event(game_b, GAME_EVENT_ROT_CL, NULL);
+
         for (x = 0; x < game_b->board->cols; ++x) {
-          placing_point.x = x;
-          cur_size = intersect_tetromino_with_board(game_b->board, game_b->placing_piece, placing_point).y;
-          if (cur_size < min_size) {
-            min_size = cur_size;
+          placing_point.x = x - 1;
+          test_point = intersect_tetromino_with_board(game_b->board, game_b->placing_piece, placing_point);
+
+          removed_lines = test_board_line_removal_for_action(game_b->board, game_b->placing_piece, placing_point);
+
+          if (removed_lines > max_removed_lines) {
+            max_removed_lines = removed_lines;
+
             result.shape = game_b->placing_piece.shape;
             result.rotation = game_b->placing_piece.rotation;
-            result.x_off = game_b->placing_piece_x;
+            result.x_off = x;
+          }
+
+          if (max_removed_lines == 0 && test_point.y > max_size) {
+            max_size = test_point.y;
+
+            result.shape = game_b->placing_piece.shape;
+            result.rotation = game_b->placing_piece.rotation;
+            result.x_off = x;
           }
         }
       }
     }
 
+    event_param = result.shape;
+    process_game_event(game_b, GAME_EVENT_SET_CHP, &event_param);
 
     event_param = result.rotation;
-    game_b->placing_piece.shape = result.shape;
-    game_b->placing_piece.rotation = result.rotation;
-    game_b->placing_piece_x = result.x_off;
+    process_game_event(game_b, GAME_EVENT_SET_ROT, &event_param);
+
+    event_param = result.x_off;
+    process_game_event(game_b, GAME_EVENT_SET_X, &event_param);
 
     process_game_event(game_b, GAME_EVENT_DROP, NULL);
     data->active_player = 0;
@@ -157,8 +176,8 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
         for (x = 0; x < game_b->board->cols; ++x) {
           placing_point.x = x;
           cur_size = intersect_tetromino_with_board(game_b->board, game_b->placing_piece, placing_point).y;
-          if (cur_size < min_size) {
-            min_size = cur_size;
+          if (cur_size < max_size) {
+            max_size = cur_size;
             result.shape = s;
             result.rotation = r;
             result.x_off = x;

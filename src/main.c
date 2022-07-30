@@ -33,6 +33,7 @@ int main() {
   GameMode game_mode;
   unsigned int prog_running;
   unsigned int in_end_scene;
+  char end_message_buffer[18];
 #if SHOW_MENU
   MainMenu* main_menu;
   unsigned int in_menu;
@@ -40,8 +41,7 @@ int main() {
 
   prog_running = 1;
 
-  data_sp.is_running = 1;
-  data_mp.is_running = 1; /* todo remove */
+  data_sp.is_running = data_mp.is_running = 1; /* todo: remove */
   data_mp.active_player = 0;
 
   game_bounds.x = 0;
@@ -163,9 +163,9 @@ int main() {
       }
 
       if (game_mode == GAME_MODE_SP) {
-        draw_game_end_screen(graphics, "You Lost");
+        sprintf(end_message_buffer, "Score: %d\n", game_a->score);
+        draw_game_end_screen(graphics, end_message_buffer);
       } else {
-
         if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
           if (game_a->finished_for_overflow) {
             draw_game_end_screen(graphics, "Player [B] Won!");
