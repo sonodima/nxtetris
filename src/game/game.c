@@ -197,19 +197,25 @@ void drop_piece(Game *game) {
   /* Calculate the intersection point with the board and adds the current tetromino to it */
   placing_point = get_placing_point(game->placing_piece, game->bounds, (int) game->placing_piece_x);
   placing_point = intersect_tetromino_with_board(game->board, game->placing_piece, placing_point);
-  add_tetromino_to_board(game->board, game->placing_piece, placing_point);
 
-  /* Remove filled lines and handle score increment */
-  removed_lines = attempt_board_line_removal(game->board);
-  game->score += removed_lines_to_points(removed_lines);
+  /* Check if the tetromino would overflow the board vertically */
+  if (placing_point.y >= 0) {
+    add_tetromino_to_board(game->board, game->placing_piece, placing_point);
 
-  /* Decrement the pieces count for the current shape */
-  if (get_piece_count(game->pieces_pool, game->placing_piece.shape) > 0) {
-    game->pieces_pool->counts[game->placing_piece.shape]--;
-  }
+    /* Remove filled lines and handle score increment */
+    removed_lines = attempt_board_line_removal(game->board);
+    game->score += removed_lines_to_points(removed_lines);
 
-  /* Revert game state to idle to allow inputs */
-  game->state = GAME_STATE_IDLE;
+    /* Decrement the pieces count for the current shape */
+    if (get_piece_count(game->pieces_pool, game->placing_piece.shape) > 0) {
+      game->pieces_pool->counts[game->placing_piece.shape]--;
+    }
+
+    /* Revert game state to idle to allow inputs */
+    game->state = GAME_STATE_IDLE;
+  } else {
+    game->state = GAME_STATE_FINISHED;
+  };
 }
 
 void process_game_event(Game *game, GameEvent event, void *data) {
