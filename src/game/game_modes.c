@@ -94,13 +94,14 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
   int event_param;
   unsigned int s, r, x;
   Point placing_point, test_point;
-  int max_size, max_removed_lines, removed_lines;
+  int max_size, max_removed_lines, removed_lines, max_filled_lines, filled_lines;
 
   CPUAction result;
 
   s_graphics = game_a->graphics;
   placing_point.y = 0;
   max_removed_lines = -1;
+  max_filled_lines = -1;
   max_size = -1;
 
   /* Update games positions */
@@ -130,23 +131,41 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
           placing_point.x = x - 1;
           test_point = intersect_tetromino_with_board(game_b->board, game_b->placing_piece, placing_point);
 
-          removed_lines = test_board_line_removal_for_action(game_b->board, game_b->placing_piece, placing_point);
+          filled_lines = get_filled_lines_count_for_action(game_b->board, game_b->placing_piece, placing_point);
 
-          if (removed_lines > max_removed_lines) {
-            max_removed_lines = removed_lines;
+          // removed_lines = test_board_line_removal_for_action(game_b->board, game_b->placing_piece, placing_point);
+
+          if (filled_lines > max_filled_lines) {
+            max_filled_lines = filled_lines;
 
             result.shape = game_b->placing_piece.shape;
             result.rotation = game_b->placing_piece.rotation;
             result.x_off = x;
-          }
-
-          if (max_removed_lines == 0 && test_point.y > max_size) {
+          } else if (max_filled_lines <= 0 && test_point.y > max_size) {
             max_size = test_point.y;
 
             result.shape = game_b->placing_piece.shape;
             result.rotation = game_b->placing_piece.rotation;
             result.x_off = x;
           }
+
+
+
+          //          if (removed_lines > max_removed_lines) {
+//            max_removed_lines = removed_lines;
+//
+//            result.shape = game_b->placing_piece.shape;
+//            result.rotation = game_b->placing_piece.rotation;
+//            result.x_off = x;
+//          }
+//
+//          if (max_removed_lines == 0 && test_point.y > max_size) {
+//            max_size = test_point.y;
+//
+//            result.shape = game_b->placing_piece.shape;
+//            result.rotation = game_b->placing_piece.rotation;
+//            result.x_off = x;
+//          }
         }
       }
     }

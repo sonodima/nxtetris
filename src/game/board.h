@@ -69,6 +69,8 @@ unsigned int attempt_board_line_removal(Board* board);
  */
 unsigned int test_board_line_removal_for_action(Board* board, Tetromino tetromino, Point position);
 
+unsigned int get_filled_lines_count_for_action(Board* board, Tetromino tetromino, Point position);
+
 /**
  * Inverts the values in the given range of rows.
  * Empty cells will become white, coloured cells will become empty.

@@ -134,6 +134,27 @@ unsigned int test_board_line_removal_for_action(Board* board, Tetromino tetromin
   return removed_lines;
 }
 
+unsigned int get_filled_lines_count_for_action(Board* board, Tetromino tetromino, Point position) {
+  unsigned int x, y, filled, result;
+
+  result = 0;
+
+  for (y = 0; y < board->rows; ++y) {
+    filled = 1;
+    for (x = 0; x <= board->cols; ++x) {
+      if (board->data[y][x] == COLOR_BLACK) {
+        filled = 0;
+      }
+    }
+
+    if (filled) {
+      result++;
+    }
+  }
+
+  return result;
+}
+
 void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
   unsigned int x, y;
 
@@ -145,3 +166,4 @@ void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
     }
   }
 }
+
