@@ -11,10 +11,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d322cd81-2ba3-4150-9765-f69675eb540f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/game.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/game.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/game.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/game_modes.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/game_modes.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/game_modes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/game_modes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main_menu.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main_menu.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +89,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1659212025038</updated>
-      <workItem from="1659212033342" duration="10143000" />
+      <workItem from="1659212033342" duration="11321000" />
     </task>
     <servers />
   </component>

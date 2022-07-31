@@ -25,24 +25,21 @@ int main() {
   Game* game_a;
   Game* game_b;
   CPU* cpu;
-  GameDataSP data_sp;
-  GameDataMP data_mp;
   Rect game_bounds;
   Point footer_pos;
   Color footer_color;
   GameMode game_mode;
-  unsigned int prog_running;
+  unsigned int is_running;
   unsigned int in_end_scene;
+  unsigned int active_player;
+  unsigned int game_finished;
   char end_message_buffer[18];
 #if SHOW_MENU
   MainMenu* main_menu;
   unsigned int in_menu;
 #endif
 
-  prog_running = 1;
-
-  data_sp.is_running = data_mp.is_running = 1; /* todo: remove */
-  data_mp.active_player = 0;
+  is_running = 1;
 
   game_bounds.x = 0;
   game_bounds.y = 0;
@@ -68,7 +65,7 @@ int main() {
 
   game_a->board->data[0][0] = COLOR_RED;
 
-  while (prog_running) {
+  while (is_running) {
 #if SHOW_MENU
     in_menu = 1;
     while (in_menu) {
@@ -81,7 +78,7 @@ int main() {
             main_menu->selected_mode = GAME_MODES_COUNT - 1;
           } else {
             main_menu->selected_mode--;
-          };
+          }
           break;
 
         case KEY_DOWN:
@@ -92,6 +89,11 @@ int main() {
           in_menu = 0;
           game_mode = main_menu->selected_mode;
           break;
+
+        case KEY_LEFT:
+          in_menu = 0;
+          is_running = 0;
+          break;
       }
 
       draw_main_menu(main_menu);
@@ -101,92 +103,93 @@ int main() {
     }
 #endif
 
-    /* Handle initialization routines that are always executed */
-    reset_game(game_a);
-    reset_game(game_b);
+    if (is_running) {
+      /* Handle initialization routines that are always executed */
+      reset_game(game_a);
+      reset_game(game_b);
 
-    /* Handle initialization routines that depend on the game mode */
-    switch (game_mode) {
-      case GAME_MODE_SP:
-        reset_pieces_pool(pieces_pool, 20);
-        break;
+      active_player = 0;
 
-      case GAME_MODE_MP:
-      case GAME_MODE_CPU:
-        reset_pieces_pool(pieces_pool, 40);
-        break;
-
-      default:
-        break;
-    }
-
-    /* Main process loop */
-    while ((game_mode == GAME_MODE_SP && game_a->state != GAME_STATE_FINISHED)
-           || ((game_mode == GAME_MODE_MP || game_mode == GAME_MODE_CPU)
-               && (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED))) {
-      update_controls(controls);
-      begin_frame(graphics);
-
+      /* Handle initialization routines that depend on the game mode */
       switch (game_mode) {
         case GAME_MODE_SP:
-          handle_game_mode_sp(game_a, controls, &data_sp);
+          reset_pieces_pool(pieces_pool, 20);
           break;
 
         case GAME_MODE_MP:
-          handle_game_mode_mp(game_a, game_b, controls, &data_mp);
-          break;
-
         case GAME_MODE_CPU:
-          handle_game_mode_cpu(game_a, game_b, controls, cpu, &data_mp);
+          reset_pieces_pool(pieces_pool, 40);
           break;
 
         default:
           break;
       }
 
-      /* Draw footer text and rectangle */
-      footer_pos.y = graphics->size.height - 1;
-      draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
-                footer_pos, footer_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+      /* Main process loop, only exit if at least one game is in the GAME_STATE_FINISHED state */
+      while ((game_mode == GAME_MODE_SP && game_a->state != GAME_STATE_FINISHED)
+             || ((game_mode == GAME_MODE_MP || game_mode == GAME_MODE_CPU)
+                 && (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED))) {
+        update_controls(controls);
+        begin_frame(graphics);
 
-      present_frame();
-      usleep(1000 * FRAME_INTERVAL);
-    }
+        switch (game_mode) {
+          case GAME_MODE_SP:
+            handle_game_mode_sp(game_a, controls);
+            break;
 
-    in_end_scene = 1;
-    while (in_end_scene) {
-      update_controls(controls);
-      begin_frame(graphics);
+          case GAME_MODE_MP:
+            handle_game_mode_mp(game_a, game_b, controls, &active_player);
+            break;
 
-      switch (controls->pressed_key) {
-        case KEY_RIGHT:
-          in_end_scene = 0;
-          break;
+          case GAME_MODE_CPU:
+            handle_game_mode_cpu(game_a, game_b, controls, cpu, &active_player);
+            break;
+        }
+
+        /* Draw footer text and rectangle */
+        footer_pos.y = graphics->size.height - 1;
+        draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
+                  footer_pos, footer_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+
+        present_frame();
+        usleep(1000 * FRAME_INTERVAL);
       }
 
-      if (game_mode == GAME_MODE_SP) {
-        sprintf(end_message_buffer, "Score: %d\n", game_a->score);
-        draw_game_end_screen(graphics, end_message_buffer);
-      } else {
-        if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
-          if (game_a->finished_for_overflow) {
-            draw_game_end_screen(graphics, "Player [B] Won!");
-          } else if (game_b->finished_for_overflow) {
-            draw_game_end_screen(graphics, "Player [A] Won!");
-          }
+      in_end_scene = 1;
+      while (in_end_scene) {
+        update_controls(controls);
+        begin_frame(graphics);
+
+        switch (controls->pressed_key) {
+          case KEY_RIGHT:
+            in_end_scene = 0;
+            break;
+        }
+
+        if (game_mode == GAME_MODE_SP) {
+          sprintf(end_message_buffer, "Score: %d\n", game_a->score);
+          draw_game_end_screen(graphics, end_message_buffer);
         } else {
-          if (game_a->score > game_b->score) {
-            draw_game_end_screen(graphics, "Player [A] Won! Reason: Score");
-          } else if (game_a->score < game_b->score) {
-            draw_game_end_screen(graphics, "Player [B] Won! Reason: Score");
+          if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
+            if (game_a->finished_for_overflow) {
+              draw_game_end_screen(graphics, "Player [B] Won!");
+            } else if (game_b->finished_for_overflow) {
+              draw_game_end_screen(graphics, "Player [A] Won!");
+            }
           } else {
-            draw_game_end_screen(graphics, "Tie!");
+            if (game_a->score > game_b->score) {
+              draw_game_end_screen(graphics, "Player [A] Won! Reason: Score");
+            } else if (game_a->score < game_b->score) {
+              draw_game_end_screen(graphics, "Player [B] Won! Reason: Score");
+            } else {
+              draw_game_end_screen(graphics, "Tie!");
+            }
           }
         }
-      }
 
-      present_frame();
-      usleep(1000 * FRAME_INTERVAL);
+        present_frame();
+        usleep(1000 * FRAME_INTERVAL);
+      }
     }
   }
 

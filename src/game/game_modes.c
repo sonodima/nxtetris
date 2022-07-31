@@ -4,7 +4,7 @@
 
 #include <curses.h>
 
-unsigned int handle_shared_game_input(Game* game, Controls* controls, unsigned int* is_running) {
+unsigned int handle_shared_game_input(Game* game, Controls* controls) {
   unsigned int mouse_x;
   unsigned int ret;
 
@@ -36,11 +36,6 @@ unsigned int handle_shared_game_input(Game* game, Controls* controls, unsigned i
       /* Handle piece switch */
       process_game_event(game, GAME_EVENT_CHP_DN, NULL);
       break;
-
-    case KEY_EXIT:
-      /* Stop the execution of the game */
-      is_running = 0;
-      break;
   }
 
   /*
@@ -53,17 +48,17 @@ unsigned int handle_shared_game_input(Game* game, Controls* controls, unsigned i
   return ret;
 }
 
-void handle_game_mode_sp(Game* game, Controls* controls, GameDataSP* data) {
+void handle_game_mode_sp(Game* game, Controls* controls) {
   /* Update game position to screen center */
   game->bounds.x = (game->graphics->size.width - game->bounds.width) / 2;
   game->bounds.y = (game->graphics->size.height - game->bounds.height) / 2;
 
-  handle_shared_game_input(game, controls, &data->is_running);
+  handle_shared_game_input(game, controls);
 
   tick_game(game);
 }
 
-void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDataMP* data) {
+void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, unsigned int* active_player) {
   Graphics* s_graphics;
   Game* active_game;
   Game* idle_game;
@@ -75,13 +70,13 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDat
   game_b->bounds.x = (s_graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
   game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
 
-  active_game = data->active_player == 0 ? game_a : game_b;
-  idle_game = data->active_player == 1 ? game_a : game_b;
+  active_game = *active_player == 0 ? game_a : game_b;
+  idle_game = *active_player == 1 ? game_a : game_b;
 
   active_game->disable_input = 0;
   idle_game->disable_input = 1;
 
-  if (handle_shared_game_input(active_game, controls, &data->is_running)) {
+  if (handle_shared_game_input(active_game, controls)) {
     /* Invert the other player's lines if 3 or more lines are removed in a single action */
     if (active_game->last_removed_lines >= 3) {
       invert_board_lines(
@@ -92,14 +87,14 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDat
     }
 
     /* Switch the current player after an action */
-    data->active_player = !data->active_player;
+    *active_player = !*active_player;
   }
 
   tick_game(game_a);
   tick_game(game_b);
 }
 
-void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* cpu, GameDataMP* data) {
+void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* cpu, unsigned int* active_player) {
   Graphics* s_graphics;
   Game* active_game;
   Game* idle_game;
@@ -121,16 +116,16 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
   game_b->bounds.x = (s_graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
   game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
 
-  active_game = data->active_player == 0 ? game_a : game_b;
-  idle_game = data->active_player == 1 ? game_a : game_b;
+  active_game = *active_player == 0 ? game_a : game_b;
+  idle_game = *active_player == 1 ? game_a : game_b;
 
   active_game->disable_input = 0;
   idle_game->disable_input = 1;
 
-  if (data->active_player == 0) {
+  if (*active_player == 0) {
     /* User round */
-    if (handle_shared_game_input(active_game, controls, &data->is_running)) {
-      data->active_player = !data->active_player;
+    if (handle_shared_game_input(active_game, controls)) {
+      *active_player = !*active_player;
     }
   } else {
     /* CPU round */
@@ -174,7 +169,7 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
     process_game_event(game_b, GAME_EVENT_SET_X, &event_param);
 
     process_game_event(game_b, GAME_EVENT_DROP, NULL);
-    data->active_player = 0;
+    *active_player = 0;
   }
 
   tick_game(game_a);

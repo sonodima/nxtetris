@@ -12,15 +12,6 @@
 #include "board.h"
 #include "pieces_pool.h"
 
-typedef struct {
-  unsigned int is_running;
-} GameDataSP;
-
-typedef struct {
-  unsigned int is_running;
-  unsigned int active_player;
-} GameDataMP;
-
 typedef enum {
   GAME_STATE_IDLE,
   GAME_STATE_PLACING,

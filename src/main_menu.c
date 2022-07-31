@@ -47,5 +47,5 @@ void draw_main_menu(MainMenu* menu) {
   point.y = menu->graphics->size.height - 1;
   color.background = COLOR_BLACK;
   color.foreground = COLOR_WHITE;
-  draw_text(menu->graphics, " [↑] UP  [↓] DOWN  [→] SELECT ", point, color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+  draw_text(menu->graphics, " [↑] UP  [↓] DOWN  [→] SELECT [←] EXIT", point, color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 }
