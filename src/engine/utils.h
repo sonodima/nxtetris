@@ -3,4 +3,6 @@
 
 int random_number(int min, int max);
 
+int clamp(int value, int min, int max);
+
 #endif

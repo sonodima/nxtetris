@@ -142,28 +142,28 @@ void draw_rect(Graphics* graphics, Rect rect, Color color) {
   attron(COLOR_PAIR(color.foreground * 8 + color.background));
 
   /* Draw top side */
-  mvhline(rect.y, rect.x * 2, ACS_HLINE, rect.width * 2);
+  mvhline(rect.y, rect.x * 2 + 2, ACS_HLINE, rect.width * 2 - 4);
 
   /* Draw left side */
-  mvvline(rect.y + 1, rect.x * 2 - 1, ACS_VLINE, rect.height - 1);
+  mvvline(rect.y + 1, rect.x * 2 + 1, ACS_VLINE, rect.height - 2);
 
   /* Draw bottom side */
-  mvhline(rect.y + rect.height, rect.x * 2, ACS_HLINE, rect.width * 2);
+  mvhline(rect.y + rect.height - 1, rect.x * 2 + 2, ACS_HLINE, rect.width * 2 - 4);
 
   /* Draw right side */
-  mvvline(rect.y + 1, (rect.x + rect.width) * 2, ACS_VLINE, rect.height - 1);
+  mvvline(rect.y + 1, (rect.x + rect.width) * 2 - 2, ACS_VLINE, rect.height - 2);
 
   /* Draw top-left corner */
-  mvprintw(rect.y, rect.x * 2 - 1, "╭");
+  mvprintw(rect.y, rect.x * 2 + 1, "╭");
 
   /* Draw top-right corner */
-  mvprintw(rect.y, (rect.x + rect.width) * 2, "╮");
+  mvprintw(rect.y, (rect.x + rect.width) * 2 - 2, "╮");
 
   /* Draw bottom-left corner */
-  mvprintw(rect.y + rect.height, rect.x * 2 - 1, "╰");
+  mvprintw(rect.y + rect.height - 1, rect.x * 2 + 1, "╰");
 
   /* Draw bottom-left corner */
-  mvprintw(rect.y + rect.height, (rect.x + rect.width) * 2, "╯");
+  mvprintw(rect.y + rect.height - 1, (rect.x + rect.width) * 2 - 2, "╯");
 }
 
 Size get_window_size(void) {

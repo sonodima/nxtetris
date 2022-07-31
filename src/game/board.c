@@ -13,12 +13,12 @@ void draw_board(Graphics* graphics, Board* board, Point offset) {
   color.alpha = ALPHA_DARKER;
 
   for (y = 0; y < board->rows; ++y) {
-    for (x = 0; x < board->cols + 1; ++x) {
+    for (x = 0; x < board->cols; ++x) {
       /* Ignore black pixels (unset) */
       col_key = board->data[y][x];
       if (col_key != COLOR_BLACK) {
         rect.y = (int)y + offset.y;
-        rect.x = (int)x + offset.x - 1;
+        rect.x = (int)x + offset.x;
         color.background = col_key;
         color.foreground = col_key;
         fill_rect(graphics, rect, color);
@@ -37,7 +37,7 @@ void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
   for (y = 0; y < 4; ++y) {
     for (x = 0; x < 4; ++x) {
       if (get_tetromino_value_at(tetromino, x, y)) {
-        board->data[position.y + y][position.x + x + 1] = (int)tetromino.color.foreground;
+        board->data[position.y + y][position.x + x] = (int)tetromino.color.foreground;
       }
     }
   }
@@ -52,10 +52,10 @@ unsigned int check_board_collision(Board* board, Tetromino tetromino, Point poin
   for (y = 0; y < (unsigned int)tetromino_size.height; ++y) {
     for (x = 0; x < (unsigned int)tetromino_size.width; ++x) {
       if (get_tetromino_value_at(tetromino, x, y)) {
-        b_x = point.x + x + 1;
+        b_x = point.x + x;
         b_y = point.y + y;
 
-        if (b_x >= 0 && b_x < board->cols + 1 && b_y >= 0 && b_y < board->rows) {
+        if (b_x >= 0 && b_x < board->cols && b_y >= 0 && b_y < board->rows) {
           if (board->data[b_y][b_x] != COLOR_BLACK) {
             return 1;
           }
@@ -75,7 +75,6 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
   test_point = point;
   tetromino_size = get_tetromino_size(tetromino);
 
-  /* todo check for collisions in the first top line */
   for (r_shift = point.y; r_shift <= board->rows - tetromino_size.height; ++r_shift) {
     test_point.y = (int)r_shift;
     if (check_board_collision(board, tetromino, test_point)) {
@@ -91,9 +90,15 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
 void remove_board_line(Board* board, unsigned int row) {
   unsigned int x, y;
 
-  for (y = row; y > 1; --y) {
-    for (x = 0; x <= board->cols; ++x) {
-      board->data[y][x] = board->data[y - 1][x];
+  if (row == 0) {
+    for (x = 0; x < board->cols; ++x) {
+      board->data[0][x] = COLOR_BLACK;
+    }
+  } else {
+    for (y = row; y > 1; --y) {
+      for (x = 0; x < board->cols; ++x) {
+        board->data[y][x] = board->data[y - 1][x];
+      }
     }
   }
 }
@@ -105,7 +110,7 @@ unsigned int attempt_board_line_removal(Board* board) {
 
   for (y = 0; y < board->rows; ++y) {
     filled = 1;
-    for (x = 0; x <= board->cols; ++x) {
+    for (x = 0; x < board->cols; ++x) {
       if (board->data[y][x] == COLOR_BLACK) {
         filled = 0;
       }
@@ -166,4 +171,3 @@ void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
     }
   }
 }
-

@@ -66,6 +66,8 @@ int main() {
   game_b = make_game(graphics, pieces_pool, game_bounds);
   cpu = make_cpu(game_b);
 
+  game_a->board->data[0][0] = COLOR_RED;
+
   while (prog_running) {
 #if SHOW_MENU
     in_menu = 1;

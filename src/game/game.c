@@ -44,8 +44,8 @@ void free_game(Game* game) {
 
 void draw_game_bounds(Game* game) {
   Color draw_color;
-  Rect bounds_rect;
   Point text_point;
+  Rect game_rect;
   char text_buffer[32];
   unsigned int pieces_count;
 
@@ -53,17 +53,16 @@ void draw_game_bounds(Game* game) {
   draw_color.background = COLOR_BLACK;
   draw_color.foreground = COLOR_WHITE;
 
-  /* The drawn game border must be bigger than the actual game. */
-  bounds_rect = game->bounds;
-  bounds_rect.x -= 1;
-  bounds_rect.y -= 1;
-  bounds_rect.width += 1;
-  bounds_rect.height += 1;
-  draw_rect(game->graphics, bounds_rect, draw_color);
+  game_rect.x = game->bounds.x - 1;
+  game_rect.y = game->bounds.y - 1;
+  game_rect.width = game->bounds.width + 2;
+  game_rect.height = game->bounds.height + 2;
+
+  draw_rect(game->graphics, game_rect, draw_color);
 
   sprintf(text_buffer, " Score: %d ", game->score);
-  text_point.x = bounds_rect.x + 1;
-  text_point.y = bounds_rect.y;
+  text_point.x = game_rect.x + 1;
+  text_point.y = game_rect.y;
   draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 
   /* Color the count text accordingly to the remaining pieces count */
@@ -77,12 +76,13 @@ void draw_game_bounds(Game* game) {
   } else {
     draw_color.foreground = COLOR_WHITE;
     draw_color.background = COLOR_RED;
+    draw_color.background = COLOR_RED;
   }
 
   if (!game->disable_input) {
     sprintf(text_buffer, " Count: %d ", pieces_count);
-    text_point.x = bounds_rect.x + bounds_rect.width - 1;
-    text_point.y = bounds_rect.y + bounds_rect.height;
+    text_point.x = game_rect.x + game_rect.width - 2;
+    text_point.y = game_rect.y + game_rect.height - 1;
     draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
   }
 }
@@ -100,13 +100,6 @@ void initialize_placing_piece(Game* game) {
   } while (!is_piece_available(game->pieces_pool, game->placing_piece.shape));
 }
 
-/**
- * Obtains the relative draw position for a tetromino.
- * @param piece Tetromino to use.
- * @param bounds Bounds of the board. (used to limit the x-axis)
- * @param placing_x X-axis offset.
- * @return Calculated relative draw point.
- */
 Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   Point placing_point;
   Size tetromino_size;
@@ -117,13 +110,7 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
    * Limit its position in the X axis.
    * This is kinda overcomplicated but it works great.
    */
-  if (placing_x < -1) {
-    placing_x = -1;
-  } else if (placing_x + tetromino_size.width > bounds.width - 1) {
-    placing_x = bounds.width - tetromino_size.width;
-  }
-
-  placing_point.x = placing_x;
+  placing_point.x = clamp(placing_x, 0, bounds.width - tetromino_size.width);
   placing_point.y = 0;
 
   return placing_point;

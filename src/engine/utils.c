@@ -23,3 +23,13 @@ int random_number(int min, int max) {
 
   return (rand() % (high - low)) + low;
 }
+
+int clamp(int value, int min, int max) {
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  } else {
+    return value;
+  }
+}

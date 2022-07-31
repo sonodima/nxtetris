@@ -87,6 +87,15 @@ void draw_game_bounds(Game* game);
 void initialize_placing_piece(Game* game);
 
 /**
+ * Obtains the relative draw position for a tetromino.
+ * @param piece Tetromino to use.
+ * @param bounds Bounds of the board. (used to limit the x-axis)
+ * @param placing_x X-axis offset.
+ * @return Calculated relative draw point.
+ */
+Point get_placing_point(Tetromino piece, Rect bounds, int placing_x);
+
+/**
  * Game loop routine. All drawing should be made here.
  * @param game Pointer to the game.
  */
