@@ -19,6 +19,7 @@ Game* make_game(Graphics* graphics, PiecesPool* pieces_pool, Rect bounds) {
 
 void reset_game(Game* game) {
   game->score = 0;
+  game->last_removed_lines = 0;
   game->finished_for_overflow = 0;
   game->disable_input = 0;
 
@@ -167,7 +168,6 @@ void tick_game(Game* game) {
 
 void drop_piece(Game* game) {
   Point placing_point;
-  unsigned int removed_lines;
 
   /* Calculate the intersection point with the board and adds the current tetromino to it */
   placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
@@ -178,8 +178,8 @@ void drop_piece(Game* game) {
     add_tetromino_to_board(game->board, game->placing_piece, placing_point);
 
     /* Remove filled lines and handle score increment */
-    removed_lines = attempt_board_line_removal(game->board);
-    game->score += removed_lines_to_points(removed_lines);
+    game->last_removed_lines = attempt_board_line_removal(game->board);
+    game->score += removed_lines_to_points(game->last_removed_lines);
 
     /* Decrement the pieces count for the current shape */
     if (get_piece_count(game->pieces_pool, game->placing_piece.shape) > 0) {

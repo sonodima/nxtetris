@@ -44,6 +44,7 @@ typedef struct {
   Rect bounds;
   GameState state;
   unsigned int score;
+  unsigned int last_removed_lines;
   unsigned int finished_for_overflow;
   unsigned int disable_input;
 

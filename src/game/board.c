@@ -163,9 +163,9 @@ unsigned int get_filled_lines_count_for_action(Board* board, Tetromino tetromino
 void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
   unsigned int x, y;
 
-  if (from >= 0 && from < board->rows && to >= 0 && to < board->rows) {
-    for (y = from; y <= to; ++y) {
-      for (x = 0; x <= board->cols; ++x) {
+  if (from != to && from >= 0 && from < board->rows && to >= 0 && to < board->rows) {
+    for (y = from + 1; y <= to; ++y) {
+      for (x = 0; x < board->cols; ++x) {
         board->data[y][x] = board->data[y][x] != COLOR_BLACK ? COLOR_BLACK : COLOR_WHITE;
       }
     }

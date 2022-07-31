@@ -66,6 +66,7 @@ void handle_game_mode_sp(Game* game, Controls* controls, GameDataSP* data) {
 void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDataMP* data) {
   Graphics* s_graphics;
   Game* active_game;
+  Game* idle_game;
 
   s_graphics = game_a->graphics;
 
@@ -75,12 +76,22 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDat
   game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
 
   active_game = data->active_player == 0 ? game_a : game_b;
+  idle_game = data->active_player == 1 ? game_a : game_b;
 
-  game_a->disable_input = 1;
-  game_b->disable_input = 1;
   active_game->disable_input = 0;
+  idle_game->disable_input = 1;
 
   if (handle_shared_game_input(active_game, controls, &data->is_running)) {
+    /* Invert the other player's lines if 3 or more lines are removed in a single action */
+    if (active_game->last_removed_lines >= 3) {
+      invert_board_lines(
+          idle_game->board,
+          idle_game->board->rows - active_game->last_removed_lines - 1,
+          idle_game->board->rows - 1
+      );
+    }
+
+    /* Switch the current player after an action */
     data->active_player = !data->active_player;
   }
 
@@ -91,6 +102,7 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, GameDat
 void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* cpu, GameDataMP* data) {
   Graphics* s_graphics;
   Game* active_game;
+  Game* idle_game;
   int event_param;
   unsigned int s, r, x;
   Point placing_point, test_point;
@@ -110,10 +122,10 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
   game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
 
   active_game = data->active_player == 0 ? game_a : game_b;
+  idle_game = data->active_player == 1 ? game_a : game_b;
 
-  game_a->disable_input = 1;
-  game_b->disable_input = 1;
   active_game->disable_input = 0;
+  idle_game->disable_input = 1;
 
   if (data->active_player == 0) {
     /* User round */
