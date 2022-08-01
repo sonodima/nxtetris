@@ -5,23 +5,14 @@
       <config projectName="nxtetris" targetName="nxtetris" />
     </generated>
   </component>
-  <component name="CMakeSettings">
+  <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d322cd81-2ba3-4150-9765-f69675eb540f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Doxyfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/ui/end_screen.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/ui/end_screen.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/controls.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/controls.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/engine/core/matrix.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/core/matrix.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/game.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/game.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/game.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main_menu.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/main_menu.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main_menu.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/main_menu.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +22,14 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
   <component name="FormatOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -73,7 +71,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="rearrange.code.on.save" value="true" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -81,9 +79,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="nxtetris" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="nxtetris" TARGET_NAME="nxtetris" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="nxtetris" RUN_TARGET_NAME="nxtetris">
@@ -101,6 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1659212025038</updated>
       <workItem from="1659212033342" duration="15603000" />
+      <workItem from="1659383998791" duration="3405000" />
     </task>
     <servers />
   </component>

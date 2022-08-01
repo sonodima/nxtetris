@@ -12,6 +12,10 @@ Game* make_game(Graphics* graphics, PiecesPool* pieces_pool, Rect bounds) {
   game->graphics = graphics;
   game->pieces_pool = pieces_pool;
   game->bounds = bounds;
+
+  /* This is necessary to fix 'pointer being freed was not allocated' in release mode */
+  game->board = make_matrix(game->bounds.height, game->bounds.width);
+  
   reset_game(game);
 
   return game;

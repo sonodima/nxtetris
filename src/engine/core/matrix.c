@@ -41,9 +41,7 @@ void free_matrix(Matrix* matrix) {
   unsigned int i;
 
   if (matrix) {
-    /*
-     * Free all the memory allocated to the rows.
-     */
+    /* Free all the memory allocated to the rows */
     for (i = 0; i < matrix->rows; ++i) {
       free(matrix->data[i]);
     }
