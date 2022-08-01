@@ -123,13 +123,6 @@ Point game_rel_to_abs(Game* game, Point point);
 unsigned int removed_lines_to_points(unsigned int count);
 
 /**
- * Draws a simple popup that should be displayed at game end.
- * @param graphics Pointer to the graphics manager.
- * @param sub_message Secondary label.
- */
-void draw_game_end_screen(Graphics* graphics, const char* sub_message);
-
-/**
  * Gets the next available tetromino in the game.
  * @param game Pointer to the game.
  * @return -1 if no piece is available, otherwise the next available tetromino.

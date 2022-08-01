@@ -10,6 +10,10 @@ typedef struct {
   int mouse_state;
 } Controls;
 
+/**
+ * Allocates the con
+ * @return
+ */
 Controls* make_controls(void);
 
 void free_controls(Controls* controls);

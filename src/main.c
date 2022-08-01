@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <curses.h>
+#include <string.h>
 
 #include "engine/types/color.h"
 #include "engine/media/graphics.h"
@@ -8,19 +9,52 @@
 #include "game/game.h"
 #include "game/cpu.h"
 #include "game/game_modes.h"
+#include "game/ui/main_menu.h"
+#include "game/ui/end_screen.h"
 
+/**
+ * Delay, in milliseconds, between each draw call.
+ */
 #define FRAME_INTERVAL 2
-#define SHOW_MENU 1
 
-#if SHOW_MENU
+/**
+ * Writes the end message to a string buffer.
+ * The buffer should be at least 32 bytes long.
+ * @param game_mode The current game mode.
+ * @param game_a Pointer to the first game.
+ * @param game_b Pointer to the second game.
+ * @param buffer Output buffer.
+ */
+void get_end_message(GameMode game_mode, Game* game_a, Game* game_b, char* buffer) {
+  if (game_mode == GAME_MODE_SP) {
+    sprintf(buffer, "Score: %d\n", game_a->score);
+  } else {
+    if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
+      if (game_a->finished_for_overflow) {
+        strcpy(buffer, "Player [B] Won!");
+      } else if (game_b->finished_for_overflow) {
+        strcpy(buffer, "Player [A] Won!");
+      }
+    } else {
+      if (game_a->score > game_b->score) {
+        strcpy(buffer, "Player [A] Won! Reason: Score");
+      } else if (game_a->score < game_b->score) {
+        strcpy(buffer, "Player [B] Won! Reason: Score");
+      } else {
+        strcpy(buffer, "Tie!");
+      }
+    }
+  }
+}
 
-#include "main_menu.h"
-
-#endif
-
+/**
+ * Program initialization, main loop and cleanup.
+ * @return 0 if there were no errors.
+ */
 int main() {
   Graphics* graphics;
   Controls* controls;
+  MainMenu* main_menu;
   PiecesPool* pieces_pool;
   Game* game_a;
   Game* game_b;
@@ -30,16 +64,10 @@ int main() {
   Color footer_color;
   GameMode game_mode;
   unsigned int is_running;
-  unsigned int in_end_scene;
-  unsigned int active_player;
-  unsigned int game_finished;
-  char end_message_buffer[18];
-#if SHOW_MENU
-  MainMenu* main_menu;
+  unsigned int in_end_screen;
   unsigned int in_menu;
-#endif
-
-  is_running = 1;
+  unsigned int active_player;
+  char end_message[32];
 
   game_bounds.x = 0;
   game_bounds.y = 0;
@@ -51,22 +79,19 @@ int main() {
   footer_color.background = COLOR_WHITE;
   footer_color.foreground = COLOR_BLACK;
 
-  game_mode = GAME_MODE_SP;
+  is_running = 1;
 
   graphics = make_graphics();
   controls = make_controls();
-#if SHOW_MENU
   main_menu = make_main_menu(graphics);
-#endif
   pieces_pool = make_pieces_pool(2);
   game_a = make_game(graphics, pieces_pool, game_bounds);
   game_b = make_game(graphics, pieces_pool, game_bounds);
   cpu = make_cpu(game_b);
 
-  game_a->board->data[0][0] = COLOR_RED;
-
+  /* Program loop, that keeps the game from closing after it finishes */
   while (is_running) {
-#if SHOW_MENU
+    /* Main menu loop */
     in_menu = 1;
     while (in_menu) {
       update_controls(controls);
@@ -101,7 +126,6 @@ int main() {
       present_frame();
       usleep(1000 * FRAME_INTERVAL);
     }
-#endif
 
     if (is_running) {
       /* Handle initialization routines that are always executed */
@@ -126,9 +150,7 @@ int main() {
       }
 
       /* Main process loop, only exit if at least one game is in the GAME_STATE_FINISHED state */
-      while ((game_mode == GAME_MODE_SP && game_a->state != GAME_STATE_FINISHED)
-             || ((game_mode == GAME_MODE_MP || game_mode == GAME_MODE_CPU)
-                 && (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED))) {
+      while (game_a->state != GAME_STATE_FINISHED && game_b->state != GAME_STATE_FINISHED) {
         update_controls(controls);
         begin_frame(graphics);
 
@@ -148,44 +170,32 @@ int main() {
 
         /* Draw footer text and rectangle */
         footer_pos.y = graphics->size.height - 1;
-        draw_text(graphics, " nxtetris, by sonodima @ Università Ca' Foscari ",
-                  footer_pos, footer_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+        draw_text(
+            graphics,
+            " nxtetris, by sonodima @ Università Ca' Foscari ",
+            footer_pos, footer_color,
+            VERTICAL_ALIGNMENT_LEFT,
+            1, 0
+        );
 
         present_frame();
         usleep(1000 * FRAME_INTERVAL);
       }
 
-      in_end_scene = 1;
-      while (in_end_scene) {
+      /* Game end screen loop, drawn after at least one game finished */
+      in_end_screen = 1;
+      while (in_end_screen) {
         update_controls(controls);
         begin_frame(graphics);
 
         switch (controls->pressed_key) {
           case KEY_RIGHT:
-            in_end_scene = 0;
+            in_end_screen = 0;
             break;
         }
 
-        if (game_mode == GAME_MODE_SP) {
-          sprintf(end_message_buffer, "Score: %d\n", game_a->score);
-          draw_game_end_screen(graphics, end_message_buffer);
-        } else {
-          if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
-            if (game_a->finished_for_overflow) {
-              draw_game_end_screen(graphics, "Player [B] Won!");
-            } else if (game_b->finished_for_overflow) {
-              draw_game_end_screen(graphics, "Player [A] Won!");
-            }
-          } else {
-            if (game_a->score > game_b->score) {
-              draw_game_end_screen(graphics, "Player [A] Won! Reason: Score");
-            } else if (game_a->score < game_b->score) {
-              draw_game_end_screen(graphics, "Player [B] Won! Reason: Score");
-            } else {
-              draw_game_end_screen(graphics, "Tie!");
-            }
-          }
-        }
+        get_end_message(game_mode, game_a, game_b, end_message);
+        draw_end_screen(graphics, end_message);
 
         present_frame();
         usleep(1000 * FRAME_INTERVAL);

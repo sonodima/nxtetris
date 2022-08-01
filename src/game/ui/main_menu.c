@@ -25,17 +25,18 @@ void draw_main_menu(MainMenu* menu) {
   Color color;
   int is_current;
 
+  /* Draw the main menu's title */
   point.x = 1;
   point.y = 1;
   color.alpha = ALPHA_DARKER;
   color.foreground = COLOR_GREEN;
   color.background = COLOR_BLACK;
   draw_text(menu->graphics, "nxtetris - Select GameMode", point, color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+
+  /* Draw the list of game modes */
   point.x++;
   point.y += 2;
-
   color.background = COLOR_BLACK;
-
   for (i = 0; i < GAME_MODES_COUNT; ++i) {
     is_current = menu->selected_mode == game_modes[i].game_mode;
     color.foreground = is_current ? COLOR_YELLOW : COLOR_WHITE;
@@ -43,6 +44,7 @@ void draw_main_menu(MainMenu* menu) {
     point.y++;
   }
 
+  /* Draw the instructions in the bottom of the page */
   point.x = 0;
   point.y = menu->graphics->size.height - 1;
   color.background = COLOR_BLACK;
