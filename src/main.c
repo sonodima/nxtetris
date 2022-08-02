@@ -19,6 +19,30 @@
 #define FRAME_INTERVAL 2
 
 /**
+ * Draws the text at the bottom of the screen while in-game.
+ * @param graphics Pointer to the graphics manager.
+ */
+void draw_footer(Graphics* graphics) {
+	Point footer_pos;
+	Color footer_color;
+
+	footer_pos.x = 0;
+	footer_pos.y = graphics->size.height - 1;
+
+	footer_color.alpha = ALPHA_TRANSPARENT;
+	footer_color.background = COLOR_WHITE;
+	footer_color.foreground = COLOR_BLACK;
+
+	draw_text(
+			graphics,
+			" NXTetris, by sonodima @ Università Ca' Foscari ",
+			footer_pos, footer_color,
+			VERTICAL_ALIGNMENT_LEFT,
+			1, 0
+	);
+}
+
+/**
  * Program initialization, main loop and cleanup.
  * @return 0 if there were no errors.
  */
@@ -31,8 +55,6 @@ int main(void) {
   Game* game_b;
   CPU* cpu;
   Rect game_bounds;
-  Point footer_pos;
-  Color footer_color;
   GameMode game_mode;
   unsigned int is_running;
   unsigned int in_end_screen;
@@ -44,11 +66,6 @@ int main(void) {
   game_bounds.y = 0;
   game_bounds.width = 10;
   game_bounds.height = 15;
-
-  footer_pos.x = 0;
-  footer_color.alpha = ALPHA_TRANSPARENT;
-  footer_color.background = COLOR_WHITE;
-  footer_color.foreground = COLOR_BLACK;
 
   is_running = 1;
 
@@ -139,15 +156,7 @@ int main(void) {
             break;
         }
 
-        /* Draw footer text and rectangle */
-        footer_pos.y = graphics->size.height - 1;
-        draw_text(
-            graphics,
-            " nxtetris, by sonodima @ Università Ca' Foscari ",
-            footer_pos, footer_color,
-            VERTICAL_ALIGNMENT_LEFT,
-            1, 0
-        );
+				draw_footer(graphics);
 
         present_frame();
         usleep(1000 * FRAME_INTERVAL);
