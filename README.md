@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="https://badgen.net/badge/lang/ANSI-C/grey"/>
-  <img src="https://badgen.net/badge/docs/Doxygen/red"/>
+  <a href="https://sonodima.github.io/nxtetris/" target="_blank"><img src="https://badgen.net/badge/docs/Doxygen/red"/></a>
   <br>
   <br>
 </div>
