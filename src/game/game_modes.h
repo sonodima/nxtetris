@@ -9,26 +9,31 @@
  * Game-mode identifiers.
  */
 typedef enum {
-  GAME_MODE_SP,    /*!< Single player game-mode. */
-  GAME_MODE_MP,    /*!< Two (alternating) players game-mode. */
-  GAME_MODE_CPU    /*!< Player vs CPU game-mode. */
+	GAME_MODE_SP, /*!< Single player game-mode. */
+	GAME_MODE_MP, /*!< Two (alternating) players game-mode. */
+	GAME_MODE_CPU /*!< Player vs CPU game-mode. */
 } GameMode;
 
 /**
  * Holds the game-mode's information.
  */
 typedef struct {
-  GameMode game_mode;    /*!< The identifier of the game-mode. */
-  char* name;            /*!< The displayable name of the game-mode. */
+	GameMode game_mode; /*!< The identifier of the game-mode. */
+	char* name; /*!< The displayable name of the game-mode. */
 } GameModeDescriptor;
 
 /**
- * Array of game-modes and their respective title.
+ * The number of implemented game-modes.
+ */
+#define GAME_MODES_COUNT 3
+
+/**
+ * Array of game-modes and their respective on-screen title.
  */
 static GameModeDescriptor game_modes[] = {
-    {GAME_MODE_SP,  "Single Player"},
-    {GAME_MODE_MP,  "Multi Player"},
-    {GAME_MODE_CPU, "Against CPU"},
+		{GAME_MODE_SP,  "Single Player"},
+		{GAME_MODE_MP,  "Multi Player"},
+		{GAME_MODE_CPU, "Against CPU"},
 };
 
 /**
@@ -50,7 +55,7 @@ void handle_game_mode_sp(Game* game, Controls* controls, Graphics* graphics);
  * @param active_player Pointer to the active player id.
  */
 void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, Graphics* graphics,
-                         unsigned int* active_player);
+												 unsigned int* active_player);
 
 /**
  * Multi player (player vs cpu) game-mode tick handler.
@@ -63,6 +68,6 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, Graphic
  * @param active_player Pointer to the active player id.
  */
 void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, Graphics* graphics, CPU* cpu,
-                          unsigned int* active_player);
+													unsigned int* active_player);
 
 #endif

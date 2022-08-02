@@ -1,5 +1,5 @@
-#ifndef NXTETRIS_END_SCREEN_H
-#define NXTETRIS_END_SCREEN_H
+#ifndef NXTETRIS_SRC_GAME_UI_END_SCREEN_H
+#define NXTETRIS_SRC_GAME_UI_END_SCREEN_H
 
 #include "engine/media/graphics.h"
 

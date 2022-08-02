@@ -1,21 +1,34 @@
 #ifndef NXTETRIS_SRC_GAME_TETROMINO_H_
 #define NXTETRIS_SRC_GAME_TETROMINO_H_
 
+#include "engine/types/size.h"
 #include "engine/types/rect.h"
 #include "engine/types/color.h"
 #include "engine/types/point.h"
 #include "engine/media/graphics.h"
 #include "engine/core/matrix.h"
 
+/**
+ * Number of tetromino shapes.
+ */
 #define TETROMINOES_COUNT 7
+
+/**
+ * Number of tetromino shape rotations.
+ */
 #define TETROMINOES_ROTATIONS 4
 
+/**
+ * The pre-calculated state of a tetromino. (in a specific rotation)
+ */
 typedef struct {
-  unsigned int data;
-  unsigned int width;
-  unsigned int height;
+  unsigned short data; /*!< State data. (parsed to bits) */
+  Size size; /*!< Size of the tetromino state. */
 } TetrominoState;
 
+/**
+ *
+ */
 typedef struct {
   unsigned short shape;
   unsigned short rotation;
@@ -35,31 +48,31 @@ typedef struct {
 static TetrominoState tetrominoes[TETROMINOES_COUNT][TETROMINOES_ROTATIONS] = {
     {
         /* I */
-        {0x000F, 4, 1}, {0x1111, 1, 4}, {0x000F, 4, 1}, {0x1111, 1, 4},
+        {0x000F, {1, 4}}, {0x1111, {4, 1}}, {0x000F, {1, 4}}, {0x1111, {4, 1}},
     },
     {
         /* J */
-        {0x0071, 3, 2}, {0x0113, 2, 3}, {0x0047, 3, 2}, {0x0322, 2, 3},
+        {0x0071, {2, 3}}, {0x0113, {3, 2}}, {0x0047, {2, 3}}, {0x0322, {3, 2}},
     },
     {
         /* L */
-        {0x0074, 3, 2}, {0x0311, 2, 3}, {0x0017, 3, 2}, {0x0223, 2, 3},
+        {0x0074, {2, 3}}, {0x0311, {3, 2}}, {0x0017, {2, 3}}, {0x0223, {3, 2}},
     },
     {
         /* O */
-        {0x0033, 2, 2}, {0x0033, 2, 2}, {0x0033, 2, 2}, {0x0033, 2, 2},
+        {0x0033, {2, 2}}, {0x0033, {2, 2}}, {0x0033, {2, 2}}, {0x0033, {2, 2}},
     },
     {
         /* S */
-        {0x0036, 3, 2}, {0x0231, 2, 3}, {0x0036, 3, 2}, {0x0231, 2, 3},
+        {0x0036, {2, 3}}, {0x0231, {3, 2}}, {0x0036, {2, 3}}, {0x0231, {3, 2}},
     },
     {
         /* T */
-        {0x0072, 3, 2}, {0x0131, 2, 3}, {0x0027, 3, 2}, {0x0232, 2, 3},
+        {0x0072, {2, 3}}, {0x0131, {3, 2}}, {0x0027, {2, 3}}, {0x0232, {3, 2}},
     },
     {
         /* Z */
-        {0x0063, 3, 2}, {0x0132, 2, 3}, {0x0063, 3, 2}, {0x0132, 2, 3},
+        {0x0063, {2, 3}}, {0x0132, {3, 2}}, {0x0063, {2, 3}}, {0x0132, {3, 2}},
     },
 };
 
@@ -93,12 +106,5 @@ unsigned int is_tetromino_valid(Tetromino tetromino);
  * @param position Draw coordinates.
  */
 void draw_tetromino(Graphics* graphics, Tetromino tetromino, Point position);
-
-/**
- * Obtains the 2-dimensional size of the given tetromino, obtaining it from its state.
- * @param tetromino Target tetromino.
- * @return The size of the tetromino.
- */
-Size get_tetromino_size(Tetromino tetromino);
 
 #endif

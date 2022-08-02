@@ -4,14 +4,12 @@
 #include "engine/media/graphics.h"
 #include "game/game_modes.h"
 
-#define GAME_MODES_COUNT 3
-
 /**
  * Holds the current game-mode selection and a pointer to the graphics manager.
  */
 typedef struct {
-  Graphics* graphics;
-  GameMode selected_mode;
+	Graphics* graphics;
+	GameMode selected_mode;
 } MainMenu;
 
 /**

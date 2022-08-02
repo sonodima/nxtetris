@@ -1,29 +1,33 @@
-<h1 align="center">nxTetris 凸</h1>
+<h1 align="center">NXTetris 🕹️</h1>
 
-> Cross-platform, over-engineered xTetris implementation built in ANSI-C.
+<div align="center">
+  <img src="https://badgen.net/badge/lang/ANSI-C/grey"/>
+  <img src="https://badgen.net/badge/docs/Doxygen/red"/>
+  <br>
+  <br>
+</div>
 
-## Features
+> Cross-platform, over-engineered XTetris in C.
 
-- [x] Easy to use CLI graphics abstraction.
-- [x] Mouse and keyboard input.
-- [x] Audio support. _(wav/aif/ogg)_
-- [x] Gravity force.
-- [x] Tetrominoes shapes.
-- [x] Tetromino spawn and rotation.
-- [ ] Fixed game surface size handling.
-- [ ] Minimum window size handling.
-- [ ] Page-based menu navigation.
-- [ ] Tetrominoes collision detection.
-- [ ] Single player game-mode.
-- [ ] Two players game-mode.
-- [ ] AI game-mode.
+## Build
 
-### Stretch goals
+<b>Before proceeding, make sure you have cmake and make installed!</b>
+<br>
+Building the program is done by running the following commands:
 
-- Networked 2-players multiplayer.
+```bash
+git clone --recursive https://github.com/sonodima/nxtetris
+cd nxtetris
 
-## Prerequisites
+mkdir -p build/release
+cd build/release
 
-- [ncurses](https://invisible-island.net/ncurses/)
-- [PortAudio](http://www.portaudio.com/)
-- [libsndfile](http://www.mega-nerd.com/libsndfile/)
+cmake ../.. -DCMAKE_BUILD_TYPE=Release
+make
+```
+
+The output executable will be named `nxtetris` and will be placed in `build/release`.
+
+## Libraries
+
+- [ncurses](https://invisible-island.net/ncurses/announce.html)

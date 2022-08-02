@@ -1,4 +1,10 @@
-*.DS_Store
+# macOS Desktop Files
+**/.DS_Store
 
+# CLion Files
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
+# Build and Doxygen Outputs
 build
 docs

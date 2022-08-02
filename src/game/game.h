@@ -21,19 +21,22 @@ typedef enum {
 	GAME_STATE_FINISHED /*!< The game ended because either one player placed a piece outside the board or the pieces pool ran out of pieces. */
 } GameState;
 
+/**
+ * Game control event.
+ */
 typedef enum {
-	GAME_EVENT_SET_X,
-	GAME_EVENT_DROP,
-	GAME_EVENT_ROT_CL,
-	GAME_EVENT_ROT_CC,
-	GAME_EVENT_SET_ROT,
-	GAME_EVENT_CHP_UP,
-	GAME_EVENT_CHP_DN,
-	GAME_EVENT_SET_CHP
+	GAME_EVENT_SET_X, /*!< Sets the x-axis offset for tetromino placement. (requires an integer parameter) */
+	GAME_EVENT_DROP, /*!< Adds the current temporary tetromino to the board. */
+	GAME_EVENT_ROT_CL, /*!< Rotates the current temporary tetromino clockwise. */
+	GAME_EVENT_ROT_CC, /*!< Rotates the current temporary tetromino counter-clockwise. */
+	GAME_EVENT_SET_ROT, /*!< Sets the current temporary tetromino's rotation. (requires an integer parameter) */
+	GAME_EVENT_CHP_UP, /*!< Changes the shape of the current temporary tetromino. */
+	GAME_EVENT_CHP_DN, /*!< Changes the shape of the current temporary tetromino. */
+	GAME_EVENT_SET_CHP /*!< Sets the shape of the current temporary tetromino. (requires an integer parameter) */
 } GameEvent;
 
 /**
- * A game handler, that holds its state and score.
+ * Game handler, that holds its state and score.
  * Many game instances can be spawned and handled independently from one another.
  * Pieces sharing can be done through the pieces pool.
  */

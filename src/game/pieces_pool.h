@@ -3,9 +3,13 @@
 
 #include "tetromino.h"
 
+/**
+ * The PiecesPool keeps count of the available pieces left.
+ * An instance of the PiecesPool can be shared with many games.
+ */
 typedef struct {
-  unsigned int counts[TETROMINOES_COUNT];
-  unsigned int count_per_piece;
+	unsigned int counts[TETROMINOES_COUNT]; /*!< The number of pieces left for each tetromino shape. */
+	unsigned int count_per_piece; /*!< The number of pieces initially available for each shape. */
 } PiecesPool;
 
 /**
