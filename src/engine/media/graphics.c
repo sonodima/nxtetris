@@ -82,6 +82,11 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
 	Size size;
 
 	/*
+	 * Shh, the graphics object is unused, I added it to the function's signature for consistency.
+	 */
+	(void)(graphics);
+
+	/*
 	 * Calculate the correct x-axis coordinate for text alignment.
 	 */
 	length = (unsigned int)strlen(text);
@@ -165,6 +170,11 @@ void fill_rect(Graphics* graphics, Rect rect, Color color) {
 }
 
 void draw_rect(Graphics* graphics, Rect rect, Color color) {
+	/*
+	 * Shh, the graphics object is unused, I added it to the function's signature for consistency.
+	 */
+	(void)(graphics);
+
 	/*
 	 * Create and enable the color pair. Color pair range goes from 0 to 77.
 	 * The first digit describes the foreground color, the second one describes the background color.

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <curses.h>
+#include <ncurses.h>
 
 #include "engine/utils.h"
 

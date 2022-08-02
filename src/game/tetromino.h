@@ -19,7 +19,7 @@
 #define TETROMINOES_ROTATIONS 4
 
 /**
- * The pre-calculated state of a tetromino. (in a specific rotation)
+ * Pre-calculated state of a tetromino. (in a specific rotation)
  */
 typedef struct {
   unsigned short data; /*!< State data. (parsed to bits) */
@@ -27,12 +27,12 @@ typedef struct {
 } TetrominoState;
 
 /**
- *
+ * Tetromino object.
  */
 typedef struct {
-  unsigned short shape;
-  unsigned short rotation;
-  Color color;
+  unsigned short shape; /*!< Shape of the tetromino. */
+  unsigned short rotation; /*!< Rotation of the tetromino. */
+  Color color; /*!< Display color of the tetromino. */
 } Tetromino;
 
 /*
