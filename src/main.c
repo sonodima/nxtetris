@@ -19,7 +19,7 @@
 
 /**
  * Writes the end message to a string buffer.
- * The buffer should be at least 32 bytes long.
+ * The buffer should be at least 30 bytes long.
  * @param game_mode The current game mode.
  * @param game_a Pointer to the first game.
  * @param game_b Pointer to the second game.
@@ -28,22 +28,16 @@
 void get_end_message(GameMode game_mode, Game* game_a, Game* game_b, char* buffer) {
   if (game_mode == GAME_MODE_SP) {
     sprintf(buffer, "Score: %d\n", game_a->score);
+  } else if (game_a->finished_for_overflow) {
+    strcpy(buffer, "Player [B] Won!");
+  } else if (game_b->finished_for_overflow) {
+    strcpy(buffer, "Player [A] Won!");
+  } else if (game_a->score > game_b->score) {
+    strcpy(buffer, "Player [A] Won! Reason: Score");
+  } else if (game_a->score < game_b->score) {
+    strcpy(buffer, "Player [B] Won! Reason: Score");
   } else {
-    if (game_a->finished_for_overflow || game_b->finished_for_overflow) {
-      if (game_a->finished_for_overflow) {
-        strcpy(buffer, "Player [B] Won!");
-      } else if (game_b->finished_for_overflow) {
-        strcpy(buffer, "Player [A] Won!");
-      }
-    } else {
-      if (game_a->score > game_b->score) {
-        strcpy(buffer, "Player [A] Won! Reason: Score");
-      } else if (game_a->score < game_b->score) {
-        strcpy(buffer, "Player [B] Won! Reason: Score");
-      } else {
-        strcpy(buffer, "Tie!");
-      }
-    }
+    strcpy(buffer, "Tie!");
   }
 }
 
@@ -51,7 +45,7 @@ void get_end_message(GameMode game_mode, Game* game_a, Game* game_b, char* buffe
  * Program initialization, main loop and cleanup.
  * @return 0 if there were no errors.
  */
-int main() {
+int main(void) {
   Graphics* graphics;
   Controls* controls;
   MainMenu* main_menu;
@@ -85,8 +79,8 @@ int main() {
   controls = make_controls();
   main_menu = make_main_menu(graphics);
   pieces_pool = make_pieces_pool(2);
-  game_a = make_game(graphics, pieces_pool, game_bounds);
-  game_b = make_game(graphics, pieces_pool, game_bounds);
+  game_a = make_game(pieces_pool, game_bounds);
+  game_b = make_game(pieces_pool, game_bounds);
   cpu = make_cpu(game_b);
 
   /* Program loop, that keeps the game from closing after it finishes */
@@ -156,15 +150,15 @@ int main() {
 
         switch (game_mode) {
           case GAME_MODE_SP:
-            handle_game_mode_sp(game_a, controls);
+            handle_game_mode_sp(game_a, controls, graphics);
             break;
 
           case GAME_MODE_MP:
-            handle_game_mode_mp(game_a, game_b, controls, &active_player);
+            handle_game_mode_mp(game_a, game_b, controls, graphics, &active_player);
             break;
 
           case GAME_MODE_CPU:
-            handle_game_mode_cpu(game_a, game_b, controls, cpu, &active_player);
+            handle_game_mode_cpu(game_a, game_b, controls, graphics, cpu, &active_player);
             break;
         }
 

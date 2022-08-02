@@ -12,47 +12,53 @@
 #include "board.h"
 #include "pieces_pool.h"
 
+/**
+ * Execution state of the game.
+ */
 typedef enum {
-  GAME_STATE_IDLE,
-  GAME_STATE_PLACING,
-  GAME_STATE_FINISHED
+	GAME_STATE_IDLE, /*!< The game just finished an action and is reverting to the GAME_STATE_PLACING state. */
+	GAME_STATE_PLACING, /*!< The player is placing the temporary preview piece. */
+	GAME_STATE_FINISHED /*!< The game ended because either one player placed a piece outside the board or the pieces pool ran out of pieces. */
 } GameState;
 
 typedef enum {
-  GAME_EVENT_SET_X,
-  GAME_EVENT_DROP,
-  GAME_EVENT_ROT_CL,
-  GAME_EVENT_ROT_CC,
-  GAME_EVENT_SET_ROT,
-  GAME_EVENT_CHP_UP,
-  GAME_EVENT_CHP_DN,
-  GAME_EVENT_SET_CHP
+	GAME_EVENT_SET_X,
+	GAME_EVENT_DROP,
+	GAME_EVENT_ROT_CL,
+	GAME_EVENT_ROT_CC,
+	GAME_EVENT_SET_ROT,
+	GAME_EVENT_CHP_UP,
+	GAME_EVENT_CHP_DN,
+	GAME_EVENT_SET_CHP
 } GameEvent;
 
+/**
+ * A game handler, that holds its state and score.
+ * Many game instances can be spawned and handled independently from one another.
+ * Pieces sharing can be done through the pieces pool.
+ */
 typedef struct {
-  Graphics* graphics;
-  PiecesPool* pieces_pool;
-  Rect bounds;
-  GameState state;
-  unsigned int score;
-  unsigned int last_removed_lines;
-  unsigned int finished_for_overflow;
-  unsigned int disable_input;
+	PiecesPool* pieces_pool; /*!< Pointer to the object that manages the available pieces. */
+	Rect bounds; /*!< Size and position of the game on screen. */
+	Board* board; /*!< Pointer to the board matrix. */
 
-  Tetromino placing_piece;
-  unsigned int placing_piece_x;
+	GameState state; /*!< Current state of the game. */
+	unsigned int score; /*!< Total score of the game. */
+	unsigned int last_removed_lines; /*!< The amount of lines removed in the last action. */
+	unsigned int finished_for_overflow; /*!< 1 if the game ended because one player could not place a piece in the board. */
+	unsigned int disable_input; /*!< Keeps the 'active' status of the game. */
 
-  Board* board;
+	Tetromino placing_piece; /*!< Temporary preview tetromino displayed at the top of the board. */
+	unsigned int placing_piece_x; /*!< Current x-axis offset for tetromino placement. */
 } Game;
 
 /**
  * Creates an instance of the game.
- * @param graphics Pointer to the graphics manager.
  * @param pieces_pool Pointer to the pool that contains the remaining pieces.
  * @param bounds Rectangle in which the game is drawn.
  * @return Pointer to the created game.
  */
-Game* make_game(Graphics* graphics, PiecesPool* pieces_pool, Rect bounds);
+Game* make_game(PiecesPool* pieces_pool, Rect bounds);
 
 /**
  * Destroys an instance of the game.
@@ -67,37 +73,11 @@ void free_game(Game* game);
 void reset_game(Game* game);
 
 /**
- * Draws a rectangle outside the game bounds, the score and the current piece's count.
- * @param game Pointer to the game.
- */
-void draw_game_bounds(Game* game);
-
-/**
- * Sets the placing_piece to a random tetromino.
- * @param game Pointer to the game.
- */
-void initialize_placing_piece(Game* game);
-
-/**
- * Obtains the relative draw position for a tetromino.
- * @param piece Tetromino to use.
- * @param bounds Bounds of the board. (used to limit the x-axis)
- * @param placing_x X-axis offset.
- * @return Calculated relative draw point.
- */
-Point get_placing_point(Tetromino piece, Rect bounds, int placing_x);
-
-/**
  * Game loop routine. All drawing should be made here.
  * @param game Pointer to the game.
+ * @param graphics Pointer to the graphics manager.
  */
-void tick_game(Game* game);
-
-/**
- * Internal routine that drops a piece in the board and handles board update.
- * @param game Pointer to the game.
- */
-void drop_piece(Game* game);
+void tick_game(Game* game, Graphics* graphics);
 
 /**
  * Event dispatcher. All manual-input game events should get processed here.

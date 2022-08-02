@@ -7,8 +7,7 @@
 #define GAME_MODES_COUNT 3
 
 /**
- * Main menu container.
- * Holds the current game mode selection and a pointer to the graphics manager.
+ * Holds the current game-mode selection and a pointer to the graphics manager.
  */
 typedef struct {
   Graphics* graphics;

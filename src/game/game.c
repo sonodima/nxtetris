@@ -5,17 +5,16 @@
 
 #include "game.h"
 
-Game* make_game(Graphics* graphics, PiecesPool* pieces_pool, Rect bounds) {
+Game* make_game(PiecesPool* pieces_pool, Rect bounds) {
   Game* game;
 
   game = malloc(sizeof(Game));
-  game->graphics = graphics;
   game->pieces_pool = pieces_pool;
   game->bounds = bounds;
 
   /* This is necessary to fix 'pointer being freed was not allocated' in release mode */
   game->board = make_matrix(game->bounds.height, game->bounds.width);
-  
+
   reset_game(game);
 
   return game;
@@ -47,7 +46,12 @@ void free_game(Game* game) {
   }
 }
 
-void draw_game_bounds(Game* game) {
+/**
+ * Draws a rectangle outside the game bounds, the score and the current piece's count.
+ * @param game Pointer to the game.
+ * @param graphics Pointer to the graphics manager.
+ */
+void draw_game_bounds(Game* game, Graphics* graphics) {
   Color draw_color;
   Point text_point;
   Rect game_rect;
@@ -63,12 +67,12 @@ void draw_game_bounds(Game* game) {
   game_rect.width = game->bounds.width + 2;
   game_rect.height = game->bounds.height + 2;
 
-  draw_rect(game->graphics, game_rect, draw_color);
+  draw_rect(graphics, game_rect, draw_color);
 
   sprintf(text_buffer, " Score: %d ", game->score);
   text_point.x = game_rect.x + 1;
   text_point.y = game_rect.y;
-  draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+  draw_text(graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 
   /* Color the count text accordingly to the remaining pieces count */
   pieces_count = get_piece_count(game->pieces_pool, game->placing_piece.shape);
@@ -88,10 +92,14 @@ void draw_game_bounds(Game* game) {
     sprintf(text_buffer, " Count: %d ", pieces_count);
     text_point.x = game_rect.x + game_rect.width - 2;
     text_point.y = game_rect.y + game_rect.height - 1;
-    draw_text(game->graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
+    draw_text(graphics, text_buffer, text_point, draw_color, VERTICAL_ALIGNMENT_RIGHT, 1, 0);
   }
 }
 
+/**
+ * Sets the placing_piece to a random tetromino.
+ * @param game Pointer to the game.
+ */
 void initialize_placing_piece(Game* game) {
   int color = random_number(1, 6);
 
@@ -105,6 +113,13 @@ void initialize_placing_piece(Game* game) {
   } while (!is_piece_available(game->pieces_pool, game->placing_piece.shape));
 }
 
+/**
+ * Obtains the relative draw position for a tetromino.
+ * @param piece Tetromino to use.
+ * @param bounds Bounds of the board. (used to limit the x-axis)
+ * @param placing_x X-axis offset.
+ * @return Calculated relative draw point.
+ */
 Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   Point placing_point;
   Size tetromino_size;
@@ -121,14 +136,14 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
   return placing_point;
 }
 
-void tick_game(Game* game) {
+void tick_game(Game* game, Graphics* graphics) {
   Tetromino preview_piece;
   Point placing_point, intersected_point;
   Point board_offset;
 
   board_offset.x = game->bounds.x;
   board_offset.y = game->bounds.y;
-  draw_board(game->graphics, game->board, board_offset);
+  draw_board(graphics, game->board, board_offset);
 
   switch (game->state) {
     case GAME_STATE_IDLE:
@@ -153,13 +168,13 @@ void tick_game(Game* game) {
 
         if (intersected_point.y >= placing_point.y) {
           /* Only draw the placing (top preview) tetromino if the intersected preview is lower*/
-          draw_tetromino(game->graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
+          draw_tetromino(graphics, game->placing_piece, game_rel_to_abs(game, placing_point));
         } else {
           /* Highlight with white the tetrominoes that when placed would result in the game to finish */
           preview_piece.color.foreground = COLOR_WHITE;
         }
 
-        draw_tetromino(game->graphics, preview_piece, game_rel_to_abs(game, intersected_point));
+        draw_tetromino(graphics, preview_piece, game_rel_to_abs(game, intersected_point));
       }
       break;
 
@@ -167,9 +182,13 @@ void tick_game(Game* game) {
       break;
   }
 
-  draw_game_bounds(game);
+  draw_game_bounds(game, graphics);
 }
 
+/**
+ * Internal routine that drops a piece in the board and handles board update.
+ * @param game Pointer to the game.
+ */
 void drop_piece(Game* game) {
   Point placing_point;
 

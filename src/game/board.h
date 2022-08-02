@@ -7,6 +7,9 @@
 
 #include "tetromino.h"
 
+/**
+ * A dynamic matrix of integers that contains the various displayable blocks.
+ */
 typedef Matrix Board;
 
 /**
@@ -27,15 +30,6 @@ void draw_board(Graphics* graphics, Board* board, Point offset);
 void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position);
 
 /**
- * Check if a tetromino (at a given position) collides with other elements in the board.
- * @param board Pointer to the board.
- * @param tetromino Target tetromino.
- * @param point Test position of the tetromino in 2d space.
- * @return 1 if the tetromino collided with other elements, otherwise 0.
- */
-unsigned int check_board_collision(Board* board, Tetromino tetromino, Point point);
-
-/**
  * Gets the first available insertion point in the board.
  * This method may become slow if used on big matrices; Use it carefully!
  * @param board Pointer to the board.
@@ -44,13 +38,6 @@ unsigned int check_board_collision(Board* board, Tetromino tetromino, Point poin
  * @return Intersected point.
  */
 Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point point);
-
-/**
- * Internal function that removes a line by shifting all the elements of the board [bottom to top].
- * @param board Pointer to the board.
- * @param row Row to remove.
- */
-void remove_board_line(Board* board, unsigned int row);
 
 /**
  * Removes all the filled lines in the board.

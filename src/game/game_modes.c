@@ -4,6 +4,12 @@
 
 #include <curses.h>
 
+/**
+ * Internal function used to share user input routines with multiple game modes.
+ * @param game Pointer to the game.
+ * @param controls Pointer to the controls handler.
+ * @return 1 if the user dropped dropped a piece this tick, otherwise 0.
+ */
 unsigned int handle_shared_game_input(Game* game, Controls* controls) {
   unsigned int mouse_x;
   unsigned int ret;
@@ -48,27 +54,25 @@ unsigned int handle_shared_game_input(Game* game, Controls* controls) {
   return ret;
 }
 
-void handle_game_mode_sp(Game* game, Controls* controls) {
+void handle_game_mode_sp(Game* game, Controls* controls, Graphics* graphics) {
   /* Update game position to screen center */
-  game->bounds.x = (game->graphics->size.width - game->bounds.width) / 2;
-  game->bounds.y = (game->graphics->size.height - game->bounds.height) / 2;
+  game->bounds.x = (graphics->size.width - game->bounds.width) / 2;
+  game->bounds.y = (graphics->size.height - game->bounds.height) / 2;
 
   handle_shared_game_input(game, controls);
 
-  tick_game(game);
+  tick_game(game, graphics);
 }
 
-void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, unsigned int* active_player) {
-  Graphics* s_graphics;
+void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, Graphics* graphics,
+                         unsigned int* active_player) {
   Game* active_game;
   Game* idle_game;
 
-  s_graphics = game_a->graphics;
-
   /* Update games positions */
-  game_a->bounds.x = (s_graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
-  game_b->bounds.x = (s_graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
-  game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
+  game_a->bounds.x = (graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
+  game_b->bounds.x = (graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
+  game_b->bounds.y = game_a->bounds.y = (graphics->size.height - game_a->bounds.height) / 2;
 
   active_game = *active_player == 0 ? game_a : game_b;
   idle_game = *active_player == 1 ? game_a : game_b;
@@ -90,12 +94,12 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, unsigne
     *active_player = !*active_player;
   }
 
-  tick_game(game_a);
-  tick_game(game_b);
+  tick_game(game_a, graphics);
+  tick_game(game_b, graphics);
 }
 
-void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* cpu, unsigned int* active_player) {
-  Graphics* s_graphics;
+void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, Graphics* graphics, CPU* cpu,
+                          unsigned int* active_player) {
   Game* active_game;
   Game* idle_game;
   int event_param;
@@ -105,16 +109,15 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
 
   CPUAction result;
 
-  s_graphics = game_a->graphics;
   placing_point.y = 0;
   max_removed_lines = -1;
   max_filled_lines = -1;
   max_size = -1;
 
   /* Update games positions */
-  game_a->bounds.x = (s_graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
-  game_b->bounds.x = (s_graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
-  game_b->bounds.y = game_a->bounds.y = (s_graphics->size.height - game_a->bounds.height) / 2;
+  game_a->bounds.x = (graphics->size.width - game_a->bounds.width - game_b->bounds.width) / 2 - 1;
+  game_b->bounds.x = (graphics->size.width - game_a->bounds.width + game_b->bounds.width) / 2 + 3;
+  game_b->bounds.y = game_a->bounds.y = (graphics->size.height - game_a->bounds.height) / 2;
 
   active_game = *active_player == 0 ? game_a : game_b;
   idle_game = *active_player == 1 ? game_a : game_b;
@@ -172,6 +175,6 @@ void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, CPU* c
     *active_player = 0;
   }
 
-  tick_game(game_a);
-  tick_game(game_b);
+  tick_game(game_a, graphics);
+  tick_game(game_b, graphics);
 }

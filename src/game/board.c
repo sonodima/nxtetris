@@ -43,6 +43,13 @@ void add_tetromino_to_board(Board* board, Tetromino tetromino, Point position) {
   }
 }
 
+/**
+ * Checks if a tetromino (at a given position) collides with other elements in the board.
+ * @param board Pointer to the board.
+ * @param tetromino Target tetromino.
+ * @param point Test position of the tetromino in 2d space.
+ * @return 1 if the tetromino collided with other elements, otherwise 0.
+ */
 unsigned int check_board_collision(Board* board, Tetromino tetromino, Point point) {
   Size tetromino_size;
   unsigned int x, y, b_x, b_y;
@@ -87,6 +94,11 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
   return test_point;
 }
 
+/**
+ * Internal function that removes a line by shifting all the elements of the board [bottom to top].
+ * @param board Pointer to the board.
+ * @param row Row to remove.
+ */
 void remove_board_line(Board* board, unsigned int row) {
   unsigned int x, y;
 

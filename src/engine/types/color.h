@@ -3,10 +3,13 @@
 
 #include "engine/enums/alpha.h"
 
+/**
+ * Color of each object that is drawable by the CLI graphics manager.
+ */
 typedef struct {
-  unsigned int foreground;
-  unsigned int background;
-  Alpha alpha;
+	unsigned int foreground; /*!< Color of text and the virtual opacity mask. */
+	unsigned int background; /*!< Color of the pixel's background. */
+	Alpha alpha; /*!< Opacity value. */
 } Color;
 
 #endif
