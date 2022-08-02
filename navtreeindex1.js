@@ -1,6 +1,9 @@
 var NAVTREEINDEX1 =
 {
-"struct_tetromino_state.html#aa6ff4861777a8bd7ccba5feadda1a6a4":[0,2,14,0],
+"struct_tetromino.html#aa5f4d1eda21c196bd8401ff73f105073":[0,3,13,0],
+"struct_tetromino_state.html":[0,3,14],
+"struct_tetromino_state.html#a693887ab47dee6ab960fb1ef887c56cf":[0,3,14,1],
+"struct_tetromino_state.html#aa6ff4861777a8bd7ccba5feadda1a6a4":[0,3,14,0],
 "tetromino_8c.html":[1,0,0,1,11],
 "tetromino_8c.html#a41b458ff31b535a9d0b8b577869cc446":[1,0,0,1,11,1],
 "tetromino_8c.html#a96d6d22f042bd80c5bfba8fc90f818aa":[1,0,0,1,11,2],

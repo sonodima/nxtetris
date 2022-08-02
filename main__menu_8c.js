@@ -1,6 +1,6 @@
 var main__menu_8c =
 [
-    [ "draw_main_menu", "main__menu_8c.html#a358eecf2ac26df62a8218bf7db00c868", null ],
+    [ "draw_main_menu", "main__menu_8c.html#a181ee24ef84886875e850c91dc748ca1", null ],
     [ "free_main_menu", "main__menu_8c.html#a4a89ee6a5b5fb4d121406dd3b8512d10", null ],
-    [ "make_main_menu", "main__menu_8c.html#a9599af062681ed208d50be31c9d40451", null ]
+    [ "make_main_menu", "main__menu_8c.html#a50522e3c2056dbb8aa7fc062dce24aa1", null ]
 ];

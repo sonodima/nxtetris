@@ -89,6 +89,8 @@ $(document).ready(function(){initNavTree('end__screen_8h.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="graphics_8h_source.html">engine/media/graphics.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="game_8h_source.html">game/game.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="game__modes_8h_source.html">game/game_modes.h</a>&quot;</code><br />
 </div>
 <p><a href="end__screen_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -97,6 +99,9 @@ Functions</h2></td></tr>
 <tr class="memitem:acb5e2c5588b2a15fc3d6a9687a1dc103"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="end__screen_8h.html#acb5e2c5588b2a15fc3d6a9687a1dc103">draw_end_screen</a> (<a class="el" href="struct_graphics.html">Graphics</a> *graphics, const char *sub_message)</td></tr>
 <tr class="memdesc:acb5e2c5588b2a15fc3d6a9687a1dc103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a simple popup that should be displayed at game end.  <a href="end__screen_8h.html#acb5e2c5588b2a15fc3d6a9687a1dc103">More...</a><br /></td></tr>
 <tr class="separator:acb5e2c5588b2a15fc3d6a9687a1dc103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8436e1cb2dc5a00266ecd9ce61708f21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="end__screen_8h.html#a8436e1cb2dc5a00266ecd9ce61708f21">get_end_message</a> (<a class="el" href="game__modes_8h.html#aaf5ef5a17b53e9997c837b07015589de">GameMode</a> game_mode, <a class="el" href="struct_game.html">Game</a> *game_a, <a class="el" href="struct_game.html">Game</a> *game_b, char *buffer)</td></tr>
+<tr class="memdesc:a8436e1cb2dc5a00266ecd9ce61708f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the end message to a string buffer.  <a href="end__screen_8h.html#a8436e1cb2dc5a00266ecd9ce61708f21">More...</a><br /></td></tr>
+<tr class="separator:a8436e1cb2dc5a00266ecd9ce61708f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="acb5e2c5588b2a15fc3d6a9687a1dc103" name="acb5e2c5588b2a15fc3d6a9687a1dc103"></a>
@@ -129,7 +134,58 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">graphics</td><td>Pointer to the graphics manager. </td></tr>
-    <tr><td class="paramname">sub_message</td><td>Secondary label. </td></tr>
+    <tr><td class="paramname">sub_message</td><td>Secondary label, drawn in the end screen popup. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8436e1cb2dc5a00266ecd9ce61708f21" name="a8436e1cb2dc5a00266ecd9ce61708f21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8436e1cb2dc5a00266ecd9ce61708f21">&#9670;&nbsp;</a></span>get_end_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void get_end_message </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game__modes_8h.html#aaf5ef5a17b53e9997c837b07015589de">GameMode</a>&#160;</td>
+          <td class="paramname"><em>game_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_game.html">Game</a> *&#160;</td>
+          <td class="paramname"><em>game_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_game.html">Game</a> *&#160;</td>
+          <td class="paramname"><em>game_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the end message to a string buffer. </p>
+<p >The buffer should be at least 30 bytes long. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">game_mode</td><td>The current game mode. </td></tr>
+    <tr><td class="paramname">game_a</td><td>Pointer to the first game. </td></tr>
+    <tr><td class="paramname">game_b</td><td>Pointer to the second game. </td></tr>
+    <tr><td class="paramname">buffer</td><td>Output buffer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -142,7 +198,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_1699be727a800b1d059c6f7f2b91d2ee.html">game</a></li><li class="navelem"><a class="el" href="dir_332e3c95f1ee50ca68a71a28d752ea65.html">ui</a></li><li class="navelem"><a class="el" href="end__screen_8h.html">end_screen.h</a></li>
-    <li class="footer">Generated on Tue Aug 2 2022 14:41:17 for nxtetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Aug 2 2022 17:08:30 for nxtetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>
