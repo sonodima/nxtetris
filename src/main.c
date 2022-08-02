@@ -1,6 +1,7 @@
 #include <unistd.h>
-#include <curses.h>
 #include <string.h>
+
+#include <ncurses.h>
 
 #include "engine/types/color.h"
 #include "engine/media/graphics.h"

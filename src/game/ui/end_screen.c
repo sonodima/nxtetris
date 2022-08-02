@@ -1,6 +1,6 @@
 #include "end_screen.h"
 
-#include <curses.h>
+#include <ncurses.h>
 
 void draw_end_screen(Graphics* graphics, const char* sub_message) {
   Color color;

@@ -1,8 +1,6 @@
 #include "game_modes.h"
 
-#include <stdlib.h>
-
-#include <curses.h>
+#include <ncurses.h>
 
 /**
  * Internal function used to share user input routines with multiple game modes.

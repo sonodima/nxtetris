@@ -1,6 +1,6 @@
 #include "board.h"
 
-#include <curses.h>
+#include <ncurses.h>
 
 void draw_board(Graphics* graphics, Board* board, Point offset) {
 	unsigned int x, y;

@@ -1,7 +1,7 @@
 #include "main_menu.h"
 
 #include <stdlib.h>
-#include <curses.h>
+#include <ncurses.h>
 
 MainMenu* make_main_menu(Graphics* graphics) {
 	MainMenu* main_menu;
