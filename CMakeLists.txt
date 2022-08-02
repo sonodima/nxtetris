@@ -9,7 +9,7 @@ endif ()
 project(nxtetris)
 
 file(GLOB_RECURSE SOURCES "src/*.h" "src/*.c")
-add_executable(nxtetris ${SOURCES} src/game/ui/end_screen.h src/game/ui/end_screen.c)
+add_executable(nxtetris ${SOURCES})
 
 target_include_directories(nxtetris PUBLIC "src")
 
