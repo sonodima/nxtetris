@@ -59,7 +59,7 @@ Size draw_text(Graphics* graphics, const char* text, Point point, Color color,
  * @param graphics pointer to the graphics context.
  * @param rect geometric rectangle structure.
  * @param color color structure of the draw operation.
- * @see draw_rect()
+ * @see draw_rect
  */
 void fill_rect(Graphics* graphics, Rect rect, Color color);
 
@@ -69,7 +69,7 @@ void fill_rect(Graphics* graphics, Rect rect, Color color);
  * @param graphics pointer to the graphics context.
  * @param rect geometric rectangle structure.
  * @param color color structure of the draw operation.
- * @see fill_rect()
+ * @see fill_rect
  */
 void draw_rect(Graphics* graphics, Rect rect, Color color);
 

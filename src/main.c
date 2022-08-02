@@ -19,30 +19,6 @@
 #define FRAME_INTERVAL 2
 
 /**
- * Writes the end message to a string buffer.
- * The buffer should be at least 30 bytes long.
- * @param game_mode The current game mode.
- * @param game_a Pointer to the first game.
- * @param game_b Pointer to the second game.
- * @param buffer Output buffer.
- */
-void get_end_message(GameMode game_mode, Game* game_a, Game* game_b, char* buffer) {
-  if (game_mode == GAME_MODE_SP) {
-    sprintf(buffer, "Score: %d\n", game_a->score);
-  } else if (game_a->finished_for_overflow) {
-    strcpy(buffer, "Player [B] Won!");
-  } else if (game_b->finished_for_overflow) {
-    strcpy(buffer, "Player [A] Won!");
-  } else if (game_a->score > game_b->score) {
-    strcpy(buffer, "Player [A] Won! Reason: Score");
-  } else if (game_a->score < game_b->score) {
-    strcpy(buffer, "Player [B] Won! Reason: Score");
-  } else {
-    strcpy(buffer, "Tie!");
-  }
-}
-
-/**
  * Program initialization, main loop and cleanup.
  * @return 0 if there were no errors.
  */
@@ -78,7 +54,7 @@ int main(void) {
 
   graphics = make_graphics();
   controls = make_controls();
-  main_menu = make_main_menu(graphics);
+  main_menu = make_main_menu();
   pieces_pool = make_pieces_pool(2);
   game_a = make_game(pieces_pool, game_bounds);
   game_b = make_game(pieces_pool, game_bounds);
@@ -116,7 +92,7 @@ int main(void) {
           break;
       }
 
-      draw_main_menu(main_menu);
+      draw_main_menu(graphics, main_menu);
 
       present_frame();
       usleep(1000 * FRAME_INTERVAL);
