@@ -1,9 +1,0 @@
-var searchData=
-[
-  ['handle_5fgame_5fmode_5fcpu_0',['handle_game_mode_cpu',['../game__modes_8c.html#a59f00faedcb8ee0dcf7c951a6e7f0386',1,'handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, Graphics *graphics, CPU *cpu, unsigned int *active_player):&#160;game_modes.c'],['../game__modes_8h.html#a59f00faedcb8ee0dcf7c951a6e7f0386',1,'handle_game_mode_cpu(Game *game_a, Game *game_b, Controls *controls, Graphics *graphics, CPU *cpu, unsigned int *active_player):&#160;game_modes.c']]],
-  ['handle_5fgame_5fmode_5fmp_1',['handle_game_mode_mp',['../game__modes_8c.html#a7f0a4101a808736042252e8108af3851',1,'handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, Graphics *graphics, unsigned int *active_player):&#160;game_modes.c'],['../game__modes_8h.html#a7f0a4101a808736042252e8108af3851',1,'handle_game_mode_mp(Game *game_a, Game *game_b, Controls *controls, Graphics *graphics, unsigned int *active_player):&#160;game_modes.c']]],
-  ['handle_5fgame_5fmode_5fsp_2',['handle_game_mode_sp',['../game__modes_8c.html#a7c2f34dd0657e6d33ade7567ef9bed79',1,'handle_game_mode_sp(Game *game, Controls *controls, Graphics *graphics):&#160;game_modes.c'],['../game__modes_8h.html#a7c2f34dd0657e6d33ade7567ef9bed79',1,'handle_game_mode_sp(Game *game, Controls *controls, Graphics *graphics):&#160;game_modes.c']]],
-  ['handle_5fshared_5fgame_5finput_3',['handle_shared_game_input',['../game__modes_8c.html#a5eff72cab6df46a2db05c406582793cc',1,'game_modes.c']]],
-  ['has_5fpieces_5fleft_4',['has_pieces_left',['../pieces__pool_8c.html#af4a781d7b10931f5673e12833f0173cd',1,'has_pieces_left(PiecesPool *pool):&#160;pieces_pool.c'],['../pieces__pool_8h.html#af4a781d7b10931f5673e12833f0173cd',1,'has_pieces_left(PiecesPool *pool):&#160;pieces_pool.c']]],
-  ['height_5',['height',['../struct_rect.html#ad12fc34ce789bce6c8a05d8a17138534',1,'Rect::height()'],['../struct_size.html#ad12fc34ce789bce6c8a05d8a17138534',1,'Size::height()']]]
-];
