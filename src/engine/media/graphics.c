@@ -4,7 +4,7 @@
 #include <string.h>
 #include <locale.h>
 
-#include <curses.h>
+#include <ncurses.h>
 
 Graphics* make_graphics() {
 	Graphics* graphics;

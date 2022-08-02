@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include <curses.h>
+#include <ncurses.h>
 
 Controls* make_controls(void) {
   Controls* controls;
