@@ -2,12 +2,27 @@
 
 <div align="center">
   <img src="https://badgen.net/badge/lang/ANSI-C/grey"/>
-  <a href="https://sonodima.github.io/nxtetris/" target="_blank"><img src="https://badgen.net/badge/docs/Doxygen/red"/></a>
+  <a href="https://sonodima.github.io/nxtetris/"><img src="https://badgen.net/badge/docs/Doxygen/red"/></a>
   <br>
   <br>
 </div>
 
-> Cross-platform, over-engineered XTetris in C.
+> Cross-platform, over-engineered XTetris written in C
+
+## Controls
+
+### Menu(s)
+
+* `KBD_RIGHT` - Confirm
+* `KBD_LEFT` - Exit / Back
+* `KBD_UP`, `KBD_DOWN` - Menu navigation
+
+### Game
+
+* `KBD_LEFT`, `KBD_RIGHT` - Rotate the tetromino
+* `KBD_UP`, `KBD_DOWN` - Change tetromino
+* `MOUSE_X` - Position the tetromino in the x-axis
+* `MOUSE_LEFT` - Drop the current tetromino in the board
 
 ## Build
 
@@ -30,4 +45,4 @@ The output executable will be named `nxtetris` and will be placed in `build/rele
 
 ## Libraries
 
-- [ncurses](https://invisible-island.net/ncurses/announce.html)
+- [ncurses:](https://invisible-island.net/ncurses) terminal control library, enabling the construction of text user interface (TUI) applications.
