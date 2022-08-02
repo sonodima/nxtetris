@@ -341,4 +341,3 @@ int get_previous_available_tetromino(Game* game) {
 
 	return available;
 }
-

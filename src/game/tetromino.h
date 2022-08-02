@@ -27,7 +27,7 @@ typedef struct {
 } TetrominoState;
 
 /**
- * Tetromino object.
+ * Tetromino object that can be displayed and inserted in a board.
  */
 typedef struct {
   unsigned short shape; /*!< Shape of the tetromino. */
