@@ -24,4 +24,4 @@ target_include_directories(nxtetris PUBLIC "src" PRIVATE ${CURSES_INCLUDE_DIRS})
 target_link_libraries(nxtetris PRIVATE curses portaudio_static SndFile::sndfile)
 
 # Copy Resource Files
-file(COPY resources DESTINATION resources)
+file(COPY resources/audio DESTINATION resources)
