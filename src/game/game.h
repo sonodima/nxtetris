@@ -5,12 +5,23 @@
 
 #include "engine/types/rect.h"
 #include "engine/media/graphics.h"
+#include "engine/media/audio.h"
 #include "engine/controls.h"
 #include "engine/core/matrix.h"
 
 #include "tetromino.h"
 #include "board.h"
 #include "pieces_pool.h"
+
+/**
+ * Structure containing the pointers to all the game sounds.
+ */
+typedef struct {
+	Sound* bg;
+	Sound* move;
+	Sound* rotate;
+	Sound* drop;
+} GameSounds;
 
 /**
  * Execution state of the game.
@@ -53,6 +64,7 @@ typedef struct {
 
 	Tetromino placing_piece; /*!< Temporary preview tetromino displayed at the top of the board. */
 	unsigned int placing_piece_x; /*!< Current x-axis offset for tetromino placement. */
+	unsigned int placing_point_changed; /*!< 1 if the placing coordinates changed. */
 } Game;
 
 /**

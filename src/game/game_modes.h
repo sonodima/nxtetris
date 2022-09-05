@@ -42,8 +42,9 @@ static GameModeDescriptor game_modes[] = {
  * @param game Pointer to the game.
  * @param controls Pointer to the controls handler.
  * @param graphics Pointer to the graphics manager.
+ * @param sounds Pointer to the sounds list.
  */
-void handle_game_mode_sp(Game* game, Controls* controls, Graphics* graphics);
+void handle_game_mode_sp(Game* game, Controls* controls, Graphics* graphics, GameSounds* sounds);
 
 /**
  * Multi player (a vs b) game-mode tick handler.
@@ -52,10 +53,16 @@ void handle_game_mode_sp(Game* game, Controls* controls, Graphics* graphics);
  * @param game_b Pointer to the second game.
  * @param controls Pointer to the controls handler.
  * @param graphics Pointer to the graphics manager.
+ * @param sounds Pointer to the sounds list.
  * @param active_player Pointer to the active player id.
  */
-void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, Graphics* graphics,
-												 unsigned int* active_player);
+void handle_game_mode_mp(
+		Game* game_a, Game* game_b,
+		Controls* controls,
+		Graphics* graphics,
+		GameSounds* sounds,
+		unsigned int* active_player
+);
 
 /**
  * Multi player (player vs cpu) game-mode tick handler.
@@ -65,9 +72,16 @@ void handle_game_mode_mp(Game* game_a, Game* game_b, Controls* controls, Graphic
  * @param controls Pointer to the controls handler.
  * @param graphics Pointer to the graphics manager.
  * @param cpu Pointer to the cpu.
+ * @param sounds Pointer to the sounds list.
  * @param active_player Pointer to the active player id.
  */
-void handle_game_mode_cpu(Game* game_a, Game* game_b, Controls* controls, Graphics* graphics, CPU* cpu,
-													unsigned int* active_player);
+void handle_game_mode_cpu(
+		Game* game_a, Game* game_b,
+		Controls* controls,
+		Graphics* graphics,
+		CPU* cpu,
+		GameSounds* sounds,
+		unsigned int* active_player
+);
 
 #endif

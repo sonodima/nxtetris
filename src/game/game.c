@@ -128,7 +128,6 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
 
 	/*
 	 * Limit its position in the X axis.
-	 * This is kinda overcomplicated but it works great.
 	 */
 	placing_point.x = clamp(placing_x, 0, bounds.width - tetromino_size.width);
 	placing_point.y = 0;
@@ -137,6 +136,7 @@ Point get_placing_point(Tetromino piece, Rect bounds, int placing_x) {
 }
 
 void tick_game(Game* game, Graphics* graphics) {
+	static int prev_placing_x = INT32_MAX;
 	Tetromino preview_piece;
 	Point placing_point, intersected_point;
 	Point board_offset;
@@ -158,8 +158,18 @@ void tick_game(Game* game, Graphics* graphics) {
 
 		case GAME_STATE_PLACING:
 			if (!game->disable_input) {
-				/* Draw the top tetromino */
+				/*
+				 * Draw the top tetromino.
+				 * Also set if the x-axis placing point (mouse coordinate limited to the game bounds) changed.
+				 * This is useful for features such as the satisfying "tick" when the mouse is moved in the x-axis.
+				 */
 				placing_point = get_placing_point(game->placing_piece, game->bounds, (int)game->placing_piece_x);
+				if (prev_placing_x != placing_point.x && prev_placing_x != INT32_MAX) {
+					game->placing_point_changed = 1;
+				} else {
+					game->placing_point_changed = 0;
+				}
+				prev_placing_x = placing_point.x;
 
 				/* Draw the dynamic bottom preview tetromino */
 				preview_piece = game->placing_piece;
