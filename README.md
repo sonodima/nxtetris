@@ -26,8 +26,14 @@
 
 ## Build
 
-<b>Before proceeding, make sure you have cmake and make installed!</b>
-<br>
+<b>Requirements:</b>
+
+- cmake
+- make
+- pkg-config _(macOS/Linux only)_
+
+---
+
 Building the program is done by running the following commands:
 
 ```bash
@@ -41,8 +47,18 @@ cmake ../.. -DCMAKE_BUILD_TYPE=Release
 make
 ```
 
-The output executable will be named `nxtetris` and will be placed in `build/release`.
+The output executable will be named `nxtetris` and will be placed in `build/release`.<br>
+The binary needs to be shipped with the `resources` folder (which is copied to the build directory at compile time) in
+order to work properly. _(without it the audio won't play)_
 
 ## Libraries
 
-- [ncurses:](https://invisible-island.net/ncurses) terminal control library, enabling the construction of text user interface (TUI) applications.
+- [ncurses:](https://invisible-island.net/ncurses) terminal control library, enabling the construction of text user
+  interface (TUI) applications.
+- [portaudio:](http://www.portaudio.com/) cross-platform audio I/O library.
+- [libsndfile:](http://www.mega-nerd.com/libsndfile/) audio file I/O library.
+
+All the libraries are managed by [vcpkg](https://vcpkg.io/) and are automatically downloaded and built during the build
+process.
+
+<b>NOTE:</b> The first build will take a while since all the libraries need to be downloaded and built.

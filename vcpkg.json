@@ -1,0 +1,11 @@
+{
+  "name": "nxtetris",
+  "version-string": "1.0.0",
+  "homepage": "https://github.com/sonodima/nxtetris",
+  "description": "Cross-platform, over-engineered XTetris built in ANSI-C",
+  "dependencies": [
+    "ncurses",
+    "portaudio",
+    "libsndfile"
+  ]
+}
