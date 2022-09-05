@@ -30,7 +30,7 @@ void draw_main_menu(Graphics* graphics, MainMenu* menu) {
 	color.alpha = ALPHA_DARKER;
 	color.foreground = COLOR_GREEN;
 	color.background = COLOR_BLACK;
-	draw_text(graphics, "nxtetris - Select Game Mode", point, color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
+	draw_text(graphics, "NXTetris - Select Game Mode", point, color, VERTICAL_ALIGNMENT_LEFT, 1, 0);
 
 	/* Draw the list of game modes */
 	point.x++;
