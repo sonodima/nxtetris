@@ -6,14 +6,18 @@
 #include <portaudio.h>
 #include <sndfile.h>
 
+/**
+ * Sound source and structure.
+ * Keeps track of the sound file, settings and its stream.
+ */
 typedef struct {
-	PaStream* stream;
-	SNDFILE* sound_file;
-	SF_INFO file_info;
-	int position;
-	int looped;
-	float volume;
-	int completed;
+	PaStream* stream; /*!< The PortAudio stream of the sound. */
+	SNDFILE* sound_file; /*!< The source sound file. */
+	SF_INFO file_info; /*!< The source sound file information. */
+	int position; /*!< The current position of the sound. */
+	int looped; /*!< Whether the sound is looped. (never ends) */
+	float volume; /*!< The playback volume of the sound. (0.0 - 1.0) */
+	int completed; /*!< Whether the sound has completed playing. (set by the portaudio_callback function) */
 } Sound;
 
 /**

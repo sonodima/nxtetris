@@ -167,7 +167,6 @@ int main(void) {
 				}
 
 				draw_footer(graphics);
-
 				present_frame();
 				usleep(1000 * FRAME_INTERVAL);
 			}
@@ -186,7 +185,6 @@ int main(void) {
 
 				get_end_message(game_mode, game_a, game_b, end_message);
 				draw_end_screen(graphics, end_message);
-
 				present_frame();
 				usleep(1000 * FRAME_INTERVAL);
 			}

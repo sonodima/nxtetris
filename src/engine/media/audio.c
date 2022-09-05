@@ -7,10 +7,7 @@
 int initialize_audio(void) {
 	PaError error;
 
-	/*
-	 * Initialize PortAudio library's internal data structures
-	 * and prepare underlying host APIs for use.
-	 */
+	/* Initialize PortAudio library's internal data structures and prepare underlying host APIs for use */
 	error = Pa_Initialize();
 	if (error != paNoError) {
 		printf("%s\n", Pa_GetErrorText(error));
@@ -21,10 +18,7 @@ int initialize_audio(void) {
 }
 
 void uninitialize_audio(void) {
-	/*
-	 * Deallocate all resources allocated by PortAudio
-	 * on Pa_Initialize() call.
-	 */
+	/* Deallocate all resources allocated by PortAudio on Pa_Initialize() call */
 	Pa_Terminate();
 }
 
@@ -45,13 +39,13 @@ int portaudio_callback(
 	(void)(flags);
 
 	if (frame_count > 0) {
-		/* Update the current read location of the file. */
+		/* Update the current read location of the file */
 		sf_seek(sound->sound_file, sound->position, SEEK_SET);
 
-		/* Read data from the sound file (at the sought position) to the output buffer. */
+		/* Read data from the sound file (at the sought position) to the output buffer */
 		read_length = sf_readf_int(sound->sound_file, output, frame_count);
 
-		/* Multiply the pcm buffer by the volume value. */
+		/* Multiply the pcm buffer by the volume value */
 		for (int i = 0; i < SAMPLES_PER_BUFFER * 2; ++i) {
 			((int*)output)[i] *= sound->volume;
 		}
@@ -66,9 +60,8 @@ int portaudio_callback(
 			return paContinue;
 		} else {
 			/*
-			 * No samples read. Reset the position and tell PortAudio
-			 * to continue executing the callback if the sound is looped,
-			 * complete the operation if the sound is not looped.
+			 * No samples read. Reset the position and tell PortAudio to continue executing the callback
+			 * if the sound is looped, complete the operation if the sound is not looped.
 			 */
 			if (sound->looped) {
 				sound->position = 0;
@@ -89,7 +82,7 @@ int portaudio_callback(
 		}
 	}
 
-	/* Here we should ideally return paComplete too, but see above. */
+	/* Here we should ideally return paComplete too, but see above */
 	sound->completed = 1;
 	return paContinue;
 }
@@ -104,21 +97,21 @@ Sound* make_sound(const char* path, int looped, float volume) {
 	sound->volume = volume;
 	sound->completed = 0;
 
-	/* Open a handle to the file at the given path, in read mode. */
+	/* Open a handle to the file at the given path, in read mode */
 	sound->sound_file = sf_open(path, SFM_READ, &sound->file_info);
 	if (!sound->sound_file) {
 		printf("[%s] %s\n", path, sf_strerror(sound->sound_file));
 		return 0;
 	}
 
-	/* Setup stream parameters using the default output device. */
+	/* Setup stream parameters using the default output device */
 	stream_parameters.device = Pa_GetDefaultOutputDevice();
 	stream_parameters.sampleFormat = paInt32;
 	stream_parameters.channelCount = sound->file_info.channels;
 	stream_parameters.suggestedLatency = Pa_GetDeviceInfo(stream_parameters.device)->defaultLowOutputLatency;
 	stream_parameters.hostApiSpecificStreamInfo = 0;
 
-	/* Set up the stream for the sample using the callback mode. */
+	/* Set up the stream for the sample using the callback mode */
 	error = Pa_OpenStream(
 			&sound->stream,
 			0, &stream_parameters,
@@ -153,10 +146,10 @@ int start_sound(Sound* sound) {
 	PaError error;
 
 	if (sound) {
-		/* Reset position without interrupting the stream. */
+		/* Reset position without interrupting the stream */
 		sound->position = 0;
 
-		/* If the stream is stopped, start it. (happens the first time a sound is played) */
+		/* If the stream is stopped, start it (happens the first time a sound is played) */
 		if (Pa_IsStreamStopped(sound->stream)) {
 			error = Pa_StartStream(sound->stream);
 			if (error != paNoError) {

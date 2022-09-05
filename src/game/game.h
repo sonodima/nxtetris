@@ -17,10 +17,10 @@
  * Structure containing the pointers to all the game sounds.
  */
 typedef struct {
-	Sound* bg;
-	Sound* move;
-	Sound* rotate;
-	Sound* drop;
+	Sound* bg; /*!< Background music, played from the game's launch time. */
+	Sound* move; /*!< Sound played when a piece is moved. (in the x-axis) */
+	Sound* rotate; /*!< Sound played when a piece is rotated or switched. */
+	Sound* drop; /*!< Sound played when a piece is dropped. */
 } GameSounds;
 
 /**
