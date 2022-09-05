@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['y_0',['y',['../struct_point.html#a0a2f84ed7838f07779ae24c5a9086d33',1,'Point::y()'],['../struct_rect.html#a0a2f84ed7838f07779ae24c5a9086d33',1,'Rect::y()']]]
+  ['x_0',['x',['../struct_point.html#a6150e0515f7202e2fb518f7206ed97dc',1,'Point::x()'],['../struct_rect.html#a6150e0515f7202e2fb518f7206ed97dc',1,'Rect::x()']]],
+  ['x_5foff_1',['x_off',['../struct_c_p_u_action.html#a7410f27483e1c5d878a62298723cf83d',1,'CPUAction']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['update_5fcontrols_0',['update_controls',['../controls_8c.html#a2d911f1f6ef6fe5b25aedc7875ab1b0b',1,'update_controls(Controls *controls):&#160;controls.c'],['../controls_8h.html#a2d911f1f6ef6fe5b25aedc7875ab1b0b',1,'update_controls(Controls *controls):&#160;controls.c']]]
+  ['test_5fboard_5fline_5fremoval_5ffor_5faction_0',['test_board_line_removal_for_action',['../board_8c.html#aa0b7608407544abfdb96c4ca546d93fa',1,'test_board_line_removal_for_action(Board *board, Tetromino tetromino, Point position):&#160;board.c'],['../board_8h.html#aa0b7608407544abfdb96c4ca546d93fa',1,'test_board_line_removal_for_action(Board *board, Tetromino tetromino, Point position):&#160;board.c']]],
+  ['tick_5fgame_1',['tick_game',['../game_8c.html#a24a75119ac12532928790393e2db2ba0',1,'tick_game(Game *game, Graphics *graphics):&#160;game.c'],['../game_8h.html#a24a75119ac12532928790393e2db2ba0',1,'tick_game(Game *game, Graphics *graphics):&#160;game.c']]]
 ];

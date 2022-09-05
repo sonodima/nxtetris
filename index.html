@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>nxtetris: nxtetris</title>
+<title>NXTetris: NXTetris</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">nxtetris
+   <div id="projectname">NXTetris
    </div>
   </td>
  </tr>
@@ -83,7 +83,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">nxtetris </div></div>
+  <div class="headertitle"><div class="title">NXTetris </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p ><a class="anchor" id="md_README"></a> </p><h1 align="center">NXTetris 🕹️</h1>
@@ -111,8 +111,14 @@ Game</h3>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Build</h2>
-<p ><b>Before proceeding, make sure you have cmake and make installed!</b> <br  />
- Building the program is done by running the following commands:</p>
+<p ><b>Requirements:</b></p>
+<ul>
+<li>cmake</li>
+<li>make</li>
+<li>pkg-config _(macOS/Linux only)_</li>
+</ul>
+<hr  />
+<p >Building the program is done by running the following commands:</p>
 <div class="fragment"><div class="line">git clone --recursive https://github.com/sonodima/nxtetris</div>
 <div class="line">cd nxtetris</div>
 <div class="line"> </div>
@@ -121,19 +127,24 @@ Build</h2>
 <div class="line"> </div>
 <div class="line">cmake ../.. -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">make</div>
-</div><!-- fragment --><p >The output executable will be named <code>nxtetris</code> and will be placed in <code>build/release</code>.</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><p >The output executable will be named <code>nxtetris</code> and will be placed in <code>build/release</code>.<br  />
+ The binary needs to be shipped with the <code>resources</code> folder (which is copied to the build directory at compile time) in order to work properly. _(without it the audio won't play)_</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Libraries</h2>
 <ul>
-<li><a href="https://invisible-island.net/ncurses">ncurses:</a> terminal control library, enabling the construction of text user interface (TUI) applications. </li>
+<li><a href="https://invisible-island.net/ncurses">ncurses:</a> terminal control library, enabling the construction of text user interface (TUI) applications.</li>
+<li><a href="http://www.portaudio.com/">portaudio:</a> cross-platform audio I/O library.</li>
+<li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile:</a> audio file I/O library.</li>
 </ul>
+<p >All the libraries are managed by <a href="https://vcpkg.io/">vcpkg</a> and are automatically downloaded and built during the build process.</p>
+<p ><b>NOTE:</b> The first build will take a while since all the libraries need to be downloaded and built. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Aug 2 2022 17:08:30 for nxtetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Mon Sep 5 2022 13:22:24 for NXTetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

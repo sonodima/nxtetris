@@ -1,5 +1,6 @@
 var game_8h =
 [
+    [ "GameSounds", "struct_game_sounds.html", "struct_game_sounds" ],
     [ "Game", "struct_game.html", "struct_game" ],
     [ "GameEvent", "game_8h.html#a76c53fd3a1d5f39a14c7e0acfb1ad374", [
       [ "GAME_EVENT_SET_X", "game_8h.html#a76c53fd3a1d5f39a14c7e0acfb1ad374a6a796223cafdccda5e0e3caf36828a33", null ],

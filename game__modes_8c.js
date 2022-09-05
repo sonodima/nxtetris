@@ -1,7 +1,7 @@
 var game__modes_8c =
 [
-    [ "handle_game_mode_cpu", "game__modes_8c.html#a59f00faedcb8ee0dcf7c951a6e7f0386", null ],
-    [ "handle_game_mode_mp", "game__modes_8c.html#a7f0a4101a808736042252e8108af3851", null ],
-    [ "handle_game_mode_sp", "game__modes_8c.html#a7c2f34dd0657e6d33ade7567ef9bed79", null ],
-    [ "handle_shared_game_input", "game__modes_8c.html#a5eff72cab6df46a2db05c406582793cc", null ]
+    [ "handle_game_mode_cpu", "game__modes_8c.html#a830149250bf09377230831be671062bd", null ],
+    [ "handle_game_mode_mp", "game__modes_8c.html#aa842745f3d9de1f4b9d0f506891fb9da", null ],
+    [ "handle_game_mode_sp", "game__modes_8c.html#a60ea056b8e294d9f917b6be50b5d9ba2", null ],
+    [ "handle_shared_game_input", "game__modes_8c.html#aa28192061a096423a45c09fbf0d89230", null ]
 ];

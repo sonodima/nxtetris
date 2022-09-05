@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['tetrominoes_5fcount_0',['TETROMINOES_COUNT',['../tetromino_8h.html#ae49e395f73aa8eb58a4b2be1dfcff10b',1,'tetromino.h']]],
-  ['tetrominoes_5frotations_1',['TETROMINOES_ROTATIONS',['../tetromino_8h.html#a4d3dbe11c7cd126e5429da1a905aee33',1,'tetromino.h']]]
+  ['samples_5fper_5fbuffer_0',['SAMPLES_PER_BUFFER',['../audio_8c.html#a0496f614511efb835b8e80df7a0b18b5',1,'audio.c']]]
 ];

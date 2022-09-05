@@ -9,5 +9,7 @@ var searchData=
   ['alpha_5flight_6',['ALPHA_LIGHT',['../alpha_8h.html#abae339911e2a814dbcc62700972b397aa8b88931f6e0f69291d728cbc189b1300',1,'alpha.h']]],
   ['alpha_5flighter_7',['ALPHA_LIGHTER',['../alpha_8h.html#abae339911e2a814dbcc62700972b397aad41b1b33e81c557ce1a740e65f527105',1,'alpha.h']]],
   ['alpha_5ftransparent_8',['ALPHA_TRANSPARENT',['../alpha_8h.html#abae339911e2a814dbcc62700972b397aa7cdf198bde5257a735dd6f39eec4193d',1,'alpha.h']]],
-  ['attempt_5fboard_5fline_5fremoval_9',['attempt_board_line_removal',['../board_8c.html#ad72587ef2fd01f269e6189e060c7d4e6',1,'attempt_board_line_removal(Board *board):&#160;board.c'],['../board_8h.html#ad72587ef2fd01f269e6189e060c7d4e6',1,'attempt_board_line_removal(Board *board):&#160;board.c']]]
+  ['attempt_5fboard_5fline_5fremoval_9',['attempt_board_line_removal',['../board_8c.html#ad72587ef2fd01f269e6189e060c7d4e6',1,'attempt_board_line_removal(Board *board):&#160;board.c'],['../board_8h.html#ad72587ef2fd01f269e6189e060c7d4e6',1,'attempt_board_line_removal(Board *board):&#160;board.c']]],
+  ['audio_2ec_10',['audio.c',['../audio_8c.html',1,'']]],
+  ['audio_2eh_11',['audio.h',['../audio_8h.html',1,'']]]
 ];

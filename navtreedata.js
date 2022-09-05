@@ -24,14 +24,14 @@
 */
 var NAVTREE =
 [
-  [ "nxtetris", "index.html", [
+  [ "NXTetris", "index.html", [
     [ "Data Structures", "annotated.html", [
       [ "Controls", "index.html#autotoc_md0", [
         [ "Menu(s)", "index.html#autotoc_md1", null ],
         [ "Game", "index.html#autotoc_md2", null ]
       ] ],
       [ "Build", "index.html#autotoc_md3", null ],
-      [ "Libraries", "index.html#autotoc_md4", null ],
+      [ "Libraries", "index.html#autotoc_md5", null ],
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
       [ "Data Fields", "functions.html", [
@@ -56,7 +56,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "alpha_8h.html",
-"struct_tetromino.html#aa5f4d1eda21c196bd8401ff73f105073"
+"struct_graphics.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
