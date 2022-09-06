@@ -26,12 +26,15 @@ var NAVTREE =
 [
   [ "NXTetris", "index.html", [
     [ "Data Structures", "annotated.html", [
-      [ "Controls", "index.html#autotoc_md0", [
-        [ "Menu(s)", "index.html#autotoc_md1", null ],
-        [ "Game", "index.html#autotoc_md2", null ]
+      [ "Features", "index.html#autotoc_md0", null ],
+      [ "Controls", "index.html#autotoc_md1", [
+        [ "Menu(s)", "index.html#autotoc_md2", null ],
+        [ "Game", "index.html#autotoc_md3", null ]
       ] ],
-      [ "Build", "index.html#autotoc_md3", null ],
-      [ "Libraries", "index.html#autotoc_md5", null ],
+      [ "Build", "index.html#autotoc_md4", [
+        [ "Windows Compilation", "index.html#autotoc_md6", null ]
+      ] ],
+      [ "Libraries", "index.html#autotoc_md7", null ],
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
       [ "Data Fields", "functions.html", [
@@ -56,7 +59,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "alpha_8h.html",
-"struct_graphics.html"
+"struct_game_sounds.html#a4bb25518bef4e93863fdd1e7e709e47c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
