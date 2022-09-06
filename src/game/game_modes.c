@@ -57,7 +57,7 @@ unsigned int handle_shared_game_input(Game* game, Controls* controls, GameSounds
 	if (game->placing_point_changed) {
 		start_sound(sounds->move);
 	}
-
+	
 	return ret;
 }
 

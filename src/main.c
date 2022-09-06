@@ -16,7 +16,7 @@
 /**
  * Delay, in milliseconds, between each draw call.
  */
-#define FRAME_INTERVAL 1
+#define FRAME_INTERVAL 5
 
 /**
  * Draws the text at the bottom of the screen while in-game.
@@ -94,6 +94,7 @@ int main(void) {
 		while (in_menu) {
 			update_controls(controls);
 			begin_frame(graphics);
+
 
 			switch (controls->pressed_key) {
 				case KEY_UP:

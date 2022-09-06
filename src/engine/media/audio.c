@@ -32,6 +32,7 @@ int portaudio_callback(
 ) {
 	Sound* sound;
 	sf_count_t read_length;
+	int i;
 
 	sound = (Sound*)user_data;
 	(void)(input);
@@ -46,7 +47,7 @@ int portaudio_callback(
 		read_length = sf_readf_int(sound->sound_file, output, frame_count);
 
 		/* Multiply the pcm buffer by the volume value */
-		for (int i = 0; i < SAMPLES_PER_BUFFER * 2; ++i) {
+		for (i = 0; i < SAMPLES_PER_BUFFER * 2; ++i) {
 			((int*)output)[i] *= sound->volume;
 		}
 
