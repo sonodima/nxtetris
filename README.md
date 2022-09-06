@@ -12,7 +12,7 @@
 ## Features
 
 - [x] Single-player game mode
-- [x] Two-player game mode
+- [x] Two-players game mode
 - [x] Player vs. AI game mode _(AI algorithm is still really basic)_
 - [x] Piece control with keyboard and mouse
 - [x] 2D CLI graphics abstraction
