@@ -48,15 +48,11 @@ Point intersect_tetromino_with_board(Board* board, Tetromino tetromino, Point po
 unsigned int attempt_board_line_removal(Board* board);
 
 /**
- *
- * @param board
- * @param tetromino
- * @param position
- * @return
+ * Counts the number of filled lines in the board.
+ * @param board Pointer to the board.
+ * @return The number of filled lines.
  */
-unsigned int test_board_line_removal_for_action(Board* board, Tetromino tetromino, Point position);
-
-unsigned int get_filled_lines_count_for_action(Board* board, Tetromino tetromino, Point position);
+unsigned int get_filled_lines_count(Board* board);
 
 /**
  * Inverts the values in the given range of rows.

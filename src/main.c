@@ -8,7 +8,6 @@
 #include "engine/controls.h"
 #include "game/pieces_pool.h"
 #include "game/game.h"
-#include "game/cpu.h"
 #include "game/game_modes.h"
 #include "game/ui/main_menu.h"
 #include "game/ui/end_screen.h"
@@ -53,7 +52,6 @@ int main(void) {
 	PiecesPool* pieces_pool;
 	Game* game_a;
 	Game* game_b;
-	CPU* cpu;
 	Rect game_bounds;
 	GameSounds game_sounds;
 	GameMode game_mode;
@@ -73,8 +71,8 @@ int main(void) {
 	/* Handle audio initialization before everything else. (it will print errors if it fails) */
 	if (!initialize_audio()) { return 1; }
 	game_sounds.bg = make_sound("resources/audio/bg.mp3", 1, 0.3f);
-	game_sounds.move = make_sound("resources/audio/tick.mp3", 0, 0.3f);
-	game_sounds.rotate = make_sound("resources/audio/pop.mp3", 0, 0.5f);
+	game_sounds.move = make_sound("resources/audio/tick.mp3", 0, 0.2f);
+	game_sounds.rotate = make_sound("resources/audio/pop.mp3", 0, 0.3f);
 	game_sounds.drop = make_sound("resources/audio/snap.mp3", 0, 0.7f);
 
 	graphics = make_graphics();
@@ -83,7 +81,6 @@ int main(void) {
 	pieces_pool = make_pieces_pool(2);
 	game_a = make_game(pieces_pool, game_bounds);
 	game_b = make_game(pieces_pool, game_bounds);
-	cpu = make_cpu(game_b);
 
 	start_sound(game_sounds.bg);
 
@@ -163,7 +160,7 @@ int main(void) {
 						break;
 
 					case GAME_MODE_CPU:
-						handle_game_mode_cpu(game_a, game_b, controls, graphics, cpu, &game_sounds, &active_player);
+						handle_game_mode_cpu(game_a, game_b, controls, graphics, &game_sounds, &active_player);
 						break;
 				}
 
@@ -193,7 +190,6 @@ int main(void) {
 	}
 
 	/* Program cleanup */
-	free_cpu(cpu);
 	free_game(game_a);
 	free_game(game_b);
 	free_pieces_pool(pieces_pool);

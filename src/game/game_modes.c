@@ -57,7 +57,7 @@ unsigned int handle_shared_game_input(Game* game, Controls* controls, GameSounds
 	if (game->placing_point_changed) {
 		start_sound(sounds->move);
 	}
-	
+
 	return ret;
 }
 
@@ -114,7 +114,6 @@ void handle_game_mode_cpu(
 		Game* game_a, Game* game_b,
 		Controls* controls,
 		Graphics* graphics,
-		CPU* cpu,
 		GameSounds* sounds,
 		unsigned int* active_player
 ) {
@@ -123,12 +122,10 @@ void handle_game_mode_cpu(
 	int event_param;
 	unsigned int s, r, x;
 	Point placing_point, test_point;
-	int max_size, max_removed_lines, removed_lines, max_filled_lines, filled_lines;
-
-	CPUAction result;
+	int max_size, max_filled_lines, filled_lines;
+	int r_shape, r_rotation, r_x;
 
 	placing_point.y = 0;
-	max_removed_lines = -1;
 	max_filled_lines = -1;
 	max_size = -1;
 
@@ -149,7 +146,7 @@ void handle_game_mode_cpu(
 			*active_player = !*active_player;
 		}
 	} else {
-		/* CPU round */
+		/* Very arcane CPU logic */
 		for (s = 0; s < TETROMINOES_COUNT; ++s) {
 			process_game_event(game_b, GAME_EVENT_CHP_UP, NULL);
 			for (r = 0; r < TETROMINOES_ROTATIONS; ++r) {
@@ -158,35 +155,30 @@ void handle_game_mode_cpu(
 				for (x = 0; x < game_b->board->cols; ++x) {
 					placing_point.x = x - 1;
 					test_point = intersect_tetromino_with_board(game_b->board, game_b->placing_piece, placing_point);
-
-					filled_lines = get_filled_lines_count_for_action(game_b->board, game_b->placing_piece, placing_point);
-
-					/* removed_lines = test_board_line_removal_for_action(game_b->board, game_b->placing_piece, placing_point); */
+					filled_lines = get_filled_lines_count(game_b->board);
 
 					if (filled_lines > max_filled_lines) {
 						max_filled_lines = filled_lines;
-
-						result.shape = game_b->placing_piece.shape;
-						result.rotation = game_b->placing_piece.rotation;
-						result.x_off = x;
+						r_shape = game_b->placing_piece.shape;
+						r_rotation = game_b->placing_piece.rotation;
+						r_x = x;
 					} else if (max_filled_lines <= 0 && test_point.y > max_size) {
 						max_size = test_point.y;
-
-						result.shape = game_b->placing_piece.shape;
-						result.rotation = game_b->placing_piece.rotation;
-						result.x_off = x;
+						r_shape = game_b->placing_piece.shape;
+						r_rotation = game_b->placing_piece.rotation;
+						r_x = x;
 					}
 				}
 			}
 		}
 
-		event_param = result.shape;
+		event_param = r_shape;
 		process_game_event(game_b, GAME_EVENT_SET_CHP, &event_param);
 
-		event_param = result.rotation;
+		event_param = r_rotation;
 		process_game_event(game_b, GAME_EVENT_SET_ROT, &event_param);
 
-		event_param = result.x_off;
+		event_param = r_x;
 		process_game_event(game_b, GAME_EVENT_SET_X, &event_param);
 
 		process_game_event(game_b, GAME_EVENT_DROP, NULL);

@@ -3,7 +3,6 @@
 
 #include "engine/controls.h"
 #include "game.h"
-#include "cpu.h"
 
 /**
  * Game-mode identifiers.
@@ -71,7 +70,6 @@ void handle_game_mode_mp(
  * @param game_b Pointer to the second game.
  * @param controls Pointer to the controls handler.
  * @param graphics Pointer to the graphics manager.
- * @param cpu Pointer to the cpu.
  * @param sounds Pointer to the sounds list.
  * @param active_player Pointer to the active player id.
  */
@@ -79,7 +77,6 @@ void handle_game_mode_cpu(
 		Game* game_a, Game* game_b,
 		Controls* controls,
 		Graphics* graphics,
-		CPU* cpu,
 		GameSounds* sounds,
 		unsigned int* active_player
 );

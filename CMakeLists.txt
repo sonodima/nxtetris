@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.21)
 include(cmake/vcpkg.cmake)
 
 if (MSVC)
-    add_compile_options(/W4)
+    add_compile_options(/W4 /WX)
 else ()
-    add_compile_options(-Wall -Wextra -Wpedantic -Wno-unused-function -ansi)
+    add_compile_options(-Wall -Wextra -Werror -Wpedantic -ansi)
 endif ()
 
 project(nxtetris)
