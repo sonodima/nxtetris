@@ -22,16 +22,16 @@
 
 ### Menu(s)
 
-* `KBD_RIGHT` - Confirm
-* `KBD_LEFT` - Exit / Back
-* `KBD_UP`, `KBD_DOWN` - Menu navigation
+* <kbd>KB_RIGHT</kbd> - Confirm
+* <kbd>KB_LEFT</kbd> - Exit / Back
+* <kbd>KB_UP</kbd>, <kbd>KB_DOWN</kbd> - Menu navigation
 
 ### Game
 
-* `KBD_LEFT`, `KBD_RIGHT` - Rotate the tetromino
-* `KBD_UP`, `KBD_DOWN` - Change tetromino
-* `MOUSE_X` - Position the tetromino in the x-axis
-* `MOUSE_LEFT` - Drop the current tetromino in the board
+* <kbd>KB_LEFT</kbd>, <kbd>KB_RIGHT</kbd> - Rotate the tetromino
+* <kbd>KB_UP</kbd>, <kbd>KB_DOWN</kbd> - Change tetromino
+* <kbd>MOUSE_X</kbd> - Position the tetromino in the x-axis
+* <kbd>MOUSE_LEFT</kbd> - Drop the current tetromino in the board
 
 ## Build
 
