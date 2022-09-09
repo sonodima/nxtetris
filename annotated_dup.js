@@ -2,8 +2,6 @@ var annotated_dup =
 [
     [ "Color", "struct_color.html", "struct_color" ],
     [ "Controls", "struct_controls.html", "struct_controls" ],
-    [ "CPU", "struct_c_p_u.html", "struct_c_p_u" ],
-    [ "CPUAction", "struct_c_p_u_action.html", "struct_c_p_u_action" ],
     [ "Game", "struct_game.html", "struct_game" ],
     [ "GameModeDescriptor", "struct_game_mode_descriptor.html", "struct_game_mode_descriptor" ],
     [ "GameSounds", "struct_game_sounds.html", "struct_game_sounds" ],

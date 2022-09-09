@@ -102,13 +102,13 @@ Functions</h2></td></tr>
 <tr class="memitem:aa842745f3d9de1f4b9d0f506891fb9da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__modes_8c.html#aa842745f3d9de1f4b9d0f506891fb9da">handle_game_mode_mp</a> (<a class="el" href="struct_game.html">Game</a> *game_a, <a class="el" href="struct_game.html">Game</a> *game_b, <a class="el" href="struct_controls.html">Controls</a> *controls, <a class="el" href="struct_graphics.html">Graphics</a> *graphics, <a class="el" href="struct_game_sounds.html">GameSounds</a> *sounds, unsigned int *active_player)</td></tr>
 <tr class="memdesc:aa842745f3d9de1f4b9d0f506891fb9da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi player (a vs b) game-mode tick handler.  <a href="game__modes_8c.html#aa842745f3d9de1f4b9d0f506891fb9da">More...</a><br /></td></tr>
 <tr class="separator:aa842745f3d9de1f4b9d0f506891fb9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a830149250bf09377230831be671062bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__modes_8c.html#a830149250bf09377230831be671062bd">handle_game_mode_cpu</a> (<a class="el" href="struct_game.html">Game</a> *game_a, <a class="el" href="struct_game.html">Game</a> *game_b, <a class="el" href="struct_controls.html">Controls</a> *controls, <a class="el" href="struct_graphics.html">Graphics</a> *graphics, <a class="el" href="struct_c_p_u.html">CPU</a> *cpu, <a class="el" href="struct_game_sounds.html">GameSounds</a> *sounds, unsigned int *active_player)</td></tr>
-<tr class="memdesc:a830149250bf09377230831be671062bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi player (player vs cpu) game-mode tick handler.  <a href="game__modes_8c.html#a830149250bf09377230831be671062bd">More...</a><br /></td></tr>
-<tr class="separator:a830149250bf09377230831be671062bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32f2e2360b8c8dff53d74faa64ad507e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__modes_8c.html#a32f2e2360b8c8dff53d74faa64ad507e">handle_game_mode_cpu</a> (<a class="el" href="struct_game.html">Game</a> *game_a, <a class="el" href="struct_game.html">Game</a> *game_b, <a class="el" href="struct_controls.html">Controls</a> *controls, <a class="el" href="struct_graphics.html">Graphics</a> *graphics, <a class="el" href="struct_game_sounds.html">GameSounds</a> *sounds, unsigned int *active_player)</td></tr>
+<tr class="memdesc:a32f2e2360b8c8dff53d74faa64ad507e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi player (player vs cpu) game-mode tick handler.  <a href="game__modes_8c.html#a32f2e2360b8c8dff53d74faa64ad507e">More...</a><br /></td></tr>
+<tr class="separator:a32f2e2360b8c8dff53d74faa64ad507e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a830149250bf09377230831be671062bd" name="a830149250bf09377230831be671062bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a830149250bf09377230831be671062bd">&#9670;&nbsp;</a></span>handle_game_mode_cpu()</h2>
+<a id="a32f2e2360b8c8dff53d74faa64ad507e" name="a32f2e2360b8c8dff53d74faa64ad507e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f2e2360b8c8dff53d74faa64ad507e">&#9670;&nbsp;</a></span>handle_game_mode_cpu()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,12 +140,6 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_c_p_u.html">CPU</a> *&#160;</td>
-          <td class="paramname"><em>cpu</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="struct_game_sounds.html">GameSounds</a> *&#160;</td>
           <td class="paramname"><em>sounds</em>, </td>
         </tr>
@@ -170,7 +164,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">game_b</td><td>Pointer to the second game. </td></tr>
     <tr><td class="paramname">controls</td><td>Pointer to the controls handler. </td></tr>
     <tr><td class="paramname">graphics</td><td>Pointer to the graphics manager. </td></tr>
-    <tr><td class="paramname">cpu</td><td>Pointer to the cpu. </td></tr>
     <tr><td class="paramname">sounds</td><td>Pointer to the sounds list. </td></tr>
     <tr><td class="paramname">active_player</td><td>Pointer to the active player id. </td></tr>
   </table>
@@ -346,7 +339,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_1699be727a800b1d059c6f7f2b91d2ee.html">game</a></li><li class="navelem"><a class="el" href="game__modes_8c.html">game_modes.c</a></li>
-    <li class="footer">Generated on Tue Sep 6 2022 14:16:18 for NXTetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Sep 9 2022 09:59:15 for NXTetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

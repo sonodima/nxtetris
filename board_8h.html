@@ -116,10 +116,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad72587ef2fd01f269e6189e060c7d4e6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#ad72587ef2fd01f269e6189e060c7d4e6">attempt_board_line_removal</a> (<a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *board)</td></tr>
 <tr class="memdesc:ad72587ef2fd01f269e6189e060c7d4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all the filled lines in the board.  <a href="board_8h.html#ad72587ef2fd01f269e6189e060c7d4e6">More...</a><br /></td></tr>
 <tr class="separator:ad72587ef2fd01f269e6189e060c7d4e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0b7608407544abfdb96c4ca546d93fa"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aa0b7608407544abfdb96c4ca546d93fa">test_board_line_removal_for_action</a> (<a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *board, <a class="el" href="struct_tetromino.html">Tetromino</a> tetromino, <a class="el" href="struct_point.html">Point</a> position)</td></tr>
-<tr class="separator:aa0b7608407544abfdb96c4ca546d93fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b91c2f4456260ffac798ae746726887"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a6b91c2f4456260ffac798ae746726887">get_filled_lines_count_for_action</a> (<a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *board, <a class="el" href="struct_tetromino.html">Tetromino</a> tetromino, <a class="el" href="struct_point.html">Point</a> position)</td></tr>
-<tr class="separator:a6b91c2f4456260ffac798ae746726887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c686b8b0850c4ca8323c811df9a91f1"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a5c686b8b0850c4ca8323c811df9a91f1">get_filled_lines_count</a> (<a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *board)</td></tr>
+<tr class="memdesc:a5c686b8b0850c4ca8323c811df9a91f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts the number of filled lines in the board.  <a href="board_8h.html#a5c686b8b0850c4ca8323c811df9a91f1">More...</a><br /></td></tr>
+<tr class="separator:a5c686b8b0850c4ca8323c811df9a91f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacc01ee01b350e95afab80ed1c1d5e45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aacc01ee01b350e95afab80ed1c1d5e45">invert_board_lines</a> (<a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *board, unsigned int from, unsigned int to)</td></tr>
 <tr class="memdesc:aacc01ee01b350e95afab80ed1c1d5e45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverts the values in the given range of rows.  <a href="board_8h.html#aacc01ee01b350e95afab80ed1c1d5e45">More...</a><br /></td></tr>
 <tr class="separator:aacc01ee01b350e95afab80ed1c1d5e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,37 +256,30 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6b91c2f4456260ffac798ae746726887" name="a6b91c2f4456260ffac798ae746726887"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b91c2f4456260ffac798ae746726887">&#9670;&nbsp;</a></span>get_filled_lines_count_for_action()</h2>
+<a id="a5c686b8b0850c4ca8323c811df9a91f1" name="a5c686b8b0850c4ca8323c811df9a91f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c686b8b0850c4ca8323c811df9a91f1">&#9670;&nbsp;</a></span>get_filled_lines_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int get_filled_lines_count_for_action </td>
+          <td class="memname">unsigned int get_filled_lines_count </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *&#160;</td>
-          <td class="paramname"><em>board</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>board</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_tetromino.html">Tetromino</a>&#160;</td>
-          <td class="paramname"><em>tetromino</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_point.html">Point</a>&#160;</td>
-          <td class="paramname"><em>position</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Counts the number of filled lines in the board. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">board</td><td>Pointer to the board. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of filled lines. </dd></dl>
 
 </div>
 </div>
@@ -380,56 +372,13 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa0b7608407544abfdb96c4ca546d93fa" name="aa0b7608407544abfdb96c4ca546d93fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b7608407544abfdb96c4ca546d93fa">&#9670;&nbsp;</a></span>test_board_line_removal_for_action()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int test_board_line_removal_for_action </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="board_8h.html#acb1da977d3779c649b0c0f6dd8ed5b95">Board</a> *&#160;</td>
-          <td class="paramname"><em>board</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_tetromino.html">Tetromino</a>&#160;</td>
-          <td class="paramname"><em>tetromino</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_point.html">Point</a>&#160;</td>
-          <td class="paramname"><em>position</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">board</td><td></td></tr>
-    <tr><td class="paramname">tetromino</td><td></td></tr>
-    <tr><td class="paramname">position</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_1699be727a800b1d059c6f7f2b91d2ee.html">game</a></li><li class="navelem"><a class="el" href="board_8h.html">board.h</a></li>
-    <li class="footer">Generated on Tue Sep 6 2022 14:16:18 for NXTetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Sep 9 2022 09:59:14 for NXTetris by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

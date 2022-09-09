@@ -9,6 +9,6 @@ var searchData=
   ['reset_5fgame_6',['reset_game',['../game_8c.html#a9e46470d30fb0dc2f143c3e43f210749',1,'reset_game(Game *game):&#160;game.c'],['../game_8h.html#a9e46470d30fb0dc2f143c3e43f210749',1,'reset_game(Game *game):&#160;game.c']]],
   ['reset_5fpieces_5fpool_7',['reset_pieces_pool',['../pieces__pool_8c.html#a4408d7a86a8bc03fd69197c49fa06ad8',1,'reset_pieces_pool(PiecesPool *pool, unsigned int count):&#160;pieces_pool.c'],['../pieces__pool_8h.html#a4408d7a86a8bc03fd69197c49fa06ad8',1,'reset_pieces_pool(PiecesPool *pool, unsigned int count):&#160;pieces_pool.c']]],
   ['rotate_8',['rotate',['../struct_game_sounds.html#a456b5ac9199e234c555e40846902e31d',1,'GameSounds']]],
-  ['rotation_9',['rotation',['../struct_c_p_u_action.html#a9613c54af09ea29b06aa5e0a2574ea45',1,'CPUAction::rotation()'],['../struct_tetromino.html#a10234be880878c25f3fd1ee0a737d341',1,'Tetromino::rotation()']]],
+  ['rotation_9',['rotation',['../struct_tetromino.html#a10234be880878c25f3fd1ee0a737d341',1,'Tetromino']]],
   ['rows_10',['rows',['../struct_matrix.html#a6140349321095d6f627e29408414fd99',1,'Matrix']]]
 ];

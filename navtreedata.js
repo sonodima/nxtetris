@@ -59,7 +59,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "alpha_8h.html",
-"struct_game_sounds.html#a4bb25518bef4e93863fdd1e7e709e47c"
+"struct_rect.html#a0a2f84ed7838f07779ae24c5a9086d33"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

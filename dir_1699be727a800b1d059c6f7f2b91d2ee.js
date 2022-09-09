@@ -3,8 +3,6 @@ var dir_1699be727a800b1d059c6f7f2b91d2ee =
     [ "ui", "dir_332e3c95f1ee50ca68a71a28d752ea65.html", "dir_332e3c95f1ee50ca68a71a28d752ea65" ],
     [ "board.c", "board_8c.html", "board_8c" ],
     [ "board.h", "board_8h.html", "board_8h" ],
-    [ "cpu.c", "cpu_8c.html", "cpu_8c" ],
-    [ "cpu.h", "cpu_8h.html", "cpu_8h" ],
     [ "game.c", "game_8c.html", "game_8c" ],
     [ "game.h", "game_8h.html", "game_8h" ],
     [ "game_modes.c", "game__modes_8c.html", "game__modes_8c" ],
