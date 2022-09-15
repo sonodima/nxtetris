@@ -22,7 +22,7 @@ unsigned int get_tetromino_value_at(Tetromino tetromino, unsigned int x, unsigne
 		return 0;
 	}
 
-	/* Obtain the value at the given coords */
+	/* Obtain the value at the given coordinates */
 	return state.data >> (y * 4 + x) & 1;
 }
 

@@ -62,7 +62,7 @@ unsigned int check_board_collision(Board* board, Tetromino tetromino, Point poin
 				b_x = point.x + x;
 				b_y = point.y + y;
 
-				if (b_x >= 0 && b_x < board->cols && b_y >= 0 && b_y < board->rows) {
+				if (b_x < board->cols && b_y < board->rows) {
 					if (board->data[b_y][b_x] != COLOR_BLACK) {
 						return 1;
 					}
@@ -161,7 +161,7 @@ unsigned int get_filled_lines_count(Board* board) {
 void invert_board_lines(Board* board, unsigned int from, unsigned int to) {
 	unsigned int x, y;
 
-	if (from != to && from >= 0 && from < board->rows && to >= 0 && to < board->rows) {
+	if (from != to && from < board->rows && to < board->rows) {
 		for (y = from + 1; y <= to; ++y) {
 			for (x = 0; x < board->cols; ++x) {
 				board->data[y][x] = board->data[y][x] != COLOR_BLACK ? COLOR_BLACK : COLOR_WHITE;

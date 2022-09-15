@@ -103,7 +103,7 @@ void tick_game(Game* game, Graphics* graphics);
 void process_game_event(Game* game, GameEvent event, void* data);
 
 /**
- * Helper function that converts game-relative coords to absolute CLI coords.
+ * Helper function that converts game-relative coordinates to absolute CLI coordinates.
  * @param game Pointer to the game.
  * @param point Point to convert.
  * @return Converted point.
